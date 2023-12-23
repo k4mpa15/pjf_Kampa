@@ -3,7 +3,7 @@ import tkinter
 
 root_tk = tkinter.Tk()
 root_tk.geometry("500x300")
-root_tk.title("kalkulatorek")
+root_tk.title("kalkulator")
 
 def add(a, b):
     wynik = a + b
@@ -13,7 +13,7 @@ def add(a, b):
 def sub(a, b):
     wynik = a - b
     outcome_label = customtkinter.CTkLabel(master=root_tk, text = str(wynik), width=120, height=25, corner_radius=8)
-    outcome_label.place(relx=0.4, rely=0.9)
+    outcome_label.place(relx=0.3, rely=0.9)
     
 def main():
     number1_entry = customtkinter.CTkEntry(master = root_tk, width = 120, height=25, corner_radius=10)
