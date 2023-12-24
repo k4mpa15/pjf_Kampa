@@ -1,8 +1,7 @@
 import tkinter
 import customtkinter
 
-#from PIL import Image, ImageTk
-
+# from PIL import Image, ImageTk
 
 # canvas = tkinter.Canvas(root_tk, width=900, height=600)
 # canvas.pack()
@@ -28,8 +27,8 @@ def create_option_button(master, text, x, y, wid, command=None):
         bg_color=COLORS["BACKGROUND_COLOR"],
         fg_color=COLORS["BACKGROUND_COLOR"],
         hover_color="#B7AAD2",
-        font = ("Century Gothic", 13),
-        text_color="black"
+        font=("Century Gothic", 13),
+        text_color="black",
     ).place(relx=x, rely=y)
 
 
@@ -41,16 +40,16 @@ def create_main_button(master, text, x, y, wid, hei, anchor, command=None):
         text=text,
         corner_radius=10,
         width=wid,
-        font = ("Century Gothic", 14),
+        font=("Century Gothic", 14),
         height=hei,
         text_color="#AEC9F2",
         hover_color="#596CD0",
     ).place(relx=x, rely=y, anchor=anchor)
 
 
-def create_label(master, text, x, y, wid, hei, 
-                 text_font,
-                 text_color, bg_color, fg_color):
+def create_label(
+    master, text, x, y, wid, hei, text_font, text_color, bg_color, fg_color
+):
     customtkinter.CTkLabel(
         master=master,
         text=text,
@@ -60,7 +59,7 @@ def create_label(master, text, x, y, wid, hei,
         font=text_font,
         bg_color=bg_color,
         text_color=text_color,
-        fg_color=fg_color
+        fg_color=fg_color,
     ).place(relx=x, rely=y)
 
 
@@ -69,15 +68,13 @@ def create_entry(master, x, y, wid, hei):
         master=master,
         width=wid,
         height=hei,
-        font = ("Century Gothic", 20),
+        font=("Century Gothic", 20),
         corner_radius=10,
         fg_color=COLORS["LIGHT_ENTRY_COLOR"],
         bg_color=COLORS["BACKGROUND_COLOR"],
-        placeholder_text = "Wpisz równanie",
-        placeholder_text_color = COLORS["TEXT_GREY_COLOR"]
-        
+        placeholder_text="Wpisz równanie",
+        placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
     ).place(relx=x, rely=y)
-
 
 
 def main():
@@ -85,10 +82,8 @@ def main():
     root_tk.title("Kalkulator równań")
     root_tk.geometry("900x600")
     root_tk.resizable(True, True)
-    
+
     root_tk.configure(background=COLORS["BACKGROUND_COLOR"])
-
-
 
     # combobox = customtkinter.CTkComboBox(master=root_tk,
     #                                 values=["option 1", "option 2"])
@@ -105,7 +100,7 @@ def main():
         ("Century Gothic", 28),
         "black",
         COLORS["BACKGROUND_COLOR"],
-        COLORS["BACKGROUND_COLOR"]
+        COLORS["BACKGROUND_COLOR"],
     )
 
     create_option_button(root_tk, "PL EN", 0.8, 0.0, 120)
@@ -145,8 +140,7 @@ def main():
         ("Century Gothic", 20),
         COLORS["TEXT_GREY_COLOR"],
         COLORS["BACKGROUND_COLOR"],
-        COLORS["LIGHT_ENTRY_COLOR"]
-        
+        COLORS["LIGHT_ENTRY_COLOR"],
     )
 
     create_option_button(root_tk, "Materiały pomocnicze", 0.085, 0.9, 180)
@@ -161,7 +155,7 @@ def main():
         None,
         COLORS["TEXT_GREY_COLOR"],
         COLORS["BACKGROUND_COLOR"],
-        COLORS["BACKGROUND_COLOR"]
+        COLORS["BACKGROUND_COLOR"],
     )
 
     root_tk.mainloop()
