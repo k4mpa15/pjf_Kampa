@@ -6,14 +6,16 @@ if sys.platform == "darwin":
     try:
         import darkdetect
     except ImportError as e:
-        sys.stderr.write(str(e) + "\nERROR: You have to install darkdetect: pip install darkdetect\n")
+        sys.stderr.write(
+            str(e) + "\nERROR: You have to install darkdetect: pip install darkdetect\n"
+        )
 
 
 class SystemAppearanceModeListener(Thread):
-    """ This class checks for a system appearance change
-        in a loop, and if a change is detected, than the
-        callback function gets called. Either 'Light' or
-        'Dark' is passed in the callback function. """
+    """This class checks for a system appearance change
+    in a loop, and if a change is detected, than the
+    callback function gets called. Either 'Light' or
+    'Dark' is passed in the callback function."""
 
     def __init__(self, callback, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,7 +62,7 @@ class SystemAppearanceModeListener(Thread):
             sleep(0.5)
 
 
-class SystemAppearanceModeListenerNoThread():
+class SystemAppearanceModeListenerNoThread:
     def __init__(self, callback):
         self.appearance_mode = self.detect_appearance_mode()
         self.callback_function = callback
@@ -94,14 +96,14 @@ class SystemAppearanceModeListenerNoThread():
                 self.callback_function("Dark", from_listener=True)
 
 
-class AppearanceModeTracker():
-    """ This class holds a list with callback functions
-        of every customtkinter object that gets created.
-        And when either the SystemAppearanceModeListener
-        or the user changes the appearance_mode, all
-        callbacks in the list get called and the
-        new appearance_mode is passed over to the
-        customtkinter objects """
+class AppearanceModeTracker:
+    """This class holds a list with callback functions
+    of every customtkinter object that gets created.
+    And when either the SystemAppearanceModeListener
+    or the user changes the appearance_mode, all
+    callbacks in the list get called and the
+    new appearance_mode is passed over to the
+    customtkinter objects"""
 
     callback_list = []
     appearance_mode = 0  # Light (standard)
@@ -113,10 +115,14 @@ class AppearanceModeTracker():
             cls.system_mode_listener.deactivate()
 
         if no_thread is True:
-            cls.system_mode_listener = SystemAppearanceModeListenerNoThread(cls.set_appearance_mode)
+            cls.system_mode_listener = SystemAppearanceModeListenerNoThread(
+                cls.set_appearance_mode
+            )
             cls.appearance_mode = cls.system_mode_listener.get_mode()
         else:
-            cls.system_mode_listener = SystemAppearanceModeListener(cls.set_appearance_mode)
+            cls.system_mode_listener = SystemAppearanceModeListener(
+                cls.set_appearance_mode
+            )
             cls.system_mode_listener.start()
             cls.appearance_mode = cls.system_mode_listener.get_mode()
 

@@ -7,18 +7,20 @@ from .customtkinter_color_manager import CTkColorManager
 
 
 class CTkLabel(tkinter.Frame):
-    def __init__(self,
-                 master=None,
-                 bg_color=None,
-                 fg_color=None,
-                 text_color=CTkColorManager.TEXT,
-                 corner_radius=8,
-                 width=120,
-                 height=25,
-                 text="CTkLabel",
-                 text_font=None,
-                 *args,
-                 **kwargs):
+    def __init__(
+        self,
+        master=None,
+        bg_color=None,
+        fg_color=None,
+        text_color=CTkColorManager.TEXT,
+        corner_radius=8,
+        width=120,
+        height=25,
+        text="CTkLabel",
+        text_font=None,
+        *args,
+        **kwargs
+    ):
         super().__init__(master=master)
 
         AppearanceModeTracker.add(self.change_appearance_mode)
@@ -54,18 +56,20 @@ class CTkLabel(tkinter.Frame):
             self.text_font = text_font
         self.configure(width=self.width, height=self.height)
 
-        self.canvas = tkinter.Canvas(master=self,
-                                     highlightthicknes=0,
-                                     width=self.width,
-                                     height=self.height)
+        self.canvas = tkinter.Canvas(
+            master=self, highlightthicknes=0, width=self.width, height=self.height
+        )
         self.canvas.place(relx=0, rely=0, anchor=tkinter.NW)
 
-        self.text_label = tkinter.Label(master=self,
-                                        highlightthicknes=0,
-                                        bd=0,
-                                        text=self.text,
-                                        font=self.text_font,
-                                        *args, **kwargs)
+        self.text_label = tkinter.Label(
+            master=self,
+            highlightthicknes=0,
+            bd=0,
+            text=self.text,
+            font=self.text_font,
+            *args,
+            **kwargs
+        )
         self.text_label.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
         self.fg_parts = []
@@ -77,19 +81,46 @@ class CTkLabel(tkinter.Frame):
         self.fg_parts = []
 
         # frame_border
-        self.fg_parts.append(self.canvas.create_oval(0, 0,
-                                                     self.corner_radius*2, self.corner_radius*2))
-        self.fg_parts.append(self.canvas.create_oval(self.width-self.corner_radius*2, 0,
-                                                     self.width, self.corner_radius*2))
-        self.fg_parts.append(self.canvas.create_oval(0, self.height-self.corner_radius*2,
-                                                     self.corner_radius*2, self.height))
-        self.fg_parts.append(self.canvas.create_oval(self.width-self.corner_radius*2, self.height-self.corner_radius*2,
-                                                     self.width, self.height))
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                0, 0, self.corner_radius * 2, self.corner_radius * 2
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                self.width - self.corner_radius * 2,
+                0,
+                self.width,
+                self.corner_radius * 2,
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                0,
+                self.height - self.corner_radius * 2,
+                self.corner_radius * 2,
+                self.height,
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                self.width - self.corner_radius * 2,
+                self.height - self.corner_radius * 2,
+                self.width,
+                self.height,
+            )
+        )
 
-        self.fg_parts.append(self.canvas.create_rectangle(0, self.corner_radius,
-                                                          self.width, self.height-self.corner_radius))
-        self.fg_parts.append(self.canvas.create_rectangle(self.corner_radius, 0,
-                                                          self.width-self.corner_radius, self.height))
+        self.fg_parts.append(
+            self.canvas.create_rectangle(
+                0, self.corner_radius, self.width, self.height - self.corner_radius
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_rectangle(
+                self.corner_radius, 0, self.width - self.corner_radius, self.height
+            )
+        )
 
         if type(self.bg_color) == tuple:
             self.canvas.configure(bg=self.bg_color[self.appearance_mode])
@@ -98,7 +129,9 @@ class CTkLabel(tkinter.Frame):
 
         for part in self.fg_parts:
             if type(self.fg_color) == tuple:
-                self.canvas.itemconfig(part, fill=self.fg_color[self.appearance_mode], width=0)
+                self.canvas.itemconfig(
+                    part, fill=self.fg_color[self.appearance_mode], width=0
+                )
             else:
                 self.canvas.itemconfig(part, fill=self.fg_color, width=0)
 

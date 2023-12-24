@@ -5,13 +5,16 @@ from .customtkinter_color_manager import CTkColorManager
 
 
 class CTkFrame(tkinter.Frame):
-    def __init__(self, *args,
-                 bg_color=None,
-                 fg_color=None,
-                 corner_radius=10,
-                 width=200,
-                 height=200,
-                 **kwargs):
+    def __init__(
+        self,
+        *args,
+        bg_color=None,
+        fg_color=None,
+        corner_radius=10,
+        width=200,
+        height=200,
+        **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
         AppearanceModeTracker.add(self.change_appearance_mode)
@@ -43,10 +46,9 @@ class CTkFrame(tkinter.Frame):
 
         self.configure(width=self.width, height=self.height)
 
-        self.canvas = tkinter.Canvas(master=self,
-                                     highlightthicknes=0,
-                                     width=self.width,
-                                     height=self.height)
+        self.canvas = tkinter.Canvas(
+            master=self, highlightthicknes=0, width=self.width, height=self.height
+        )
 
         if type(self.bg_color) == tuple:
             self.canvas.configure(bg=self.bg_color[self.appearance_mode])
@@ -60,29 +62,58 @@ class CTkFrame(tkinter.Frame):
         self.draw()
 
     def draw(self):
-        #self.canvas.delete("all")
+        # self.canvas.delete("all")
         for part in self.fg_parts:
             self.canvas.delete(part)
         self.fg_parts = []
 
         # frame_border
-        self.fg_parts.append(self.canvas.create_oval(0, 0,
-                                                     self.corner_radius*2, self.corner_radius*2))
-        self.fg_parts.append(self.canvas.create_oval(self.width-self.corner_radius*2, 0,
-                                                     self.width, self.corner_radius*2))
-        self.fg_parts.append(self.canvas.create_oval(0, self.height-self.corner_radius*2,
-                                                     self.corner_radius*2, self.height))
-        self.fg_parts.append(self.canvas.create_oval(self.width-self.corner_radius*2, self.height-self.corner_radius*2,
-                                                     self.width, self.height))
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                0, 0, self.corner_radius * 2, self.corner_radius * 2
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                self.width - self.corner_radius * 2,
+                0,
+                self.width,
+                self.corner_radius * 2,
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                0,
+                self.height - self.corner_radius * 2,
+                self.corner_radius * 2,
+                self.height,
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_oval(
+                self.width - self.corner_radius * 2,
+                self.height - self.corner_radius * 2,
+                self.width,
+                self.height,
+            )
+        )
 
-        self.fg_parts.append(self.canvas.create_rectangle(0, self.corner_radius,
-                                                          self.width, self.height-self.corner_radius))
-        self.fg_parts.append(self.canvas.create_rectangle(self.corner_radius, 0,
-                                                          self.width-self.corner_radius, self.height))
+        self.fg_parts.append(
+            self.canvas.create_rectangle(
+                0, self.corner_radius, self.width, self.height - self.corner_radius
+            )
+        )
+        self.fg_parts.append(
+            self.canvas.create_rectangle(
+                self.corner_radius, 0, self.width - self.corner_radius, self.height
+            )
+        )
 
         for part in self.fg_parts:
             if type(self.fg_color) == tuple:
-                self.canvas.itemconfig(part, fill=self.fg_color[self.appearance_mode], width=0)
+                self.canvas.itemconfig(
+                    part, fill=self.fg_color[self.appearance_mode], width=0
+                )
             else:
                 self.canvas.itemconfig(part, fill=self.fg_color, width=0)
 
@@ -106,4 +137,3 @@ class CTkFrame(tkinter.Frame):
             self.bg_color = self.master.cget("bg")
 
         self.draw()
-
