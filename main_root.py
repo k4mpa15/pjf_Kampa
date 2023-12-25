@@ -1,7 +1,8 @@
 import tkinter as tk
 import customtkinter
+from tkinter import filedialog
 
-#from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 COLORS = {
     "MAIN_BUTTONS_COLOR": "#1B36CD",
@@ -12,47 +13,75 @@ COLORS = {
 
 FONT = "Century Gothic"
 
+
 class ToplevelWindow(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
-
-        self.label = customtkinter.CTkLabel(self, text="ToplevelWindow")
+        self.label = customtkinter.CTkLabel(
+            self,
+            text="Wybierz plik ze zdjęciem równania",
+            bg_color=COLORS["BACKGROUND_COLOR"],
+            fg_color=COLORS["BACKGROUND_COLOR"],
+            corner_radius=10,
+            text_color="black",
+        )
         self.label.pack(padx=20, pady=20)
+        self.create_widgets()
+        self.master.resizable(True, True)
+        self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.title("Wybór zdjęcia")
 
     def on_close(self):
         self.destroy()
+
+    def create_widgets(self):
+        load_button = customtkinter.CTkButton(
+            self,
+            text="Wczytaj plik",
+            command=self.load_file,
+            corner_radius=10,
+            bg_color=COLORS["BACKGROUND_COLOR"],
+        )
+        load_button.pack(pady=10)
+
+    def load_file(self):
+        file_path = filedialog.askopenfilename(
+            title="Wybierz plik",
+            filetypes=[("Pliki obrazów", "*.png;*.jpg;*.jpeg;*.gif")],
+        )
+        if file_path:
+            print(f"Wczytano plik: {file_path}")
+
 
 class CalculatorApp(customtkinter.CTk):
     def __init__(self, master, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.master = master
         self.master.title("Kalkulator równań")
-        self.master.geometry("1000x700")
+        self.master.geometry("1200x700")
         self.master.resizable(True, True)
         self.master.configure(background=COLORS["BACKGROUND_COLOR"])
         self.toplevel_window = None
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.create_widgets()
 
-    
     def on_close(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             pass
         else:
             self.toplevel_window.destroy()
-            
+
         self.master.destroy()
         self.master.quit()
-        
-        
+
     def create_widgets(self):
         self.create_label(
             "Kalkulator równań",
             0.0,
             0.0,
-            900,
+            961,
             90,
             (FONT, 28),
             "white",
@@ -102,9 +131,7 @@ class CalculatorApp(customtkinter.CTk):
 
         self.create_main_button("Rozwiąż", 0.15, 0.6, 120, 32, tk.CENTER)
 
-        self.create_main_button(
-            "Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, tk.CENTER
-        )
+        self.create_main_button("Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, tk.CENTER)
         self.create_main_button(
             "Pokaż graficzne przedstawienie", 0.7, 0.6, 260, 32, tk.CENTER
         )
@@ -146,20 +173,23 @@ class CalculatorApp(customtkinter.CTk):
             0,
             None,
         )
-        
-        self.create_image_button(0.65, 0.33, 6, lambda: self.display_scan_eq_opt())#skanuj zdj
-        self.create_image_button(0.9, 0.0, 6, None)#historia
-        self.create_image_button(0.52, 0.7, 6, None)#export
 
+        self.create_image_button(
+            0.65, 0.33, 6, lambda: self.display_scan_eq_opt()
+        )  # skanuj zdj
+        self.create_image_button(0.9, 0.0, 6, None)  # historia
+        self.create_image_button(0.52, 0.7, 6, None)  # export
 
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-            self.toplevel_window = ToplevelWindow(self)  
+            self.toplevel_window = ToplevelWindow(self)
         else:
-           self.toplevel_window.focus()
-            
+            self.toplevel_window.focus()
+
     def create_image_button(self, x, y, wid, command):
-        return customtkinter.CTkButton(master=self.master, command=command).place(relx=x, rely=y)
+        return customtkinter.CTkButton(master=self.master, command=command).place(
+            relx=x, rely=y
+        )
 
     def create_option_button(self, text, x, y, wid, bg_color, fg_color, text_color):
         return customtkinter.CTkButton(
