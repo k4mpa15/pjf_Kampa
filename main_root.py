@@ -1,8 +1,8 @@
 import tkinter as tk
-import customtkinter
+import customtkinter as ctk
 from tkinter import filedialog
 
-# from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 
 COLORS = {
     "MAIN_BUTTONS_COLOR": "#1B36CD",
@@ -14,19 +14,18 @@ COLORS = {
 FONT = "Century Gothic"
 
 
-class ToplevelWindow(customtkinter.CTkToplevel):
+class ToplevelWindow(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
-        self.label = customtkinter.CTkLabel(
+        self.label = ctk.CTkLabel(
             self,
             text="Wybierz plik ze zdjęciem równania",
             bg_color=COLORS["BACKGROUND_COLOR"],
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
             text_color="black",
-        )
-        self.label.pack(padx=20, pady=20)
+        ).place(relx=0.22, rely=0.1)
         self.create_widgets()
         self.master.resizable(True, True)
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
@@ -37,14 +36,14 @@ class ToplevelWindow(customtkinter.CTkToplevel):
         self.destroy()
 
     def create_widgets(self):
-        load_button = customtkinter.CTkButton(
+        load_button = ctk.CTkButton(
             self,
             text="Wczytaj plik",
             command=self.load_file,
             corner_radius=10,
             bg_color=COLORS["BACKGROUND_COLOR"],
         )
-        load_button.pack(pady=10)
+        load_button.place(relx=0.32, rely=0.3)
 
     def load_file(self):
         file_path = filedialog.askopenfilename(
@@ -55,14 +54,14 @@ class ToplevelWindow(customtkinter.CTkToplevel):
             print(f"Wczytano plik: {file_path}")
 
 
-class CalculatorApp(customtkinter.CTk):
+class CalculatorApp(ctk.CTk):
     def __init__(self, master, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.master = master
         self.master.title("Kalkulator równań")
-        self.master.geometry("1200x700")
+        self.master.geometry("1000x600")
         self.master.resizable(True, True)
-        self.master.configure(background=COLORS["BACKGROUND_COLOR"])
+        self.master.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.toplevel_window = None
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.create_widgets()
@@ -81,7 +80,7 @@ class CalculatorApp(customtkinter.CTk):
             "Kalkulator równań",
             0.0,
             0.0,
-            961,
+            1000,
             90,
             (FONT, 28),
             "white",
@@ -101,16 +100,16 @@ class CalculatorApp(customtkinter.CTk):
             "white",
         )
 
-        # img_history = customtkinter.CTkFrame(Image.open("history_icon.png"), size=(26, 26))
-        # history_button = customtkinter.CTkButton(master = root_tk, image = img_history)
+        # img_history = ctk.CTkFrame(Image.open("history_icon.png"), size=(26, 26))
+        # history_button = ctk.CTkButton(master = root_tk, image = img_history)
         # history_button.place(relx = 0.95, rely = 0.0)
 
-        # img_camera = customtkinter.CTkFrame(Image.open("camera_icon.jpg"), size=(26, 26))
-        # camera_button = customtkinter.CTkButton(master = root_tk, image = img_camera)
+        # img_camera = ctk.CTkFrame(Image.open("camera_icon.jpg"), size=(26, 26))
+        # camera_button = ctk.CTkButton(master = root_tk, image = img_camera)
         # camera_button.place(relx = 0.95, rely = 0.0)
 
-        # img_export = customtkinter.CTkFrame(Image.open("export_icon.jpg"), size=(26, 26))
-        # export_button = customtkinter.CTkButton(master = root_tk, image = img)
+        # img_export = ctk.CTkFrame(Image.open("export_icon.jpg"), size=(26, 26))
+        # export_button = ctk.CTkButton(master = root_tk, image = img)
         # export_button.place(relx = 0.95, rely = 0.0)
 
         eq_types = ["Wybierz typ", "1", "2", "3"]
@@ -129,11 +128,11 @@ class CalculatorApp(customtkinter.CTk):
 
         self.create_entry(0.084, 0.33, 600, 100)
 
-        self.create_main_button("Rozwiąż", 0.15, 0.6, 120, 32, tk.CENTER)
+        self.create_main_button("Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER)
 
-        self.create_main_button("Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, tk.CENTER)
+        self.create_main_button("Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, ctk.CENTER)
         self.create_main_button(
-            "Pokaż graficzne przedstawienie", 0.7, 0.6, 260, 32, tk.CENTER
+            "Pokaż graficzne przedstawienie", 0.7, 0.6, 260, 32, ctk.CENTER
         )
 
         self.create_label(
@@ -176,7 +175,7 @@ class CalculatorApp(customtkinter.CTk):
 
         self.create_image_button(
             0.65, 0.33, 6, lambda: self.display_scan_eq_opt()
-        )  # skanuj zdj
+        )  
         self.create_image_button(0.9, 0.0, 6, None)  # historia
         self.create_image_button(0.52, 0.7, 6, None)  # export
 
@@ -187,12 +186,12 @@ class CalculatorApp(customtkinter.CTk):
             self.toplevel_window.focus()
 
     def create_image_button(self, x, y, wid, command):
-        return customtkinter.CTkButton(master=self.master, command=command).place(
+        return ctk.CTkButton(master=self.master, command=command).place(
             relx=x, rely=y
         )
 
     def create_option_button(self, text, x, y, wid, bg_color, fg_color, text_color):
-        return customtkinter.CTkButton(
+        return ctk.CTkButton(
             master=self.master,
             text=text,
             width=wid,
@@ -205,7 +204,7 @@ class CalculatorApp(customtkinter.CTk):
         ).place(relx=x, rely=y)
 
     def create_main_button(self, text, x, y, wid, hei, anchor, command=None):
-        return customtkinter.CTkButton(
+        return ctk.CTkButton(
             fg_color=COLORS["MAIN_BUTTONS_COLOR"],
             bg_color=COLORS["BACKGROUND_COLOR"],
             master=self.master,
@@ -232,7 +231,7 @@ class CalculatorApp(customtkinter.CTk):
         corner_radius,
         anchor,
     ):
-        customtkinter.CTkLabel(
+        ctk.CTkLabel(
             master=self.master,
             text=text,
             width=wid,
@@ -246,7 +245,7 @@ class CalculatorApp(customtkinter.CTk):
         ).place(relx=x, rely=y)
 
     def create_entry(self, x, y, wid, hei):
-        return customtkinter.CTkEntry(
+        return ctk.CTkEntry(
             master=self.master,
             width=wid,
             height=hei,
@@ -271,7 +270,7 @@ class CalculatorApp(customtkinter.CTk):
         dropdown_font,
         button_color,
     ):
-        combobox = customtkinter.CTkComboBox(
+        combobox = ctk.CTkComboBox(
             master=self.master,
             values=values,
             width=wid,
@@ -287,7 +286,7 @@ class CalculatorApp(customtkinter.CTk):
 
 
 def main():
-    root_tk = tk.Tk()
+    root_tk = ctk.CTk()
     app = CalculatorApp(root_tk)
     root_tk.mainloop()
 
