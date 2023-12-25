@@ -19,19 +19,34 @@ class ToplevelWindow(customtkinter.CTkToplevel):
 
         self.label = customtkinter.CTkLabel(self, text="ToplevelWindow")
         self.label.pack(padx=20, pady=20)
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
 
+    def on_close(self):
+        self.destroy()
 
-class CalculatorApp:
-    def __init__(self, master):
+class CalculatorApp(customtkinter.CTk):
+    def __init__(self, master, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.master = master
         self.master.title("Kalkulator równań")
-        self.master.geometry("900x600")
+        self.master.geometry("1000x700")
         self.master.resizable(True, True)
         self.master.configure(background=COLORS["BACKGROUND_COLOR"])
         self.toplevel_window = None
-        
+        self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.create_widgets()
 
+    
+    def on_close(self):
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            pass
+        else:
+            self.toplevel_window.destroy()
+            
+        self.master.destroy()
+        self.master.quit()
+        
+        
     def create_widgets(self):
         self.create_label(
             "Kalkulator równań",
@@ -139,7 +154,7 @@ class CalculatorApp:
 
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-            self.toplevel_window = ToplevelWindow(self)  # create window if its None or destroyed
+            self.toplevel_window = ToplevelWindow(self)  
         else:
            self.toplevel_window.focus()
             
