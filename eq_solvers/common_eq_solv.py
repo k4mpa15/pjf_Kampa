@@ -1,6 +1,7 @@
 import cmath
 import re
 
+
 class EquationSolver:
     @staticmethod
     def solve_linear_equation(equation_content):
@@ -10,7 +11,7 @@ class EquationSolver:
         z = eval(s, {"j": 1j})
         real, imag = z.real, -z.imag
         if imag:
-            return f"x = {round((real / imag), 2)}" 
+            return f"x = {round((real / imag), 2)}"
         else:
             if real:
                 return "Brak rozwiązań"
@@ -30,23 +31,21 @@ class EquationSolver:
 
             if match:
                 a, b, c = map(lambda x: int(x) if x else 0, match.groups())
-            else: 
+            else:
                 return "Zły format równania!"
 
             d = (b**2) - (4 * a * c)
             if d < 0:
                 return "Brak rozwiązań"
             elif d == 0:
-                sol = -b / (2*a)
+                sol = -b / (2 * a)
                 return f"x = {round(sol, 2)}"
             elif a == 0:
                 return "To nie jest równanie kwadratowe"
             else:
                 sol1 = (-b - d**0.5) / (2 * a)
                 sol2 = (-b + d**0.5) / (2 * a)
-                return f"x1 = {round(sol1, 2)}, x2 = {round(sol2, 2)} " 
+                return f"x1 = {round(sol1, 2)}, x2 = {round(sol2, 2)} "
 
         except ZeroDivisionError:
             return "Brak rozwiązań"
-
-    

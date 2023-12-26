@@ -36,6 +36,17 @@ class CalculatorApp(ctk.CTk):
         self.master.quit()
 
     def create_widgets(self):
+        self.create_option_button(
+            "Jak poprawnie wpisywać równania?",
+            0.084,
+            0.29,
+            150,
+            COLORS["BACKGROUND_COLOR"],
+            COLORS["BACKGROUND_COLOR"],
+            COLORS["BLACK"],
+            COLORS["OPTION_BUTTON_HOVER_COLOR"]
+        )
+
         self.create_label(
             "Kalkulator równań",
             0.0,
@@ -58,6 +69,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["WHITE"],
+            COLORS["OPTION_BUTTON_HOVER_COLOR"]
         )
 
         # self.create_image_buttons()
@@ -125,6 +137,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["BACKGROUND_COLOR"],
             COLORS["BACKGROUND_COLOR"],
             COLORS["BLACK"],
+            COLORS["OPTION_BUTTON_HOVER_COLOR"]
         )
 
         self.create_label(
@@ -158,7 +171,7 @@ class CalculatorApp(ctk.CTk):
     def create_image_button(self, x, y, wid, command):
         return ctk.CTkButton(master=self.master, command=command).place(relx=x, rely=y)
 
-    def create_option_button(self, text, x, y, wid, bg_color, fg_color, text_color):
+    def create_option_button(self, text, x, y, wid, bg_color, fg_color, text_color, hover_color):
         return ctk.CTkButton(
             master=self.master,
             text=text,
@@ -166,7 +179,7 @@ class CalculatorApp(ctk.CTk):
             border_color=COLORS["WHITE"],
             bg_color=bg_color,
             fg_color=fg_color,
-            hover_color=COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            hover_color=hover_color,
             font=(FONT, 13),
             text_color=text_color,
         ).place(relx=x, rely=y)
@@ -281,9 +294,7 @@ class CalculatorApp(ctk.CTk):
     def update_label(self, result):
         if result is not None:
             self.solution = result
-            self.result_label.configure(
-                text=result, text_color=COLORS["BLACK"]
-            )
+            self.result_label.configure(text=result, text_color=COLORS["BLACK"])
         else:
             self.solution = "Nie udało się rozwiązać równania."
             self.result_label.configure(
