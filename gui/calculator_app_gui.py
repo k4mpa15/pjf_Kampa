@@ -11,8 +11,8 @@ FONT = "Century Gothic"
 
 
 class CalculatorApp(ctk.CTk):
-    def __init__(self, master, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, master):
+        super().__init__()
         self.master = master
         self.master.title("Kalkulator równań")
         self.master.geometry("1000x600")
@@ -34,7 +34,7 @@ class CalculatorApp(ctk.CTk):
 
         self.master.destroy()
         self.master.quit()
-        
+
     def create_widgets(self):
         self.create_label(
             "Kalkulator równań",
@@ -60,7 +60,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["WHITE"],
         )
 
-        # self.create_image_buttons()
+        #self.create_image_buttons()
 
         # img_camera = ctk.CTkFrame(Image.open("camera_icon.jpg"), size=(26, 26))
         # camera_button = ctk.CTkButton(master = root_tk, image = img_camera)
@@ -70,7 +70,13 @@ class CalculatorApp(ctk.CTk):
         # export_button = ctk.CTkButton(master = root_tk, image = img)
         # export_button.place(relx = 0.95, rely = 0.0)
 
-        eq_types = ["Wybierz typ", "równanie liniowe", "układ równań liniowych", "równanie kwadratowe","3"]
+        eq_types = [
+            "Wybierz typ",
+            "równanie liniowe",
+            "układ równań liniowych",
+            "równanie kwadratowe",
+            "3",
+        ]
         self.create_combobox(
             eq_types,
             250,
@@ -110,7 +116,7 @@ class CalculatorApp(ctk.CTk):
             10,
             None,
         )
-        
+
         self.create_option_button(
             "Materiały pomocnicze",
             0.085,
@@ -139,11 +145,12 @@ class CalculatorApp(ctk.CTk):
         self.create_image_button(0.9, 0.0, 6, None)  # historia
         self.create_image_button(0.52, 0.7, 6, None)  # export
 
-    """def create_image_buttons(self):
-        img_history = ctk.CTkFrame(Image.open("history_icon.png"), size=(26, 26))
-        history_button = ctk.CTkButton(master = self.master, image = img_history)
-        history_button.place(relx = 0.95, rely = 0.0)"""
-
+    '''def create_image_buttons(self):
+        image_path = "icons/history_icon.png"
+        photo = ctk.CTkImage(file=image_path)
+        history_button = ctk.CTkButton(master = self.master).configure(image=photo, compound="top")
+        history_button.place(relx = 0.95, rely = 0.0)'''
+        
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
@@ -254,16 +261,13 @@ class CalculatorApp(ctk.CTk):
             font=font,
             dropdown_font=dropdown_font,
             button_color=button_color,
-            command = self.get_type_content
+            command=self.get_type_content,
         )
         self.combobox.place(relx=x, rely=y)
-        #return self.combobox
-    
+
     def get_type_content(self, choice):
-        #return self.combobox.get()
         self.eq_type = choice
-        
-        
+
     def solve_equation(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_linear_equation(equation_content)
@@ -273,7 +277,7 @@ class CalculatorApp(ctk.CTk):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_quadratic_equation(equation_content)
         self.update_label(result)
-        
+
     def update_label(self, result):
         if result is not None:
             self.solution = result
@@ -285,10 +289,12 @@ class CalculatorApp(ctk.CTk):
             self.result_label.configure(
                 text="Nie udało się rozwiązać równania.", text_color=COLORS["BLACK"]
             )
-    
+
     def solve_choosen_type(self):
-        if self.eq_type == "równanie liniowe":
-            self.solve_equation()
-            
-        if self.eq_type == "równanie kwadratowe":
-            self.solve_quadratic_equation()
+        eq_type_to_func = {
+            "równanie liniowe": self.solve_equation,
+            "równanie kwadratowe": self.solve_quadratic_equation,
+        }
+        selected_func = eq_type_to_func.get(self.eq_type)
+        if selected_func:
+            selected_func()

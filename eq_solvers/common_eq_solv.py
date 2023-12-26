@@ -1,4 +1,6 @@
 import cmath
+
+
 class EquationSolver:
     @staticmethod
     def solve_linear_equation(equation_content):
@@ -14,7 +16,8 @@ class EquationSolver:
                 return "Brak rozwiązań"
             else:
                 return "Nieskończona ilosć rozwiązań"
-    @staticmethod     
+
+    @staticmethod
     def solve_quadratic_equation(equation_content):
         try:
             s = equation_content.replace("x", " ").replace("=0", "").split()
@@ -25,25 +28,25 @@ class EquationSolver:
                 a, b = int(s[0]), int(s[1])
             if len(s) == 1:
                 a = int(s[0])
-            d = (b**2) - (4*a*c)
-            if d < 0 or a == 0:
+            d = (b**2) - (4 * a * c)
+            if d < 0:
                 return "Brak rozwiązań"
-            elif d == 0: 
+            elif d == 0:
                 sol = -c / b
                 return round(sol, 2)
+            elif a == 0:
+                return "To nie jest równanie kwadratowe"
             else:
                 sol1 = (-b - d**0.5) / (2 * a)
                 sol2 = (-b + d**0.5) / (2 * a)
-                return  round(sol1, 2), round(sol2, 2)
-            
+                return round(sol1, 2), round(sol2, 2)
+
         except ZeroDivisionError:
             return "Brak rozwiązań"
-                
+
     def is_valid_coefficient(self, value):
         try:
             float(value)
             return True
         except ValueError:
             return False
-        
-        
