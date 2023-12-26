@@ -3,11 +3,12 @@ from common_eq_solv import EquationSolver
 from pic_chooser import ToplevelWindow
 import json
 
-with open('colors.json') as f:
+with open("colors.json") as f:
     colors_data = json.load(f)
 
 COLORS = colors_data.get("COLORS", {})
 FONT = "Century Gothic"
+
 
 class CalculatorApp(ctk.CTk):
     def __init__(self, master, *args, **kwargs):
@@ -23,18 +24,22 @@ class CalculatorApp(ctk.CTk):
         self.equation_solver = EquationSolver()
         self.create_widgets()
         self.solution = None
-        
+
     def solve_equation(self):
         equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_equation(equation_content)
+        result = self.equation_solver.solve_linear_equation(equation_content)
 
         if result is not None:
             self.solution = result
-            self.result_label.configure(text=f"Rozwiązanie równania: {result}", text_color = COLORS["BLACK"])
+            self.result_label.configure(
+                text=f"Rozwiązanie równania: {result}", text_color=COLORS["BLACK"]
+            )
         else:
             self.solution = "Nie udało się rozwiązać równania."
-            self.result_label.configure(text="Nie udało się rozwiązać równania.", text_color = COLORS["BLACK"])
-                
+            self.result_label.configure(
+                text="Nie udało się rozwiązać równania.", text_color=COLORS["BLACK"]
+            )
+
     def on_close(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             pass
@@ -69,8 +74,8 @@ class CalculatorApp(ctk.CTk):
             COLORS["WHITE"],
         )
 
-        #self.create_image_buttons()
-            
+        # self.create_image_buttons()
+
         # img_camera = ctk.CTkFrame(Image.open("camera_icon.jpg"), size=(26, 26))
         # camera_button = ctk.CTkButton(master = root_tk, image = img_camera)
         # camera_button.place(relx = 0.95, rely = 0.0)
@@ -95,14 +100,17 @@ class CalculatorApp(ctk.CTk):
 
         self.create_entry(0.084, 0.33, 600, 100)
 
-        self.solve_button = self.create_main_button("Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_equation())
+        self.solve_button = self.create_main_button(
+            "Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_equation()
+        )
 
-        self.create_main_button("Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, ctk.CENTER, None)
+        self.create_main_button(
+            "Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, ctk.CENTER, None
+        )
         self.create_main_button(
             "Pokaż graficzne przedstawienie", 0.7, 0.6, 260, 32, ctk.CENTER, None
         )
 
-        
         self.result_label = self.create_label(
             "Rozwiązanie równania... ",
             0.085,
@@ -116,7 +124,6 @@ class CalculatorApp(ctk.CTk):
             10,
             None,
         )
-        self.solve_button.bind("<ButtonRelease>", lambda event: self.solve_equation())
         
         self.create_option_button(
             "Materiały pomocnicze",
@@ -142,26 +149,21 @@ class CalculatorApp(ctk.CTk):
             None,
         )
 
-        self.create_image_button(
-            0.65, 0.33, 6, lambda: self.display_scan_eq_opt()
-        )  
+        self.create_image_button(0.65, 0.33, 6, lambda: self.display_scan_eq_opt())
         self.create_image_button(0.9, 0.0, 6, None)  # historia
         self.create_image_button(0.52, 0.7, 6, None)  # export
 
-
-    '''def create_image_buttons(self):
+    """def create_image_buttons(self):
         img_history = ctk.CTkFrame(Image.open("history_icon.png"), size=(26, 26))
         history_button = ctk.CTkButton(master = self.master, image = img_history)
-        history_button.place(relx = 0.95, rely = 0.0)'''
+        history_button.place(relx = 0.95, rely = 0.0)"""
 
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
 
     def create_image_button(self, x, y, wid, command):
-        return ctk.CTkButton(master=self.master, command=command).place(
-            relx=x, rely=y
-        )
+        return ctk.CTkButton(master=self.master, command=command).place(relx=x, rely=y)
 
     def create_option_button(self, text, x, y, wid, bg_color, fg_color, text_color):
         return ctk.CTkButton(
@@ -188,7 +190,7 @@ class CalculatorApp(ctk.CTk):
             height=hei,
             text_color=COLORS["WHITE"],
             hover_color=COLORS["MAIN_BUTTONS_HOVER_COLOR"],
-            command=command
+            command=command,
         )
         button.place(relx=x, rely=y, anchor=anchor)
         return button
@@ -233,16 +235,15 @@ class CalculatorApp(ctk.CTk):
             bg_color=COLORS["BACKGROUND_COLOR"],
             placeholder_text="Wpisz równanie",
             placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
-            text_color=COLORS["BLACK"]
+            text_color=COLORS["BLACK"],
         )
         self.eq_entry.place(relx=x, rely=y)
 
         return self.eq_entry
-    
+
     def get_entry_content(self):
         return self.eq_entry.get()
 
-        
     def create_combobox(
         self,
         values,
@@ -269,4 +270,3 @@ class CalculatorApp(ctk.CTk):
             button_color=button_color,
         ).place(relx=x, rely=y)
         return combobox
-

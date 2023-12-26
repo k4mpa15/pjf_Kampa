@@ -2,10 +2,11 @@ import customtkinter as ctk
 from tkinter import filedialog
 import json
 
-with open('colors.json') as f:
+with open("colors.json") as f:
     colors_data = json.load(f)
 
 COLORS = colors_data.get("COLORS", {})
+
 
 class ToplevelWindow(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
@@ -21,7 +22,6 @@ class ToplevelWindow(ctk.CTkToplevel):
         self.destroy()
 
     def create_widgets(self):
-        
         label = ctk.CTkLabel(
             self,
             text="Wybierz plik ze zdjęciem równania",
@@ -31,7 +31,7 @@ class ToplevelWindow(ctk.CTkToplevel):
             text_color=COLORS["BLACK"],
         )
         label.place(relx=0.22, rely=0.1)
-        
+
         load_button = ctk.CTkButton(
             self,
             text="Wczytaj plik",
