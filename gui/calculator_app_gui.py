@@ -24,28 +24,7 @@ class CalculatorApp(ctk.CTk):
         self.equation_solver = EquationSolver()
         self.create_widgets()
         self.solution = None
-
-    def solve_equation(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_linear_equation(equation_content)
-        self.update_label(result)
-
-    def solve_quadratic_equation(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_quadratic_equation(equation_content)
-        self.update_label(result)
-        
-    def update_label(self, result):
-        if result is not None:
-            self.solution = result
-            self.result_label.configure(
-                text=f"x = {result}", text_color=COLORS["BLACK"]
-            )
-        else:
-            self.solution = "Nie udało się rozwiązać równania."
-            self.result_label.configure(
-                text="Nie udało się rozwiązać równania.", text_color=COLORS["BLACK"]
-            )
+        self.eq_type = None
 
     def on_close(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
@@ -55,7 +34,7 @@ class CalculatorApp(ctk.CTk):
 
         self.master.destroy()
         self.master.quit()
-
+        
     def create_widgets(self):
         self.create_label(
             "Kalkulator równań",
@@ -108,7 +87,7 @@ class CalculatorApp(ctk.CTk):
         self.create_entry(0.084, 0.33, 600, 100)
 
         self.solve_button = self.create_main_button(
-            "Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_quadratic_equation()
+            "Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_choosen_type()
         )
 
         self.create_main_button(
@@ -264,7 +243,7 @@ class CalculatorApp(ctk.CTk):
         dropdown_font,
         button_color,
     ):
-        combobox = ctk.CTkComboBox(
+        self.combobox = ctk.CTkComboBox(
             master=self.master,
             values=values,
             width=wid,
@@ -275,5 +254,41 @@ class CalculatorApp(ctk.CTk):
             font=font,
             dropdown_font=dropdown_font,
             button_color=button_color,
-        ).place(relx=x, rely=y)
-        return combobox
+            command = self.get_type_content
+        )
+        self.combobox.place(relx=x, rely=y)
+        #return self.combobox
+    
+    def get_type_content(self, choice):
+        #return self.combobox.get()
+        self.eq_type = choice
+        
+        
+    def solve_equation(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_linear_equation(equation_content)
+        self.update_label(result)
+
+    def solve_quadratic_equation(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_quadratic_equation(equation_content)
+        self.update_label(result)
+        
+    def update_label(self, result):
+        if result is not None:
+            self.solution = result
+            self.result_label.configure(
+                text=f"x = {result}", text_color=COLORS["BLACK"]
+            )
+        else:
+            self.solution = "Nie udało się rozwiązać równania."
+            self.result_label.configure(
+                text="Nie udało się rozwiązać równania.", text_color=COLORS["BLACK"]
+            )
+    
+    def solve_choosen_type(self):
+        if self.eq_type == "równanie liniowe":
+            self.solve_equation()
+            
+        if self.eq_type == "równanie kwadratowe":
+            self.solve_quadratic_equation()

@@ -8,7 +8,7 @@ class EquationSolver:
         z = eval(s, {"j": 1j})
         real, imag = z.real, -z.imag
         if imag:
-            return real / imag
+            return round((real / imag), 2)
         else:
             if real:
                 return "Brak rozwiązań"
@@ -28,13 +28,13 @@ class EquationSolver:
             d = (b**2) - (4*a*c)
             if d < 0 or a == 0:
                 return "Brak rozwiązań"
-            elif a == 0: 
+            elif d == 0: 
                 sol = -c / b
-                return sol
+                return round(sol, 2)
             else:
                 sol1 = (-b - d**0.5) / (2 * a)
                 sol2 = (-b + d**0.5) / (2 * a)
-                return sol1, sol2
+                return  round(sol1, 2), round(sol2, 2)
             
         except ZeroDivisionError:
             return "Brak rozwiązań"
