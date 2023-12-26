@@ -282,7 +282,7 @@ class CalculatorApp(ctk.CTk):
         if result is not None:
             self.solution = result
             self.result_label.configure(
-                text=f"x = {result}", text_color=COLORS["BLACK"]
+                text=result, text_color=COLORS["BLACK"]
             )
         else:
             self.solution = "Nie udało się rozwiązać równania."
