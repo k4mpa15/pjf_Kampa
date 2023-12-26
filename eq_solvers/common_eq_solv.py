@@ -1,7 +1,6 @@
 import cmath
 import re
 
-
 class EquationSolver:
     @staticmethod
     def solve_linear_equation(equation_content):
@@ -38,7 +37,7 @@ class EquationSolver:
             if d < 0:
                 return "Brak rozwiązań"
             elif d == 0:
-                sol = -c / b
+                sol = -b / (2*a)
                 return round(sol, 2)
             elif a == 0:
                 return "To nie jest równanie kwadratowe"
@@ -50,9 +49,4 @@ class EquationSolver:
         except ZeroDivisionError:
             return "Brak rozwiązań"
 
-    def is_valid_coefficient(self, value):
-        try:
-            float(value)
-            return True
-        except ValueError:
-            return False
+    
