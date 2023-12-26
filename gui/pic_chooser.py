@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import filedialog
 import json
 
-with open("colors.json") as f:
+with open("gui/colors.json") as f:
     colors_data = json.load(f)
 
 COLORS = colors_data.get("COLORS", {})

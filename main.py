@@ -1,6 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
-from calculator_app_gui import CalculatorApp
+from gui.calculator_app_gui import CalculatorApp
 
 # from PIL import Image, ImageTk
 

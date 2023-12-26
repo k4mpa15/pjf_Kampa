@@ -1,9 +1,9 @@
 import customtkinter as ctk
-from common_eq_solv import EquationSolver
-from pic_chooser import ToplevelWindow
+from eq_solvers.common_eq_solv import EquationSolver
+from gui.pic_chooser import ToplevelWindow
 import json
 
-with open("colors.json") as f:
+with open("gui/colors.json") as f:
     colors_data = json.load(f)
 
 COLORS = colors_data.get("COLORS", {})
@@ -28,11 +28,18 @@ class CalculatorApp(ctk.CTk):
     def solve_equation(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_linear_equation(equation_content)
+        self.update_label(result)
 
+    def solve_quadratic_equation(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_quadratic_equation(equation_content)
+        self.update_label(result)
+        
+    def update_label(self, result):
         if result is not None:
             self.solution = result
             self.result_label.configure(
-                text=f"Rozwiązanie równania: {result}", text_color=COLORS["BLACK"]
+                text=f"x = {result}", text_color=COLORS["BLACK"]
             )
         else:
             self.solution = "Nie udało się rozwiązać równania."
@@ -84,10 +91,10 @@ class CalculatorApp(ctk.CTk):
         # export_button = ctk.CTkButton(master = root_tk, image = img)
         # export_button.place(relx = 0.95, rely = 0.0)
 
-        eq_types = ["Wybierz typ", "1", "2", "3"]
+        eq_types = ["Wybierz typ", "równanie liniowe", "układ równań liniowych", "równanie kwadratowe","3"]
         self.create_combobox(
             eq_types,
-            150,
+            250,
             COLORS["BACKGROUND_COLOR"],
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["MAIN_BUTTONS_COLOR"],
@@ -101,7 +108,7 @@ class CalculatorApp(ctk.CTk):
         self.create_entry(0.084, 0.33, 600, 100)
 
         self.solve_button = self.create_main_button(
-            "Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_equation()
+            "Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_quadratic_equation()
         )
 
         self.create_main_button(
