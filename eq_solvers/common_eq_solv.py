@@ -1,4 +1,5 @@
 import cmath
+import re
 
 
 class EquationSolver:
@@ -20,14 +21,19 @@ class EquationSolver:
     @staticmethod
     def solve_quadratic_equation(equation_content):
         try:
-            s = equation_content.replace("x", " ").replace("=0", "").split()
-            a, b, c = 0, 0, 0
-            if len(s) == 3:
-                a, b, c = int(s[0]), int(s[1]), int(s[2])
-            if len(s) == 2:
-                a, b = int(s[0]), int(s[1])
-            if len(s) == 1:
-                a = int(s[0])
+            equation_content = equation_content.replace(" ", "")
+            pattern = re.compile(r"([-+]?\d*)x\^2\s*([-+]?\d*)x\s*([-+]?\d*)\s*=\s*0")
+            match = pattern.match(equation_content)
+
+            a = 0
+            b = 0
+            c = 0
+
+            if match:
+                a, b, c = map(lambda x: int(x) if x else 0, match.groups())
+
+            print(a, b, c)
+
             d = (b**2) - (4 * a * c)
             if d < 0:
                 return "Brak rozwiązań"

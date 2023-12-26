@@ -60,7 +60,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["WHITE"],
         )
 
-        #self.create_image_buttons()
+        # self.create_image_buttons()
 
         # img_camera = ctk.CTkFrame(Image.open("camera_icon.jpg"), size=(26, 26))
         # camera_button = ctk.CTkButton(master = root_tk, image = img_camera)
@@ -145,12 +145,12 @@ class CalculatorApp(ctk.CTk):
         self.create_image_button(0.9, 0.0, 6, None)  # historia
         self.create_image_button(0.52, 0.7, 6, None)  # export
 
-    '''def create_image_buttons(self):
+    """def create_image_buttons(self):
         image_path = "icons/history_icon.png"
         photo = ctk.CTkImage(file=image_path)
         history_button = ctk.CTkButton(master = self.master).configure(image=photo, compound="top")
-        history_button.place(relx = 0.95, rely = 0.0)'''
-        
+        history_button.place(relx = 0.95, rely = 0.0)"""
+
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
