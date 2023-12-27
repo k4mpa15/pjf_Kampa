@@ -3,7 +3,8 @@ import os
 from tkinter import *
 import tkinter
 from eq_solvers.common_eq_solv import EquationSolver
-from gui.pic_chooser import ToplevelWindow
+from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from gui.toplevel_window_export import TopLevelExport
 import json
 from PIL import Image, ImageTk
 from options.file_exporter import FileExporter
@@ -19,12 +20,12 @@ class CalculatorApp(ctk.CTk):
     def __init__(self, master):
         super().__init__()
         self.master = master
-        self.file_exporter = FileExporter()
         self.master.title("Kalkulator równań")
         self.master.geometry("1000x600")
         self.master.resizable(True, True)
         self.master.configure(fg_color=COLORS["BACKGROUND_COLOR"])
-        self.toplevel_window = None
+        self.toplevel_window_pic_choser = None
+        self.toplevel_window_export = None
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.eq_entry = None
         self.equation_solver = EquationSolver()
@@ -33,10 +34,13 @@ class CalculatorApp(ctk.CTk):
         self.eq_type = None
 
     def on_close(self):
-        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+        if (
+            self.toplevel_window_pic_choser is None
+            or not self.toplevel_window_pic_choser.winfo_exists()
+        ):
             pass
         else:
-            self.toplevel_window.destroy()
+            self.toplevel_window_pic_choser.destroy()
 
         self.master.destroy()
         self.master.quit()
@@ -201,21 +205,18 @@ class CalculatorApp(ctk.CTk):
 
     def export_to_file(self):
         result = self.solution
-        self.file_exporter.export_to_excel(result)
-        self.file_exporter.export_to_latex(result)
-        self.show_message()
-
-    def show_message(self):
-        self.after(1000, self.show_info)
-
-    def show_info(self):
-        tkinter.messagebox.showinfo(
-            "Export files", "Eksport do pliku wykonany pomyślnie."
-        )
+        if (
+            self.toplevel_window_export is None
+            or not self.toplevel_window_export.winfo_exists()
+        ):
+            self.toplevel_window_export = TopLevelExport(result)
 
     def display_scan_eq_opt(self):
-        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-            self.toplevel_window = ToplevelWindow(self)
+        if (
+            self.toplevel_window_pic_choser is None
+            or not self.toplevel_window_pic_choser.winfo_exists()
+        ):
+            self.toplevel_window_pic_choser = ToplevelWindowPicChoser()
 
     def create_option_button(
         self, text, x, y, wid, bg_color, fg_color, text_color, hover_color

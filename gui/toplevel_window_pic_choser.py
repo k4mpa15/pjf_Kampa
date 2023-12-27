@@ -8,7 +8,7 @@ with open("gui/colors.json") as f:
 COLORS = colors_data.get("COLORS", {})
 
 
-class ToplevelWindow(ctk.CTkToplevel):
+class ToplevelWindowPicChoser(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
