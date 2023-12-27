@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import os
 from tkinter import *
+import tkinter
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.pic_chooser import ToplevelWindow
 import json
@@ -204,9 +205,14 @@ class CalculatorApp(ctk.CTk):
         result = self.solution
         self.file_exporter.export_to_excel(result)
         self.file_exporter.export_to_latex(result)
+        self.show_message()
+        
+    def show_message(self):
+        self.after(2000, self.show_info)
 
-        
-        
+    def show_info(self):
+        tkinter.messagebox.showinfo("Export files", "Eksport do pliku wykonany pomyślnie.")
+
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
