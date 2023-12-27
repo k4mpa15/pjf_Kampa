@@ -1,7 +1,10 @@
 import customtkinter as ctk
+import os
+from tkinter import *
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.pic_chooser import ToplevelWindow
 import json
+from PIL import Image, ImageTk
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -44,8 +47,9 @@ class CalculatorApp(ctk.CTk):
             COLORS["BACKGROUND_COLOR"],
             COLORS["BACKGROUND_COLOR"],
             COLORS["BLACK"],
-            COLORS["OPTION_BUTTON_HOVER_COLOR"]
+            COLORS["OPTION_BUTTON_HOVER_COLOR"],
         )
+        
 
         self.create_label(
             "Kalkulator równań",
@@ -63,24 +67,14 @@ class CalculatorApp(ctk.CTk):
 
         self.create_option_button(
             "PL EN",
-            0.8,
+            0.87,
             0.0,
-            120,
+            50,
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["WHITE"],
-            COLORS["OPTION_BUTTON_HOVER_COLOR"]
+            COLORS["OPTION_BUTTON_HOVER_COLOR"],
         )
-
-        # self.create_image_buttons()
-
-        # img_camera = ctk.CTkFrame(Image.open("camera_icon.jpg"), size=(26, 26))
-        # camera_button = ctk.CTkButton(master = root_tk, image = img_camera)
-        # camera_button.place(relx = 0.95, rely = 0.0)
-
-        # img_export = ctk.CTkFrame(Image.open("export_icon.jpg"), size=(26, 26))
-        # export_button = ctk.CTkButton(master = root_tk, image = img)
-        # export_button.place(relx = 0.95, rely = 0.0)
 
         eq_types = [
             "Wybierz typ",
@@ -128,6 +122,7 @@ class CalculatorApp(ctk.CTk):
             10,
             None,
         )
+        self.create_image_buttons()
 
         self.create_option_button(
             "Materiały pomocnicze",
@@ -137,7 +132,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["BACKGROUND_COLOR"],
             COLORS["BACKGROUND_COLOR"],
             COLORS["BLACK"],
-            COLORS["OPTION_BUTTON_HOVER_COLOR"]
+            COLORS["OPTION_BUTTON_HOVER_COLOR"],
         )
 
         self.create_label(
@@ -154,15 +149,52 @@ class CalculatorApp(ctk.CTk):
             None,
         )
 
-        self.create_image_button(0.65, 0.33, 6, lambda: self.display_scan_eq_opt())
-        self.create_image_button(0.9, 0.0, 6, None)  # historia
-        self.create_image_button(0.52, 0.7, 6, None)  # export
+    def create_image_buttons(self):
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
-    """def create_image_buttons(self):
-        image_path = "icons/history_icon.png"
-        photo = ctk.CTkImage(file=image_path)
-        history_button = ctk.CTkButton(master = self.master).configure(image=photo, compound="top")
-        history_button.place(relx = 0.95, rely = 0.0)"""
+        img_h = ctk.CTkImage(Image.open(os.path.join(image_path, "history_icon.png")))
+        history_button = ctk.CTkButton(
+            master=self.master,
+            image=img_h,
+            text="",
+            width=14,
+            height=14,
+            bg_color=COLORS["MAIN_BUTTONS_COLOR"],
+            fg_color=COLORS["MAIN_BUTTONS_COLOR"],
+            hover_color=COLORS["MAIN_BUTTONS_COLOR"],
+        )
+        history_button.place(relx=0.92, rely=0.0)
+        history_button.configure(compound="top")
+
+        img_c = ctk.CTkImage(Image.open(os.path.join(image_path, "camera_icon.png")))
+        camera_button = ctk.CTkButton(
+            master=self.master,
+            image=img_c,
+            command=lambda: self.display_scan_eq_opt(),
+            text="",
+            width=16,
+            height=14,
+            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            hover_color=COLORS["OPTION_BUTTON_HOVER_COLOR"],
+        )
+        camera_button.place(relx=0.64, rely=0.34)
+        camera_button.configure(compound="top")
+
+        img_e = ctk.CTkImage(Image.open(os.path.join(image_path, "export_icon.jpg")))
+        export_button = ctk.CTkButton(
+            master=self.master,
+            image=img_e,
+            text="",
+            width=14,
+            height=14,
+            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            hover_color=COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            corner_radius=8,
+        )
+        export_button.place(relx=0.542, rely=0.71)
+        export_button.configure(compound="top")
 
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
@@ -171,7 +203,9 @@ class CalculatorApp(ctk.CTk):
     def create_image_button(self, x, y, wid, command):
         return ctk.CTkButton(master=self.master, command=command).place(relx=x, rely=y)
 
-    def create_option_button(self, text, x, y, wid, bg_color, fg_color, text_color, hover_color):
+    def create_option_button(
+        self, text, x, y, wid, bg_color, fg_color, text_color, hover_color
+    ):
         return ctk.CTkButton(
             master=self.master,
             text=text,

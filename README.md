@@ -15,7 +15,6 @@ Clone the project
 Go to the project directory
 
 ```bash
-  .\project_env\bin\activate
   pip install -r \requiments.txt
 ```
 
