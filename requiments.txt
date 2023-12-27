@@ -1,3 +1,5 @@
 customtkinter
 Pillow
 black
+openpyxel
+pylatex

@@ -5,6 +5,7 @@ from eq_solvers.common_eq_solv import EquationSolver
 from gui.pic_chooser import ToplevelWindow
 import json
 from PIL import Image, ImageTk
+from options.file_exporter import FileExporter
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -17,6 +18,7 @@ class CalculatorApp(ctk.CTk):
     def __init__(self, master):
         super().__init__()
         self.master = master
+        self.file_exporter = FileExporter()
         self.master.title("Kalkulator równań")
         self.master.geometry("1000x600")
         self.master.resizable(True, True)
@@ -185,6 +187,7 @@ class CalculatorApp(ctk.CTk):
         export_button = ctk.CTkButton(
             master=self.master,
             image=img_e,
+            command=lambda: self.export_to_file(),
             text="",
             width=14,
             height=14,
@@ -196,6 +199,14 @@ class CalculatorApp(ctk.CTk):
         export_button.place(relx=0.542, rely=0.71)
         export_button.configure(compound="top")
 
+
+    def export_to_file(self):
+        result = self.solution
+        self.file_exporter.export_to_excel(result)
+        self.file_exporter.export_to_latex(result)
+
+        
+        
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
