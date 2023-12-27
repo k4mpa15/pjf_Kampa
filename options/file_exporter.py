@@ -3,12 +3,13 @@ import openpyxl
 from pylatex import Document, Section, Math, Alignat
 import customtkinter as ctk
 
+
 class FileExporter:
     def export_to_excel(self, result):
         wb = openpyxl.Workbook()
         ws = wb.active
-        ws['A1'] = "Wyniki równania:"
-        ws['A2'] = result
+        ws["A1"] = "Wyniki równania:"
+        ws["A2"] = result
 
         file_path = self.ask_save_file(
             defaultextension=".xlsx",

@@ -52,7 +52,6 @@ class CalculatorApp(ctk.CTk):
             COLORS["BLACK"],
             COLORS["OPTION_BUTTON_HOVER_COLOR"],
         )
-        
 
         self.create_label(
             "Kalkulator równań",
@@ -84,7 +83,6 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
-            "3",
         ]
         self.create_combobox(
             eq_types,
@@ -118,13 +116,14 @@ class CalculatorApp(ctk.CTk):
             0.7,
             500,
             100,
-            (FONT, 20),
+            (FONT, 14),
             COLORS["TEXT_GREY_COLOR"],
             COLORS["BACKGROUND_COLOR"],
             COLORS["LIGHT_ENTRY_COLOR"],
             10,
             None,
         )
+
         self.create_image_buttons()
 
         self.create_option_button(
@@ -200,25 +199,23 @@ class CalculatorApp(ctk.CTk):
         export_button.place(relx=0.542, rely=0.71)
         export_button.configure(compound="top")
 
-
     def export_to_file(self):
         result = self.solution
         self.file_exporter.export_to_excel(result)
         self.file_exporter.export_to_latex(result)
         self.show_message()
-        
+
     def show_message(self):
-        self.after(2000, self.show_info)
+        self.after(1000, self.show_info)
 
     def show_info(self):
-        tkinter.messagebox.showinfo("Export files", "Eksport do pliku wykonany pomyślnie.")
+        tkinter.messagebox.showinfo(
+            "Export files", "Eksport do pliku wykonany pomyślnie."
+        )
 
     def display_scan_eq_opt(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
-
-    def create_image_button(self, x, y, wid, command):
-        return ctk.CTkButton(master=self.master, command=command).place(relx=x, rely=y)
 
     def create_option_button(
         self, text, x, y, wid, bg_color, fg_color, text_color, hover_color
@@ -286,7 +283,7 @@ class CalculatorApp(ctk.CTk):
             master=self.master,
             width=wid,
             height=hei,
-            font=(FONT, 20),
+            font=(FONT, 14),
             corner_radius=10,
             fg_color=COLORS["LIGHT_ENTRY_COLOR"],
             bg_color=COLORS["BACKGROUND_COLOR"],
@@ -342,6 +339,11 @@ class CalculatorApp(ctk.CTk):
         result = self.equation_solver.solve_quadratic_equation(equation_content)
         self.update_label(result)
 
+    def solve_system_of_equations(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_system_of_equation(equation_content)
+        self.update_label(result)
+
     def update_label(self, result):
         if result is not None:
             self.solution = result
@@ -356,6 +358,7 @@ class CalculatorApp(ctk.CTk):
         eq_type_to_func = {
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
+            "układ równań liniowych": self.solve_system_of_equations,
         }
         selected_func = eq_type_to_func.get(self.eq_type)
         if selected_func:
