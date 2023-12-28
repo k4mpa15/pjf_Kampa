@@ -7,6 +7,7 @@ from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from gui.toplevel_window_export import TopLevelExport
 import json
 from PIL import Image, ImageTk
+from gui.toplevel_window_instructions import TopLevelInstructions
 from options.file_exporter import FileExporter
 
 with open("gui/colors.json") as f:
@@ -32,6 +33,7 @@ class CalculatorApp(ctk.CTk):
         self.create_widgets()
         self.solution = None
         self.eq_type = None
+        self.toplevel_window_instructions = None
 
     def on_close(self):
         if (
@@ -44,7 +46,7 @@ class CalculatorApp(ctk.CTk):
 
         self.master.destroy()
         self.master.quit()
-
+    
     def create_widgets(self):
         self.create_option_button(
             "Jak poprawnie wpisywać równania?",
@@ -55,6 +57,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["BACKGROUND_COLOR"],
             COLORS["BLACK"],
             COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            lambda: self.show_instrcutions()
         )
 
         self.create_label(
@@ -80,6 +83,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["WHITE"],
             COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            None
         )
 
         eq_types = [
@@ -139,6 +143,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["BACKGROUND_COLOR"],
             COLORS["BLACK"],
             COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            None
         )
 
         self.create_label(
@@ -203,6 +208,14 @@ class CalculatorApp(ctk.CTk):
         export_button.place(relx=0.542, rely=0.71)
         export_button.configure(compound="top")
 
+
+    def show_instrcutions(self):
+        if (
+            self.toplevel_window_instructions is None
+            or not self.toplevel_window_instructions.winfo_exists()
+        ):
+            self.toplevel_window_instructions = TopLevelInstructions()
+        
     def export_to_file(self):
         result = self.solution
         if (
@@ -219,7 +232,7 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_pic_choser = ToplevelWindowPicChoser()
 
     def create_option_button(
-        self, text, x, y, wid, bg_color, fg_color, text_color, hover_color
+        self, text, x, y, wid, bg_color, fg_color, text_color, hover_color,command
     ):
         return ctk.CTkButton(
             master=self.master,
@@ -231,6 +244,7 @@ class CalculatorApp(ctk.CTk):
             hover_color=hover_color,
             font=(FONT, 13),
             text_color=text_color,
+            command = command
         ).place(relx=x, rely=y)
 
     def create_main_button(self, text, x, y, wid, hei, anchor, command):

@@ -53,24 +53,24 @@ class EquationSolver:
 
     @staticmethod
     def solve_system_of_equation(equation_content):
-        # equation_content = "8x+ 3y - 2z = 9; -4x + 7y + 5z = 15; 3x + 4y - 12z = 35"
         equations = equation_content.replace(" ", "").split(";")
-
-        equation_pattern = re.compile(r"([-+]?\d*\.?\d+)([a-zA-Z]+)")
         A = [[] for _ in range(len(equations))]
         B = []
-
         for equation in equations:
             equation_pattern = re.compile(r"([-+]?\d*\.?\d+)([a-zA-Z]+)")
             match = re.search(r"=\s*([-+]?\d*\.?\d+)", equation)
             if match:
-                result = match.group(1)
+                result = match.group(1) 
 
             matches = equation_pattern.findall(equation)
-            for i in range(0, len(equations)):
-                num = float(matches[i][0])
-                A[i].append(num)
 
+            for i in range(0, len(equations)):
+                try:
+                    num = float(matches[i][0]) 
+                    A[i].append(num)
+                except IndexError:
+                    A[i].append(0)
+            
             B.append(float(result))
 
         A = np.array(A).transpose()
