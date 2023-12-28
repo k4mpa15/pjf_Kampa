@@ -47,12 +47,12 @@ class TopLevelExport(ctk.CTkToplevel):
         load_button.place(relx=0.32, rely=0.7)
 
         self.radio_var = tkinter.IntVar(value=0)
-        
+
         self.radiobutton_tex = ctk.CTkRadioButton(
             self,
             text=".tex",
-            value = 1,
-            variable= self.radio_var,
+            value=1,
+            variable=self.radio_var,
             text_color=COLORS["BLACK"],
         )
         self.radiobutton_tex.place(relx=0.25, rely=0.3)
@@ -60,18 +60,17 @@ class TopLevelExport(ctk.CTkToplevel):
         self.radiobutton_xlsx = ctk.CTkRadioButton(
             self,
             text=".xlsx",
-            value = 2,
-            variable= self.radio_var,
+            value=2,
+            variable=self.radio_var,
             text_color=COLORS["BLACK"],
         )
         self.radiobutton_xlsx.place(relx=0.25, rely=0.4)
-        
+
     def export(self):
         if self.radio_var.get() == 1:
             self.file_exporter.export_to_latex(self.result)
         elif self.radio_var.get() == 2:
             self.file_exporter.export_to_excel(self.result)
-       
 
         self.show_message()
 

@@ -25,7 +25,12 @@ class TopLevelInstructions(ctk.CTkToplevel):
         self.destroy()
 
     def create_widgets(self):
-        my_image = ctk.CTkImage(light_image=Image.open("gui\instructions.png"), dark_image=None,
-                                  size=(600, 500))
+        my_image = ctk.CTkImage(
+            light_image=Image.open("gui\instructions.png"),
+            dark_image=None,
+            size=(600, 500),
+        )
 
-        image_label = ctk.CTkLabel(self, image=my_image, text="").place(relx=0.0, rely=0.0)  
+        image_label = ctk.CTkLabel(self, image=my_image, text="").place(
+            relx=0.0, rely=0.0
+        )
