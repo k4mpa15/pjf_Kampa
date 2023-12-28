@@ -67,7 +67,6 @@ class TopLevelExport(ctk.CTkToplevel):
         self.radiobutton_xlsx.place(relx=0.25, rely=0.4)
         
     def export(self):
-        print(self.radio_var.get())
         if self.radio_var.get() == 1:
             self.file_exporter.export_to_latex(self.result)
         elif self.radio_var.get() == 2:
