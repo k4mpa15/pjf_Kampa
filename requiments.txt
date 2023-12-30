@@ -3,3 +3,6 @@ Pillow
 black
 openpyxel
 pylatex
+scipy
+scikit-learn
+
