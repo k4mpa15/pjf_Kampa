@@ -342,7 +342,6 @@ class CalculatorApp(ctk.CTk):
         self.combobox.place(relx=x, rely=y)
 
     def open_help(self):
-        url = "https://www.google.com/"
         url_to_help = {
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
