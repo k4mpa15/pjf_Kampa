@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from tkinter import filedialog
 import json
 from options.file_exporter import FileExporter
 import tkinter

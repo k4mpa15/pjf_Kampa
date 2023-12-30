@@ -2,14 +2,12 @@ import customtkinter as ctk
 import os
 import webbrowser
 from tkinter import *
-import tkinter
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from gui.toplevel_window_export import TopLevelExport
 import json
-from PIL import Image, ImageTk
+from PIL import Image
 from gui.toplevel_window_instructions import TopLevelInstructions
-from options.file_exporter import FileExporter
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -343,17 +341,16 @@ class CalculatorApp(ctk.CTk):
         )
         self.combobox.place(relx=x, rely=y)
 
-
     def open_help(self):
         url = "https://www.google.com/"
         url_to_help = {
-             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
+            "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
         }
         url = url_to_help.get(self.eq_type)
         webbrowser.open(url, new=0, autoraise=True)
-        
+
     def get_type_content(self, choice):
         self.eq_type = choice
 

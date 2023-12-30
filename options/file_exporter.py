@@ -1,6 +1,5 @@
-import os
 import openpyxl
-from pylatex import Document, Section, Math, Alignat
+from pylatex import Document, Section, Math
 import customtkinter as ctk
 
 
