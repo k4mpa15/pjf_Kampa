@@ -77,3 +77,7 @@ class EquationSolver:
 
         x = np.linalg.solve(A, B)
         return f"x, y, z ... {str(x)}"
+    
+    @staticmethod
+    def solve_non_linear_equation(equation_content):
+        return "dziala"

@@ -90,6 +90,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
+            "równanie nieliniowe"
         ]
         self.create_combobox(
             eq_types,
@@ -346,6 +347,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
+            "równanie nieliniowe": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf"
         }
         url = url_to_help.get(self.eq_type)
         webbrowser.open(url, new=0, autoraise=True)
@@ -367,7 +369,12 @@ class CalculatorApp(ctk.CTk):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_system_of_equation(equation_content)
         self.update_label(result)
-
+        
+    def solve_non_linear_equation(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_non_linear_equation(equation_content)
+        self.update_label(result)
+        
     def update_label(self, result):
         if result is not None:
             self.solution = result
@@ -383,6 +390,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
             "układ równań liniowych": self.solve_system_of_equations,
+            "równanie nieliniowe": self.solve_non_linear_equation
         }
         selected_func = eq_type_to_func.get(self.eq_type)
         if selected_func:
