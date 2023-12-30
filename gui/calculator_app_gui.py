@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import os
+import webbrowser
 from tkinter import *
 import tkinter
 from eq_solvers.common_eq_solv import EquationSolver
@@ -143,7 +144,7 @@ class CalculatorApp(ctk.CTk):
             COLORS["BACKGROUND_COLOR"],
             COLORS["BLACK"],
             COLORS["OPTION_BUTTON_HOVER_COLOR"],
-            None,
+            lambda: self.open_help(),
         )
 
         self.create_label(
@@ -233,7 +234,7 @@ class CalculatorApp(ctk.CTk):
     def create_option_button(
         self, text, x, y, wid, bg_color, fg_color, text_color, hover_color, command
     ):
-        return ctk.CTkButton(
+        opt_button = ctk.CTkButton(
             master=self.master,
             text=text,
             width=wid,
@@ -244,7 +245,9 @@ class CalculatorApp(ctk.CTk):
             font=(FONT, 13),
             text_color=text_color,
             command=command,
-        ).place(relx=x, rely=y)
+        )
+        opt_button.place(relx=x, rely=y)
+        return opt_button
 
     def create_main_button(self, text, x, y, wid, hei, anchor, command):
         button = ctk.CTkButton(
@@ -340,6 +343,17 @@ class CalculatorApp(ctk.CTk):
         )
         self.combobox.place(relx=x, rely=y)
 
+
+    def open_help(self):
+        url = "https://www.google.com/"
+        url_to_help = {
+             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
+            "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
+            "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
+        }
+        url = url_to_help.get(self.eq_type)
+        webbrowser.open(url, new=0, autoraise=True)
+        
     def get_type_content(self, choice):
         self.eq_type = choice
 
