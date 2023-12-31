@@ -26,7 +26,8 @@ class TopLevelHistory(ctk.CTkToplevel):
             bg_color=COLORS["BACKGROUND_COLOR"],
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
-            text_color=COLORS["MAIN_BUTTONS_COLOR"],font=(FONT, 20)
+            text_color=COLORS["MAIN_BUTTONS_COLOR"],
+            font=(FONT, 20),
         )
         label.place(relx=0.42, rely=0.1)
 
@@ -39,7 +40,7 @@ class TopLevelHistory(ctk.CTkToplevel):
             corner_radius=10,
             text_color=COLORS["BLACK"],
             font=(FONT, 14),
-            width= 600,
-            height=300
+            width=600,
+            height=300,
         )
         label_content.place(relx=0.014, rely=0.23)

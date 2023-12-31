@@ -1,4 +1,6 @@
 from datetime import datetime
+
+
 class EquationHistory:
     def __init__(self):
         self.history_file_path = "history.txt"

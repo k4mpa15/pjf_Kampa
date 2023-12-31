@@ -8,6 +8,7 @@ with open("gui/colors.json") as f:
 COLORS = colors_data.get("COLORS", {})
 FONT = "Century Gothic"
 
+
 class ToplevelWindowPicChoser(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -28,7 +29,7 @@ class ToplevelWindowPicChoser(ctk.CTkToplevel):
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
             text_color=COLORS["BLACK"],
-            font=(FONT, 20)
+            font=(FONT, 20),
         )
         label.place(relx=0.22, rely=0.1)
 

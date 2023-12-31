@@ -33,7 +33,7 @@ class TopLevelExport(ctk.CTkToplevel):
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
             text_color=COLORS["BLACK"],
-            font=(FONT, 20)
+            font=(FONT, 20),
         )
         label.place(relx=0.26, rely=0.1)
 
