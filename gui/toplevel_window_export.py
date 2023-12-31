@@ -7,6 +7,7 @@ with open("gui/colors.json") as f:
     colors_data = json.load(f)
 
 COLORS = colors_data.get("COLORS", {})
+FONT = "Century Gothic"
 
 
 class TopLevelExport(ctk.CTkToplevel):
@@ -15,7 +16,6 @@ class TopLevelExport(ctk.CTkToplevel):
         self.geometry("400x300")
         self.create_widgets()
         self.file_exporter = FileExporter()
-        self.resizable(True, True)
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.title("Wybór rozszerzenia pliku")
@@ -33,6 +33,7 @@ class TopLevelExport(ctk.CTkToplevel):
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
             text_color=COLORS["BLACK"],
+            font=(FONT, 20)
         )
         label.place(relx=0.26, rely=0.1)
 

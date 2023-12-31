@@ -6,14 +6,13 @@ with open("gui/colors.json") as f:
     colors_data = json.load(f)
 
 COLORS = colors_data.get("COLORS", {})
-
+FONT = "Century Gothic"
 
 class ToplevelWindowPicChoser(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
         self.create_widgets()
-        self.resizable(True, True)
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.title("Wybór zdjęcia")
@@ -29,6 +28,7 @@ class ToplevelWindowPicChoser(ctk.CTkToplevel):
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
             text_color=COLORS["BLACK"],
+            font=(FONT, 20)
         )
         label.place(relx=0.22, rely=0.1)
 

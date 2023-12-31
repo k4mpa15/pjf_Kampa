@@ -5,9 +5,12 @@ from tkinter import *
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from gui.toplevel_window_export import TopLevelExport
+from options.equations_history import EquationHistory
 import json
 from PIL import Image
 from gui.toplevel_window_instructions import TopLevelInstructions
+from options.equations_history import EquationHistory
+from gui.toplevel_window_history import TopLevelHistory
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -22,7 +25,6 @@ class CalculatorApp(ctk.CTk):
         self.master = master
         self.master.title("Kalkulator równań")
         self.master.geometry("1000x600")
-        self.master.resizable(True, True)
         self.master.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.toplevel_window_pic_choser = None
         self.toplevel_window_export = None
@@ -33,6 +35,8 @@ class CalculatorApp(ctk.CTk):
         self.solution = None
         self.eq_type = None
         self.toplevel_window_instructions = None
+        self.equation_history = EquationHistory()
+        self.toplevel_window_history = None
 
     def on_close(self):
         if (
@@ -90,7 +94,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
-            "równanie nieliniowe"
+            "równanie nieliniowe",
         ]
         self.create_combobox(
             eq_types,
@@ -167,6 +171,7 @@ class CalculatorApp(ctk.CTk):
         history_button = ctk.CTkButton(
             master=self.master,
             image=img_h,
+            command=lambda: self.show_history(),
             text="",
             width=14,
             height=14,
@@ -347,7 +352,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
-            "równanie nieliniowe": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf"
+            "równanie nieliniowe": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf",
         }
         url = url_to_help.get(self.eq_type)
         webbrowser.open(url, new=0, autoraise=True)
@@ -358,27 +363,28 @@ class CalculatorApp(ctk.CTk):
     def solve_equation(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_linear_equation(equation_content)
-        self.update_label(result)
+        self.update_label_and_history(result)
 
     def solve_quadratic_equation(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_quadratic_equation(equation_content)
-        self.update_label(result)
+        self.update_label_and_history(result)
 
     def solve_system_of_equations(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_system_of_equation(equation_content)
-        self.update_label(result)
-        
+        self.update_label_and_history(result)
+
     def solve_non_linear_equation(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_non_linear_equation(equation_content)
-        self.update_label(result)
-        
-    def update_label(self, result):
+        self.update_label_and_history(result)
+
+    def update_label_and_history(self, result):
         if result is not None:
             self.solution = result
             self.result_label.configure(text=result, text_color=COLORS["BLACK"])
+            self.equation_history.add_equation(self.get_entry_content(), result)
         else:
             self.solution = "Nie udało się rozwiązać równania."
             self.result_label.configure(
@@ -390,8 +396,15 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
             "układ równań liniowych": self.solve_system_of_equations,
-            "równanie nieliniowe": self.solve_non_linear_equation
+            "równanie nieliniowe": self.solve_non_linear_equation,
         }
         selected_func = eq_type_to_func.get(self.eq_type)
         if selected_func:
             selected_func()
+
+    def show_history(self):
+        if (
+            self.toplevel_window_history is None
+            or not self.toplevel_window_history.winfo_exists()
+        ):
+            self.toplevel_window_history = TopLevelHistory()
