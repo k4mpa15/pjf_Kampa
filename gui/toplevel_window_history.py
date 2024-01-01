@@ -32,15 +32,25 @@ class TopLevelHistory(ctk.CTkToplevel):
         label.place(relx=0.42, rely=0.1)
 
         history_text = self.equation_history.get_history()
+        scrollable_frame = ctk.CTkScrollableFrame(
+            master=self,
+            width=500,
+            height=300,
+            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            
+        )
+        scrollable_frame.place(relx=0.06, rely=0.23)
+
         label_content = ctk.CTkLabel(
-            self,
+            scrollable_frame,
             text=history_text,
-            bg_color=COLORS["BACKGROUND_COLOR"],
-            fg_color=COLORS["BACKGROUND_COLOR"],
+            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
             corner_radius=10,
             text_color=COLORS["BLACK"],
             font=(FONT, 14),
             width=600,
             height=300,
-        )
-        label_content.place(relx=0.014, rely=0.23)
+            anchor=ctk.W
+        ).pack(pady=10)
