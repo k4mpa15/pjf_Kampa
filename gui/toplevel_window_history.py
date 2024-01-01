@@ -19,6 +19,7 @@ class TopLevelHistory(ctk.CTkToplevel):
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.title("Historia")
         self.resizable(False, True)
+        self.grab_set()
 
     def create_widgets(self):
         label = ctk.CTkLabel(

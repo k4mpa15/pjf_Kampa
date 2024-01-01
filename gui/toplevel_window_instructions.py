@@ -18,6 +18,7 @@ class TopLevelInstructions(ctk.CTkToplevel):
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.title("Instrukcje")
+        self.grab_set()
 
     def on_close(self):
         self.destroy()

@@ -220,6 +220,7 @@ class CalculatorApp(ctk.CTk):
             or not self.toplevel_window_instructions.winfo_exists()
         ):
             self.toplevel_window_instructions = TopLevelInstructions()
+            self.toplevel_window_instructions.after(1, self.toplevel_window_instructions.lift)
 
     def export_to_file(self):
         result = self.solution
@@ -228,6 +229,7 @@ class CalculatorApp(ctk.CTk):
             or not self.toplevel_window_export.winfo_exists()
         ):
             self.toplevel_window_export = TopLevelExport(result)
+            self.toplevel_window_export.after(1, self.toplevel_window_export.lift)
 
     def display_scan_eq_opt(self):
         if (
@@ -235,6 +237,7 @@ class CalculatorApp(ctk.CTk):
             or not self.toplevel_window_pic_choser.winfo_exists()
         ):
             self.toplevel_window_pic_choser = ToplevelWindowPicChoser()
+            self.toplevel_window_pic_choser.after(1, self.toplevel_window_pic_choser.lift)
 
     def create_option_button(
         self, text, x, y, wid, bg_color, fg_color, text_color, hover_color, command
@@ -405,7 +408,8 @@ class CalculatorApp(ctk.CTk):
 
     def show_history(self):
         if (
-            self.toplevel_window_history is None
+             self.toplevel_window_history is None
             or not self.toplevel_window_history.winfo_exists()
         ):
             self.toplevel_window_history = TopLevelHistory()
+            self.toplevel_window_history.after(1, self.toplevel_window_history.lift)
