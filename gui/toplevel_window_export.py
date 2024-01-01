@@ -36,7 +36,7 @@ class TopLevelExport(ctk.CTkToplevel):
             text_color=COLORS["BLACK"],
             font=(FONT, 20),
         )
-        label.place(relx=0.26, rely=0.1)
+        label.place(relx=0.19, rely=0.1)
 
         load_button = ctk.CTkButton(
             self,

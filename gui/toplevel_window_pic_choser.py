@@ -32,7 +32,7 @@ class ToplevelWindowPicChoser(ctk.CTkToplevel):
             text_color=COLORS["BLACK"],
             font=(FONT, 20),
         )
-        label.place(relx=0.22, rely=0.1)
+        label.place(relx=0.08, rely=0.1)
 
         load_button = ctk.CTkButton(
             self,
