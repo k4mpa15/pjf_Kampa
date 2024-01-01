@@ -1,6 +1,6 @@
-import openpyxl
-from pylatex import Document, Section, Math
 import customtkinter as ctk
+import openpyxl
+from pylatex import Document, Math, Section
 
 
 class FileExporter:

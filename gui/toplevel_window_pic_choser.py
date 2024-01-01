@@ -1,6 +1,7 @@
-import customtkinter as ctk
-from tkinter import filedialog
 import json
+from tkinter import filedialog
+
+import customtkinter as ctk
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)

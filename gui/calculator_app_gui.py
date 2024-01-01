@@ -1,16 +1,17 @@
-import customtkinter as ctk
+import json
 import os
 import webbrowser
 from tkinter import *
+
+import customtkinter as ctk
 from eq_solvers.common_eq_solv import EquationSolver
-from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
-from gui.toplevel_window_export import TopLevelExport
 from options.equations_history import EquationHistory
-import json
 from PIL import Image
-from gui.toplevel_window_instructions import TopLevelInstructions
-from options.equations_history import EquationHistory
+
+from gui.toplevel_window_export import TopLevelExport
 from gui.toplevel_window_history import TopLevelHistory
+from gui.toplevel_window_instructions import TopLevelInstructions
+from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)

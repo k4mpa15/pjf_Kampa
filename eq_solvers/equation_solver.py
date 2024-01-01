@@ -1,4 +1,6 @@
 import tkinter as tk
-import customtkinter as ctk
 from tkinter import filedialog
+
+import customtkinter as ctk
+
 from eq_solvers.common_eq_solv import EquationSolver

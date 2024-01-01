@@ -1,5 +1,6 @@
-import customtkinter as ctk
 import json
+
+import customtkinter as ctk
 from options.equations_history import EquationHistory
 
 with open("gui/colors.json") as f:
@@ -38,7 +39,6 @@ class TopLevelHistory(ctk.CTkToplevel):
             height=300,
             bg_color=COLORS["LIGHT_ENTRY_COLOR"],
             fg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            
         )
         scrollable_frame.place(relx=0.06, rely=0.23)
 
@@ -52,5 +52,5 @@ class TopLevelHistory(ctk.CTkToplevel):
             font=(FONT, 14),
             width=600,
             height=300,
-            anchor=ctk.W
+            anchor=ctk.W,
         ).pack(pady=10)

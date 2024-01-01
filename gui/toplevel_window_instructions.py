@@ -1,5 +1,6 @@
-import customtkinter as ctk
 import json
+
+import customtkinter as ctk
 from PIL import Image
 
 with open("gui/colors.json") as f:

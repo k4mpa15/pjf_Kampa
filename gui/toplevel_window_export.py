@@ -1,7 +1,8 @@
-import customtkinter as ctk
 import json
-from options.file_exporter import FileExporter
 import tkinter
+
+import customtkinter as ctk
+from options.file_exporter import FileExporter
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)

@@ -4,5 +4,6 @@ black
 openpyxel
 pylatex
 scipy
-scikit-learn
+numpy
+isort
 
