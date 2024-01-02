@@ -7,7 +7,7 @@ class EquationHistory:
 
     def add_equation(self, equation, result):
         time = datetime.now()
-        formated_time = time.strftime("%m/%d/%Y, %H:%M:%S")
+        formated_time = time.strftime("%d/%m/%Y, %H:%M:%S")
         with open(self.history_file_path, "a") as f:
             f.write(f"rownanie: {equation}, wynik: {result}, [{formated_time}]\n")
 
