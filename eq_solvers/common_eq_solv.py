@@ -153,16 +153,15 @@ class EquationSolver:
 
             if abs(f_x1 - f_x0) < tol:
                 return (
-                    "Dzielenie przez bliskie zero, metoda siecznych może nie zadziałać."
+                    "Devision by 0!"
                 )
 
             x_next = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0)
 
             if abs(x_next - x1) < tol:
-                x_next = x1.evalf(3)
-                return f"x = {x_next}, iter. = {iter_count}"
+                return f"x = {round(x_next, 3)}, iter. = {iter_count}"
 
             x0, x1 = x1, x_next
             iter_count += 1
 
-        return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."
+        return "End of iterations"

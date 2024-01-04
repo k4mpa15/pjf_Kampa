@@ -77,6 +77,10 @@
       "fill":{
         "pl": "Opcje do niektórych typów równań",
         "en": "Options to some equation types:"
+      },
+      "erase":{
+        "pl": "Usuń historię",
+        "en": "Erase history"
       }
 
   }

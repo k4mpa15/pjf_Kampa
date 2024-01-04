@@ -25,6 +25,11 @@ class TopLevelHistory(ctk.CTkToplevel):
         self.resizable(False, True)
         self.grab_set()
 
+    def clear_history(self):
+        with open('history.txt', 'w'):
+            pass
+        self.create_widgets()
+
     def create_widgets(self):
         text = "history"
         translated_text = self.translator.translate(text)
@@ -61,3 +66,13 @@ class TopLevelHistory(ctk.CTkToplevel):
             height=300,
             anchor=ctk.W,
         ).pack(pady=10)
+        text = "erase"
+        translated_text = self.translator.translate(text)
+        ctk.CTkButton(master = self, command=lambda: self.clear_history(), fg_color=COLORS["MAIN_BUTTONS_COLOR"],
+            bg_color=COLORS["BACKGROUND_COLOR"],corner_radius=10,
+            text = translated_text,
+            width=50,
+            font=(FONT, 14),
+            height=25,
+            text_color=COLORS["WHITE"],
+            hover_color=COLORS["MAIN_BUTTONS_HOVER_COLOR"],).place(relx = 0.8, rely = 0.01)
