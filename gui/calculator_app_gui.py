@@ -10,8 +10,10 @@ from PIL import Image
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
-from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_instructions import \
+    TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import \
+    ToplevelWindowPicChoser
 from options.equations_history import EquationHistory
 from options.translator import Translator
 
@@ -115,7 +117,7 @@ class CalculatorApp(ctk.CTk):
             "quadratic eq.",
             "non linear eq., Newton - Raphson method",
             "non linear eq., secant method",
-            "non linear eq., bisection method"
+            "non linear eq., bisection method",
         ]
         eq_types_pl = [
             "Wybierz typ",
@@ -124,7 +126,7 @@ class CalculatorApp(ctk.CTk):
             "równanie kwadratowe",
             "równanie nieliniowe, metoda Newtona - Raphsona",
             "równanie nieliniowe, metoda siecznych",
-            "równanie nieliniowe, metoda bisekcji"
+            "równanie nieliniowe, metoda bisekcji",
         ]
         if self.translator.language == "pl":
             eq_types = eq_types_pl
@@ -456,7 +458,7 @@ class CalculatorApp(ctk.CTk):
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
             "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
             "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
-            "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału"
+            "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
         }
         url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
@@ -464,7 +466,7 @@ class CalculatorApp(ctk.CTk):
             "system of l. eq.": "https://en.wikipedia.org/wiki/Linear_system",
             "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
             "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
-            "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method"
+            "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",
         }
         if self.translator.language == "pl":
             url_to_help = url_to_help_pl
@@ -513,14 +515,13 @@ class CalculatorApp(ctk.CTk):
     def solve_non_linear_equation_by_bisection(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_non_linear_equation_by_bisection(
-        equation_content,
-        max_iter=int(self.it_entry.get()),
-        a=int(self.x0_entry.get()),
-        b=int(self.x1_entry.get())
+            equation_content,
+            max_iter=int(self.it_entry.get()),
+            a=int(self.x0_entry.get()),
+            b=int(self.x1_entry.get()),
         )
         self.update_label_and_history(result)
 
-    
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -533,7 +534,7 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda siecznych",
             "non linear eq., secant method",
             "równanie nieliniowe, metoda bisekcji",
-            "non linear eq., bisection method"
+            "non linear eq., bisection method",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -564,7 +565,9 @@ class CalculatorApp(ctk.CTk):
 
         if (
             self.eq_type == "równanie nieliniowe, metoda siecznych"
-            or self.eq_type == "non linear eq., secant method" or self.eq_type == "równanie nieliniowe, metoda bisekcji" or self.eq_type == "non linear eq., bisection method"
+            or self.eq_type == "non linear eq., secant method"
+            or self.eq_type == "równanie nieliniowe, metoda bisekcji"
+            or self.eq_type == "non linear eq., bisection method"
         ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
@@ -578,9 +581,13 @@ class CalculatorApp(ctk.CTk):
                 text_color=COLORS["BLACK"],
             )
             self.x1_entry.place(relx=0.89, rely=0.37)
-        if self.eq_type == "równanie nieliniowe, metoda bisekcji" or self.eq_type == "non linear eq., bisection method":
-            self.x0_entry.configure(placeholder_text = "a")
-            self.x1_entry.configure(placeholder_text = "b")
+        if (
+            self.eq_type == "równanie nieliniowe, metoda bisekcji"
+            or self.eq_type == "non linear eq., bisection method"
+        ):
+            self.x0_entry.configure(placeholder_text="a")
+            self.x1_entry.configure(placeholder_text="b")
+
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,
@@ -588,7 +595,7 @@ class CalculatorApp(ctk.CTk):
             "układ równań liniowych": self.solve_system_of_equations,
             "równanie nieliniowe, metoda Newtona - Raphsona": self.solve_non_linear_equation_by_newton_raphson,
             "równanie nieliniowe, metoda siecznych": self.solve_non_linear_equation_by_secant,
-            "równanie nieliniowe, metoda bisekcji": self.solve_non_linear_equation_by_bisection
+            "równanie nieliniowe, metoda bisekcji": self.solve_non_linear_equation_by_bisection,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -596,7 +603,7 @@ class CalculatorApp(ctk.CTk):
             "system of l. eq.": self.solve_system_of_equations,
             "non linear eq., Newton - Raphson method": self.solve_non_linear_equation_by_newton_raphson,
             "non linear eq., secant method": self.solve_non_linear_equation_by_secant,
-            "non linear eq., bisection method": self.solve_non_linear_equation_by_bisection
+            "non linear eq., bisection method": self.solve_non_linear_equation_by_bisection,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
