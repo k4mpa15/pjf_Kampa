@@ -67,6 +67,16 @@
       "load_file":{
         "pl": "Wczytaj plik",
         "en": "Load file"
+      },
+
+      "iterations":{
+        "pl": "liczba iteracji",
+        "en": "num of iterations"
+      },
+      
+      "fill":{
+        "pl": "Opcje do niektórych typów równań",
+        "en": "Options to some equation types:"
       }
 
   }

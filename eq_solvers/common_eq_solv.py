@@ -1,6 +1,7 @@
 import re
 
 import numpy as np
+import sympy as sp
 
 
 class EquationSolver:
@@ -23,7 +24,7 @@ class EquationSolver:
     def solve_quadratic_equation(equation_content):
         try:
             equation_content = equation_content.replace(" ", "")
-            pattern = re.compile(r"([-+]?\d*)x\^2\s*([-+]?\d*)x\s*([-+]?\d*)\s*=\s*0")
+            pattern = re.compile(r"([-+]?\d*)x\*\*2\s*([-+]?\d*)x\s*([-+]?\d*)\s*=\s*0")
             match = pattern.match(equation_content)
 
             a = 0
@@ -80,5 +81,45 @@ class EquationSolver:
         return f"x, y, z ... {str(x)}"
 
     @staticmethod
-    def solve_non_linear_equation(equation_content):
-        return "dziala"
+    def solve_non_linear_equation_by_newton_raphson(
+        func_str, x0, tol=1e-6, max_iter=100
+    ):
+        # ta metoda głównie służy do rozwiazywania równań nieliniowych f(x) = 0
+        func_str = func_str.replace(" ", "")
+        func_str = func_str.replace("=0", "")
+        """
+        Parametry:
+        - func: Funkcja, dla której szukamy miejsca zerowego.
+        - x0: Punkt startowy (przybliżenie miejsca zerowego).
+        - tol: Tolerancja błędu (domyślnie 1e-6).
+        - max_iter: Maksymalna liczba iteracji (domyślnie 100).
+
+        Zwraca:
+        - x: Miejsce zerowe (przybliżone).
+        - iter_count: Liczba wykonanych iteracji.
+        """
+        x = sp.symbols("x")
+        func = sp.sympify(func_str)
+        df = sp.diff(func, x)  # Oblicz pochodną funkcji
+        f_prime = sp.lambdify(x, df)
+        iter_count = 0
+
+        while iter_count < max_iter:
+            f_val = func.subs(x, x0)
+            f_prime_val = f_prime(x0)
+
+            if abs(f_prime_val) < tol:
+                return (
+                    "Pochodna bliska zeru, metoda Newtona-Raphsona może nie zadziałać."
+                )
+
+            x1 = x0 - f_val / f_prime_val
+
+            if abs(x1 - x0) < tol:
+                x1 = x1.evalf(3)
+                return f"x1 = {x1}, iter. = {iter_count}"
+
+            x0 = x1
+            iter_count += 1
+
+        return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."

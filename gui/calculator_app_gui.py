@@ -10,10 +10,8 @@ from PIL import Image
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
-from gui.top_level_windows.toplevel_window_instructions import \
-    TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import \
-    ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from options.equations_history import EquationHistory
 from options.translator import Translator
 
@@ -115,14 +113,14 @@ class CalculatorApp(ctk.CTk):
             "linear equations",
             "system of l. eq.",
             "quadratic eq.",
-            "non linear eq.",
+            "non linear eq., Newton - Raphson method",
         ]
         eq_types_pl = [
             "Wybierz typ",
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
-            "równanie nieliniowe",
+            "równanie nieliniowe, metoda Newtona - Raphsona",
         ]
         if self.translator.language == "pl":
             eq_types = eq_types_pl
@@ -130,7 +128,7 @@ class CalculatorApp(ctk.CTk):
             eq_types = eq_types_en
         self.create_combobox(
             eq_types,
-            250,
+            500,
             COLORS["BACKGROUND_COLOR"],
             COLORS["MAIN_BUTTONS_COLOR"],
             COLORS["MAIN_BUTTONS_COLOR"],
@@ -140,7 +138,12 @@ class CalculatorApp(ctk.CTk):
             (FONT, 14),
             COLORS["MAIN_BUTTONS_COLOR"],
         )
-
+        label = "fill"
+        translated_label = self.translator.translate(label)
+        ctk.CTkLabel(self.master, text = translated_label, font=(FONT,14), text_color=COLORS["BLACK"]).place(relx = 0.72, rely = 0.32)
+        self.entry_to_placehold = ctk.CTkLabel(self.master, text = " ", font=(FONT,14), text_color=COLORS["BLACK"], width=250, height=150)
+        self.entry_to_placehold.place(relx = 0.72, rely = 0.32)
+        
         self.create_entry(0.084, 0.33, 600, 100, "solve_eq")
 
         self.solve_button = self.create_main_button(
@@ -193,6 +196,7 @@ class CalculatorApp(ctk.CTk):
             0,
             None,
         )
+        
 
     def create_image_buttons(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
@@ -435,13 +439,13 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
-            "równanie nieliniowe": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf",
+            "równanie nieliniowe, metoda Newtona - Raphsona": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf",
         }
         url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
             "quadratic eq.": "https://en.wikipedia.org/wiki/Quadratic_equation",
             "system of l. eq.": "https://en.wikipedia.org/wiki/Linear_system",
-            "non linear eq.": "https://www.vedantu.com/maths/difference-between-linear-and-nonlinear-equations",
+            "non linear eq., Newton - Raphson method": "https://www.vedantu.com/maths/difference-between-linear-and-nonlinear-equations",
         }
         if self.translator.language == "pl":
             url_to_help = url_to_help_pl
@@ -452,6 +456,7 @@ class CalculatorApp(ctk.CTk):
 
     def get_type_content(self, choice):
         self.eq_type = choice
+        self.create_options_to_solve_eq()
 
     def solve_equation(self):
         equation_content = self.get_entry_content()
@@ -468,34 +473,61 @@ class CalculatorApp(ctk.CTk):
         result = self.equation_solver.solve_system_of_equation(equation_content)
         self.update_label_and_history(result)
 
-    def solve_non_linear_equation(self):
+    def solve_non_linear_equation_by_newton_raphson(self):
+        num_of_it = self.it_entry.get()
         equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_non_linear_equation(equation_content)
+        result = self.equation_solver.solve_non_linear_equation_by_newton_raphson(
+            equation_content, max_iter = int(num_of_it), x0 = int(self.x0_entry.get())
+        )
         self.update_label_and_history(result)
 
     def update_label_and_history(self, result):
-        if result is not None:
-            self.solution = result
-            self.result_label.configure(text=result, text_color=COLORS["BLACK"])
-            self.equation_history.add_equation(self.get_entry_content(), result)
-        else:
-            self.solution = "Nie udało się rozwiązać równania."
-            self.result_label.configure(
-                text="Nie udało się rozwiązać równania.", text_color=COLORS["BLACK"]
-            )
+        self.solution = result
+        self.result_label.configure(text=result, text_color=COLORS["BLACK"])
+        self.equation_history.add_equation(self.get_entry_content(), result)
 
+    def create_options_to_solve_eq(self):
+        
+        
+        if self.eq_type == "równanie nieliniowe, metoda Newtona - Raphsona" or self.eq_type == "non linear eq., Newton - Raphson method":
+            self.entry_to_placehold.destroy()
+            self.it_entry = ctk.CTkEntry(
+                self.master,
+                height=40,
+                width=100,
+                corner_radius=10,
+                bg_color=COLORS["BACKGROUND_COLOR"],
+                fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+                placeholder_text="iter.",
+                placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
+                text_color=COLORS["BLACK"]
+            )
+            self.it_entry.place(relx=0.72, rely=0.37)
+            self.x0_entry = ctk.CTkEntry(
+                self.master,
+                height=40,
+                width=40,
+                corner_radius=10,
+                bg_color=COLORS["BACKGROUND_COLOR"],
+                fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+                placeholder_text="x0",
+                placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
+                text_color=COLORS["BLACK"]
+            )
+            self.x0_entry.place(relx=0.84, rely=0.37)
+            
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
             "układ równań liniowych": self.solve_system_of_equations,
-            "równanie nieliniowe": self.solve_non_linear_equation,
+            "równanie nieliniowe, metoda Newtona - Raphsona": self.solve_non_linear_equation_by_newton_raphson,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
             "quadratic eq.": self.solve_quadratic_equation,
             "system of l. eq.": self.solve_system_of_equations,
-            "non linear eq.": self.solve_non_linear_equation,
+            "non linear eq., Newton - Raphson method": self.solve_non_linear_equation_by_newton_raphson,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
