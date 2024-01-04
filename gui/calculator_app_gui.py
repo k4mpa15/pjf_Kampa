@@ -452,15 +452,15 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
-            "równanie nieliniowe, metoda Newtona - Raphsona": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf",
-            "równanie nieliniowe, metoda siecznych": "",
+            "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
+            "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
         }
         url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
             "quadratic eq.": "https://en.wikipedia.org/wiki/Quadratic_equation",
             "system of l. eq.": "https://en.wikipedia.org/wiki/Linear_system",
-            "non linear eq., Newton - Raphson method": "https://www.vedantu.com/maths/difference-between-linear-and-nonlinear-equations",
-            "non linear eq., secant method": "",
+            "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
+            "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
         }
         if self.translator.language == "pl":
             url_to_help = url_to_help_pl
@@ -499,7 +499,10 @@ class CalculatorApp(ctk.CTk):
     def solve_non_linear_equation_by_secant(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.solve_non_linear_equation_by_secant(
-            equation_content, max_iter=int(self.it_entry.get()), x0=int(self.x0_entry.get()), x1=int(self.x1_entry.get())
+            equation_content,
+            max_iter=int(self.it_entry.get()),
+            x0=int(self.x0_entry.get()),
+            x1=int(self.x1_entry.get()),
         )
         self.update_label_and_history(result)
 
@@ -513,7 +516,7 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda Newtona - Raphsona",
             "non linear eq., Newton - Raphson method",
             "równanie nieliniowe, metoda siecznych",
-            "non linear eq., secant method"
+            "non linear eq., secant method",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -541,8 +544,11 @@ class CalculatorApp(ctk.CTk):
                 text_color=COLORS["BLACK"],
             )
             self.x0_entry.place(relx=0.84, rely=0.37)
-            
-        if self.eq_type == "równanie nieliniowe, metoda siecznych" or self.eq_type == "non linear eq., secant method":
+
+        if (
+            self.eq_type == "równanie nieliniowe, metoda siecznych"
+            or self.eq_type == "non linear eq., secant method"
+        ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
                 height=40,
