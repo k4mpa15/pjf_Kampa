@@ -1,16 +1,19 @@
 import json
 import os
+import tkinter
 import webbrowser
 from tkinter import *
-import tkinter
+
 import customtkinter as ctk
 from PIL import Image
 
 from eq_solvers.common_eq_solv import EquationSolver
-from gui.toplevel_window_export import TopLevelExport
-from gui.toplevel_window_history import TopLevelHistory
-from gui.toplevel_window_instructions import TopLevelInstructions
-from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_export import TopLevelExport
+from gui.top_level_windows.toplevel_window_history import TopLevelHistory
+from gui.top_level_windows.toplevel_window_instructions import \
+    TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import \
+    ToplevelWindowPicChoser
 from options.equations_history import EquationHistory
 from options.translator import Translator
 
@@ -81,8 +84,32 @@ class CalculatorApp(ctk.CTk):
             5000,
             "w",
         )
-        self.create_label("PL", 0.821, 0.00, 30, 32, (FONT, 14), COLORS["WHITE"], COLORS["MAIN_BUTTONS_COLOR"], COLORS["MAIN_BUTTONS_COLOR"], 10, "center")
-        self.create_label("EN", 0.88, 0.00, 30, 32, (FONT, 14), COLORS["WHITE"], COLORS["MAIN_BUTTONS_COLOR"], COLORS["MAIN_BUTTONS_COLOR"], 10, "center")
+        self.create_label(
+            "PL",
+            0.821,
+            0.00,
+            30,
+            32,
+            (FONT, 14),
+            COLORS["WHITE"],
+            COLORS["MAIN_BUTTONS_COLOR"],
+            COLORS["MAIN_BUTTONS_COLOR"],
+            10,
+            "center",
+        )
+        self.create_label(
+            "EN",
+            0.88,
+            0.00,
+            30,
+            32,
+            (FONT, 14),
+            COLORS["WHITE"],
+            COLORS["MAIN_BUTTONS_COLOR"],
+            COLORS["MAIN_BUTTONS_COLOR"],
+            10,
+            "center",
+        )
         eq_types_en = [
             "Choose type",
             "linear equations",
@@ -166,8 +193,6 @@ class CalculatorApp(ctk.CTk):
             0,
             None,
         )
-
-        
 
     def create_image_buttons(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
@@ -395,7 +420,7 @@ class CalculatorApp(ctk.CTk):
             fg_color=COLORS["BACKGROUND_COLOR"],
             progress_color=COLORS["BACKGROUND_COLOR"],
             button_color=COLORS["BACKGROUND_COLOR"],
-            button_hover_color=COLORS["BACKGROUND_COLOR"]
+            button_hover_color=COLORS["BACKGROUND_COLOR"],
         )
         self.slider.set(1.0)
         self.slider.place(relx=0.87, rely=0.03, anchor=tkinter.CENTER)
