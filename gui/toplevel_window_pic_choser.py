@@ -3,6 +3,8 @@ from tkinter import filedialog
 
 import customtkinter as ctk
 
+from options.translator import Translator
+
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
 
@@ -11,21 +13,26 @@ FONT = "Century Gothic"
 
 
 class ToplevelWindowPicChoser(ctk.CTkToplevel):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, language_manager, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
+        self.language_manager = language_manager
+        self.translator = Translator(self.language_manager)
         self.create_widgets()
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.title("Wybór zdjęcia")
+        self.grab_set()
 
     def on_close(self):
         self.destroy()
 
     def create_widgets(self):
+        text = "choose_file"
+        translated_text = self.translator.translate(text)
         label = ctk.CTkLabel(
             self,
-            text="Wybierz plik ze zdjęciem równania",
+            text=translated_text,
             bg_color=COLORS["BACKGROUND_COLOR"],
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
@@ -34,9 +41,11 @@ class ToplevelWindowPicChoser(ctk.CTkToplevel):
         )
         label.place(relx=0.08, rely=0.1)
 
+        text = "load_file"
+        translated_text = self.translator.translate(text)
         load_button = ctk.CTkButton(
             self,
-            text="Wczytaj plik",
+            text=translated_text,
             command=self.load_file,
             corner_radius=10,
             bg_color=COLORS["BACKGROUND_COLOR"],
@@ -44,8 +53,10 @@ class ToplevelWindowPicChoser(ctk.CTkToplevel):
         load_button.place(relx=0.32, rely=0.3)
 
     def load_file(self):
+        text = "load_file"
+        translated_text = self.translator.translate(text)
         file_path = filedialog.askopenfilename(
-            title="Wybierz plik",
+            title=translated_text,
             filetypes=[("Pliki obrazów", "*.png;*.jpg;*.jpeg;")],
         )
         if file_path:

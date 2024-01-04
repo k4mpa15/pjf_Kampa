@@ -1,0 +1,73 @@
+{
+    "how_to_enter_equations": {
+      "pl": "Jak poprawnie wpisywać równania?",
+      "en": "How to correctly enter equations?   "
+    },
+    "calculator_app": {
+      "pl": "Kalkulator równań",
+      "en": "Equations solver"
+    }, 
+    "solve_eq": {
+        "pl": "Wpisz równanie",
+        "en": "Enter equation"
+      }, 
+      "solve": {
+        "pl": "Rozwiąż",
+        "en": "Solve"
+      }, 
+      "solve_step_by_step": {
+        "pl": "Rozwiąż krok po kroku",
+        "en": "Solve step by step"
+      }, 
+      "eq_solve__": {
+        "pl": "Rozwiązanie równania... ",
+        "en": "Equation solve ..."
+      }, 
+      "help": {
+        "pl": "Materiały pomocnicze",
+        "en": "Help materials"
+      }, 
+      "graph": {
+        "pl": "Pokaż graficzne przedstawienie",
+        "en": "Show graphic representation"
+      },
+
+
+
+      "choose_file_type": {
+        "pl": "Wybierz rozszerzenie pliku",
+        "en": "Choose file extension"
+      }, 
+      "export": {
+        "pl": "Eksportuj",
+        "en": "Export"
+      }, 
+      "export_files_info": {
+        "pl": "Eksport wykonano pomyślnie",
+        "en": "Export completed successfully"
+      },
+
+      "history":{
+        "pl": "Historia",
+        "en": "History"
+      },
+
+      "result":{
+        "pl": "wynik",
+        "en": "result"
+      },
+      "equation":{
+        "pl": "równanie",
+        "en": "equation"
+      },
+      "choose_file":{
+        "pl": "Wybierz plik ze zdjęciem równania",
+        "en": "Choose file with equation picture"
+      },
+      "load_file":{
+        "pl": "Wczytaj plik",
+        "en": "Load file"
+      }
+
+  }
+  

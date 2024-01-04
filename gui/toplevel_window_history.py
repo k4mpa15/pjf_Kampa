@@ -1,7 +1,9 @@
 import json
 
 import customtkinter as ctk
+
 from options.equations_history import EquationHistory
+from options.translator import Translator
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -11,10 +13,12 @@ FONT = "Century Gothic"
 
 
 class TopLevelHistory(ctk.CTkToplevel):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, language_manager, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("600x500")
-        self.equation_history = EquationHistory()
+        self.language_manager = language_manager
+        self.translator = Translator(self.language_manager)
+        self.equation_history = EquationHistory(self.language_manager)
         self.create_widgets()
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.title("Historia")
@@ -22,9 +26,11 @@ class TopLevelHistory(ctk.CTkToplevel):
         self.grab_set()
 
     def create_widgets(self):
+        text = "history"
+        translated_text = self.translator.translate(text)
         label = ctk.CTkLabel(
             self,
-            text="Historia",
+            text=translated_text,
             bg_color=COLORS["BACKGROUND_COLOR"],
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,

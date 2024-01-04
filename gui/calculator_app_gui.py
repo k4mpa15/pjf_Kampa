@@ -2,16 +2,17 @@ import json
 import os
 import webbrowser
 from tkinter import *
-
+import tkinter
 import customtkinter as ctk
-from eq_solvers.common_eq_solv import EquationSolver
-from options.equations_history import EquationHistory
 from PIL import Image
 
+from eq_solvers.common_eq_solv import EquationSolver
 from gui.toplevel_window_export import TopLevelExport
 from gui.toplevel_window_history import TopLevelHistory
 from gui.toplevel_window_instructions import TopLevelInstructions
 from gui.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from options.equations_history import EquationHistory
+from options.translator import Translator
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -21,9 +22,10 @@ FONT = "Century Gothic"
 
 
 class CalculatorApp(ctk.CTk):
-    def __init__(self, master):
+    def __init__(self, master, language_manager):
         super().__init__()
         self.master = master
+        self.language_manager = language_manager
         self.master.title("Kalkulator równań")
         self.master.geometry("1000x600")
         self.master.configure(fg_color=COLORS["BACKGROUND_COLOR"])
@@ -32,12 +34,14 @@ class CalculatorApp(ctk.CTk):
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.eq_entry = None
         self.equation_solver = EquationSolver()
+        self.translator = Translator(self.language_manager)
         self.create_widgets()
         self.solution = None
         self.eq_type = None
         self.toplevel_window_instructions = None
-        self.equation_history = EquationHistory()
+        self.equation_history = EquationHistory(self.language_manager)
         self.toplevel_window_history = None
+        self.create_slider()
 
     def on_close(self):
         if (
@@ -53,7 +57,7 @@ class CalculatorApp(ctk.CTk):
 
     def create_widgets(self):
         self.create_option_button(
-            "Jak poprawnie wpisywać równania?",
+            "how_to_enter_equations",
             0.084,
             0.29,
             150,
@@ -65,7 +69,7 @@ class CalculatorApp(ctk.CTk):
         )
 
         self.create_label(
-            "Kalkulator równań",
+            "calculator_app",
             0.0,
             0.0,
             1000,
@@ -77,26 +81,26 @@ class CalculatorApp(ctk.CTk):
             5000,
             "w",
         )
-
-        self.create_option_button(
-            "PL EN",
-            0.87,
-            0.0,
-            50,
-            COLORS["MAIN_BUTTONS_COLOR"],
-            COLORS["MAIN_BUTTONS_COLOR"],
-            COLORS["WHITE"],
-            COLORS["OPTION_BUTTON_HOVER_COLOR"],
-            None,
-        )
-
-        eq_types = [
+        self.create_label("PL", 0.821, 0.00, 30, 32, (FONT, 14), COLORS["WHITE"], COLORS["MAIN_BUTTONS_COLOR"], COLORS["MAIN_BUTTONS_COLOR"], 10, "center")
+        self.create_label("EN", 0.88, 0.00, 30, 32, (FONT, 14), COLORS["WHITE"], COLORS["MAIN_BUTTONS_COLOR"], COLORS["MAIN_BUTTONS_COLOR"], 10, "center")
+        eq_types_en = [
+            "Choose type",
+            "linear equations",
+            "system of l. eq.",
+            "quadratic eq.",
+            "non linear eq.",
+        ]
+        eq_types_pl = [
             "Wybierz typ",
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
             "równanie nieliniowe",
         ]
+        if self.translator.language == "pl":
+            eq_types = eq_types_pl
+        else:
+            eq_types = eq_types_en
         self.create_combobox(
             eq_types,
             250,
@@ -110,21 +114,19 @@ class CalculatorApp(ctk.CTk):
             COLORS["MAIN_BUTTONS_COLOR"],
         )
 
-        self.create_entry(0.084, 0.33, 600, 100)
+        self.create_entry(0.084, 0.33, 600, 100, "solve_eq")
 
         self.solve_button = self.create_main_button(
-            "Rozwiąż", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_choosen_type()
+            "solve", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_choosen_type()
         )
 
         self.create_main_button(
-            "Rozwiąż krok po kroku", 0.385, 0.6, 250, 32, ctk.CENTER, None
+            "solve_step_by_step", 0.385, 0.6, 250, 32, ctk.CENTER, None
         )
-        self.create_main_button(
-            "Pokaż graficzne przedstawienie", 0.7, 0.6, 260, 32, ctk.CENTER, None
-        )
+        self.create_main_button("graph", 0.7, 0.6, 260, 32, ctk.CENTER, None)
 
         self.result_label = self.create_label(
-            "Rozwiązanie równania... ",
+            "eq_solve__",
             0.085,
             0.7,
             500,
@@ -140,7 +142,7 @@ class CalculatorApp(ctk.CTk):
         self.create_image_buttons()
 
         self.create_option_button(
-            "Materiały pomocnicze",
+            "help",
             0.085,
             0.9,
             180,
@@ -165,6 +167,8 @@ class CalculatorApp(ctk.CTk):
             None,
         )
 
+        
+
     def create_image_buttons(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
@@ -180,7 +184,7 @@ class CalculatorApp(ctk.CTk):
             fg_color=COLORS["MAIN_BUTTONS_COLOR"],
             hover_color=COLORS["MAIN_BUTTONS_COLOR"],
         )
-        history_button.place(relx=0.92, rely=0.0)
+        history_button.place(relx=0.917, rely=0.0057)
         history_button.configure(compound="top")
 
         img_c = ctk.CTkImage(Image.open(os.path.join(image_path, "camera_icon.png")))
@@ -214,12 +218,29 @@ class CalculatorApp(ctk.CTk):
         export_button.place(relx=0.542, rely=0.71)
         export_button.configure(compound="top")
 
+    def change_language(self, value):
+        if value == 1:
+            new_language = "pl"
+        if value == 2:
+            new_language = "en"
+        self.change_language_in_manager(new_language)
+
+    def change_language_in_manager(self, new_language):
+        self.language_manager.set_language(new_language)
+        self.update_language()
+
+    def update_language(self):
+        self.create_widgets()
+        self.slider.lift()
+
     def show_instrcutions(self):
         if (
             self.toplevel_window_instructions is None
             or not self.toplevel_window_instructions.winfo_exists()
         ):
-            self.toplevel_window_instructions = TopLevelInstructions()
+            self.toplevel_window_instructions = TopLevelInstructions(
+                self.language_manager
+            )
             self.toplevel_window_instructions.after(
                 1, self.toplevel_window_instructions.lift
             )
@@ -230,7 +251,7 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_export is None
             or not self.toplevel_window_export.winfo_exists()
         ):
-            self.toplevel_window_export = TopLevelExport(result)
+            self.toplevel_window_export = TopLevelExport(result, self.language_manager)
             self.toplevel_window_export.after(1, self.toplevel_window_export.lift)
 
     def display_scan_eq_opt(self):
@@ -238,7 +259,9 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_pic_choser is None
             or not self.toplevel_window_pic_choser.winfo_exists()
         ):
-            self.toplevel_window_pic_choser = ToplevelWindowPicChoser()
+            self.toplevel_window_pic_choser = ToplevelWindowPicChoser(
+                self.language_manager
+            )
             self.toplevel_window_pic_choser.after(
                 1, self.toplevel_window_pic_choser.lift
             )
@@ -246,9 +269,10 @@ class CalculatorApp(ctk.CTk):
     def create_option_button(
         self, text, x, y, wid, bg_color, fg_color, text_color, hover_color, command
     ):
+        translated_text = self.translator.translate(text)
         opt_button = ctk.CTkButton(
             master=self.master,
-            text=text,
+            text=translated_text,
             width=wid,
             border_color=COLORS["WHITE"],
             bg_color=bg_color,
@@ -257,16 +281,18 @@ class CalculatorApp(ctk.CTk):
             font=(FONT, 13),
             text_color=text_color,
             command=command,
+            anchor="w",
         )
         opt_button.place(relx=x, rely=y)
         return opt_button
 
     def create_main_button(self, text, x, y, wid, hei, anchor, command):
+        translated_text = self.translator.translate(text)
         button = ctk.CTkButton(
             fg_color=COLORS["MAIN_BUTTONS_COLOR"],
             bg_color=COLORS["BACKGROUND_COLOR"],
             master=self.master,
-            text=text,
+            text=translated_text,
             corner_radius=10,
             width=wid,
             font=(FONT, 14),
@@ -292,9 +318,10 @@ class CalculatorApp(ctk.CTk):
         corner_radius,
         anchor,
     ):
+        translated_text = self.translator.translate(text)
         label = ctk.CTkLabel(
             master=self.master,
-            text=text,
+            text=translated_text,
             width=wid,
             height=hei,
             corner_radius=corner_radius,
@@ -307,7 +334,8 @@ class CalculatorApp(ctk.CTk):
         label.place(relx=x, rely=y)
         return label
 
-    def create_entry(self, x, y, wid, hei):
+    def create_entry(self, x, y, wid, hei, text):
+        translated_text = self.translator.translate(text)
         self.eq_entry = ctk.CTkEntry(
             master=self.master,
             width=wid,
@@ -316,7 +344,7 @@ class CalculatorApp(ctk.CTk):
             corner_radius=10,
             fg_color=COLORS["LIGHT_ENTRY_COLOR"],
             bg_color=COLORS["BACKGROUND_COLOR"],
-            placeholder_text="Wpisz równanie",
+            placeholder_text=translated_text,
             placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
             text_color=COLORS["BLACK"],
         )
@@ -355,13 +383,45 @@ class CalculatorApp(ctk.CTk):
         )
         self.combobox.place(relx=x, rely=y)
 
+    def create_slider(self):
+        self.slider = ctk.CTkSlider(
+            master=self.master,
+            from_=1,
+            to=1.5,
+            command=self.slider_event,
+            number_of_steps=2,
+            width=40,
+            bg_color=COLORS["MAIN_BUTTONS_COLOR"],
+            fg_color=COLORS["BACKGROUND_COLOR"],
+            progress_color=COLORS["BACKGROUND_COLOR"],
+            button_color=COLORS["BACKGROUND_COLOR"],
+            button_hover_color=COLORS["BACKGROUND_COLOR"]
+        )
+        self.slider.set(1.0)
+        self.slider.place(relx=0.87, rely=0.03, anchor=tkinter.CENTER)
+
+    def slider_event(self, value):
+        rounded_value = round(float(value))
+        self.slider.set(rounded_value)
+        self.change_language(rounded_value)
+
     def open_help(self):
-        url_to_help = {
+        url_to_help_pl = {
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
             "równanie nieliniowe": "https://www.cce.pk.edu.pl/~mj/lib/exe/fetch.php?media=pl:dydaktyka:konspektrniel.pdf",
         }
+        url_to_help_en = {
+            "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
+            "quadratic eq.": "https://en.wikipedia.org/wiki/Quadratic_equation",
+            "system of l. eq.": "https://en.wikipedia.org/wiki/Linear_system",
+            "non linear eq.": "https://www.vedantu.com/maths/difference-between-linear-and-nonlinear-equations",
+        }
+        if self.translator.language == "pl":
+            url_to_help = url_to_help_pl
+        else:
+            url_to_help = url_to_help_en
         url = url_to_help.get(self.eq_type)
         webbrowser.open(url, new=0, autoraise=True)
 
@@ -400,12 +460,22 @@ class CalculatorApp(ctk.CTk):
             )
 
     def solve_choosen_type(self):
-        eq_type_to_func = {
+        eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
             "układ równań liniowych": self.solve_system_of_equations,
             "równanie nieliniowe": self.solve_non_linear_equation,
         }
+        eq_type_to_func_en = {
+            "linear equations": self.solve_equation,
+            "quadratic eq.": self.solve_quadratic_equation,
+            "system of l. eq.": self.solve_system_of_equations,
+            "non linear eq.": self.solve_non_linear_equation,
+        }
+        if self.translator.language == "pl":
+            eq_type_to_func = eq_type_to_func_pl
+        else:
+            eq_type_to_func = eq_type_to_func_en
         selected_func = eq_type_to_func.get(self.eq_type)
         if selected_func:
             selected_func()
@@ -415,5 +485,5 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_history is None
             or not self.toplevel_window_history.winfo_exists()
         ):
-            self.toplevel_window_history = TopLevelHistory()
+            self.toplevel_window_history = TopLevelHistory(self.language_manager)
             self.toplevel_window_history.after(1, self.toplevel_window_history.lift)

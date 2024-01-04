@@ -2,7 +2,9 @@ import json
 import tkinter
 
 import customtkinter as ctk
+
 from options.file_exporter import FileExporter
+from options.translator import Translator
 
 with open("gui/colors.json") as f:
     colors_data = json.load(f)
@@ -12,9 +14,11 @@ FONT = "Century Gothic"
 
 
 class TopLevelExport(ctk.CTkToplevel):
-    def __init__(self, result, *args, **kwargs):
+    def __init__(self, result, language_manager, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("400x300")
+        self.language_manager = language_manager
+        self.translator = Translator(self.language_manager)
         self.create_widgets()
         self.file_exporter = FileExporter()
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
@@ -27,9 +31,11 @@ class TopLevelExport(ctk.CTkToplevel):
         self.destroy()
 
     def create_widgets(self):
+        text = "choose_file_type"
+        translated_text = self.translator.translate(text)
         label = ctk.CTkLabel(
             self,
-            text="Wybierz rozszerzenie pliku",
+            text=translated_text,
             bg_color=COLORS["BACKGROUND_COLOR"],
             fg_color=COLORS["BACKGROUND_COLOR"],
             corner_radius=10,
@@ -38,9 +44,11 @@ class TopLevelExport(ctk.CTkToplevel):
         )
         label.place(relx=0.19, rely=0.1)
 
+        button_text = "export"
+        translated_text = self.translator.translate(button_text)
         load_button = ctk.CTkButton(
             self,
-            text="Eksportuj",
+            text=translated_text,
             command=self.export,
             corner_radius=10,
             bg_color=COLORS["BACKGROUND_COLOR"],
@@ -79,6 +87,6 @@ class TopLevelExport(ctk.CTkToplevel):
         self.after(1000, self.show_info)
 
     def show_info(self):
-        tkinter.messagebox.showinfo(
-            "Export files", "Eksport do pliku wykonany pomyślnie."
-        )
+        text = "export_files_info"
+        translated_text = self.translator.translate(text)
+        tkinter.messagebox.showinfo("Export files", translated_text)

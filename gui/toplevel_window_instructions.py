@@ -10,9 +10,10 @@ COLORS = colors_data.get("COLORS", {})
 
 
 class TopLevelInstructions(ctk.CTkToplevel):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, language_manager, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("600x500")
+        self.language_manager = language_manager
         self.create_widgets()
         self.resizable(True, True)
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
