@@ -10,8 +10,10 @@ from PIL import Image
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
-from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_instructions import \
+    TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import \
+    ToplevelWindowPicChoser
 from options.equations_history import EquationHistory
 from options.translator import Translator
 
