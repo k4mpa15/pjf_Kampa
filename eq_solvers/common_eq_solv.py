@@ -152,9 +152,7 @@ class EquationSolver:
             f_x1 = f(x1)
 
             if abs(f_x1 - f_x0) < tol:
-                return (
-                    "Devision by 0!"
-                )
+                return "Devision by 0!"
 
             x_next = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0)
 
@@ -165,3 +163,45 @@ class EquationSolver:
             iter_count += 1
 
         return "End of iterations"
+
+    @staticmethod
+    def solve_non_linear_equation_by_bisection(func_str, a, b, tol=1e-6, max_iter=1000):
+        """
+        Metoda bisekcji do znalezienia miejsca zerowego funkcji.
+
+        Parametry:
+        - func_str: String reprezentujący równanie, dla którego szukamy miejsca zerowego.
+        - a, b: Dwa punkty krańcowe przedziału, w którym szukamy miejsca zerowego.
+        - tol: Tolerancja błędu (domyślnie 1e-6).
+        - max_iter: Maksymalna liczba iteracji (domyślnie 100).
+
+        Zwraca:
+        - x: Przybliżone miejsce zerowe funkcji.
+        - iter_count: Liczba wykonanych iteracji.
+        """
+        x = sp.symbols("x")
+        func_str = func_str.replace(" ", "")
+        func_str = func_str.replace("=0", "")
+        func = sp.sympify(func_str)
+
+        f = sp.lambdify(x, func)
+
+        if f(a) * f(b) > 0:
+            return "Funkcja nie spełnia warunków teoretycznych metody bisekcji."
+
+        iter_count = 0
+        while iter_count < max_iter:
+            c = (a + b) / 2
+            f_c = f(c)
+
+            if abs(f_c) < tol:
+                return f"x = {round(c, 3)}, iter. = {iter_count}"
+
+            if f_c * f(a) < 0:
+                b = c
+            else:
+                a = c
+
+            iter_count += 1
+
+        return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."
