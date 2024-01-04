@@ -117,9 +117,51 @@ class EquationSolver:
 
             if abs(x1 - x0) < tol:
                 x1 = x1.evalf(3)
-                return f"x1 = {x1}, iter. = {iter_count}"
+                return f"x = {x1}, iter. = {iter_count}"
 
             x0 = x1
+            iter_count += 1
+
+        return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."
+
+    @staticmethod
+    def solve_non_linear_equation_by_secant(
+        func_str, x0=2, x1=3, tol=1e-6, max_iter=100
+    ):
+        """
+        Metoda siecznych do znalezienia miejsca zerowego funkcji.
+
+        Parametry:
+        - func_str: String reprezentujący równanie, dla którego szukamy miejsca zerowego.
+        - x0, x1: Dwa punkty startowe, między którymi znajduje się miejsce zerowe.
+        - tol: Tolerancja błędu (domyślnie 1e-6).
+        - max_iter: Maksymalna liczba iteracji (domyślnie 100).
+
+        Zwraca:
+        - x: Przybliżone miejsce zerowe funkcji.
+        - iter_count: Liczba wykonanych iteracji.
+        """
+        x = sp.symbols("x")
+        func = sp.sympify(func_str)
+
+        f = sp.lambdify(x, func)
+
+        iter_count = 0
+        while iter_count < max_iter:
+            f_x0 = f(x0)
+            f_x1 = f(x1)
+
+            if abs(f_x1 - f_x0) < tol:
+                return (
+                    "Dzielenie przez bliskie zero, metoda siecznych może nie zadziałać."
+                )
+
+            x_next = x1 - f_x1 * (x1 - x0) / (f_x1 - f_x0)
+
+            if abs(x_next - x1) < tol:
+                f"x = {x_next}, iter. = {iter_count}"
+
+            x0, x1 = x1, x_next
             iter_count += 1
 
         return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."
