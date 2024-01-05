@@ -10,10 +10,8 @@ from PIL import Image
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
-from gui.top_level_windows.toplevel_window_instructions import \
-    TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import \
-    ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from options.equations_history import EquationHistory
 from options.translator import Translator
 
@@ -110,7 +108,7 @@ class CalculatorApp(ctk.CTk):
             10,
             "center",
         )
-        eq_types_en = [
+        self.eq_types_en = [
             "Choose type",
             "linear equations",
             "system of l. eq.",
@@ -119,7 +117,7 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., secant method",
             "non linear eq., bisection method",
         ]
-        eq_types_pl = [
+        self.eq_types_pl = [
             "Wybierz typ",
             "równanie liniowe",
             "układ równań liniowych",
@@ -129,9 +127,9 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda bisekcji",
         ]
         if self.translator.language == "pl":
-            eq_types = eq_types_pl
+            eq_types = self.eq_types_pl
         else:
-            eq_types = eq_types_en
+            eq_types = self.eq_types_en
         self.create_combobox(
             eq_types,
             500,
@@ -146,12 +144,14 @@ class CalculatorApp(ctk.CTk):
         )
         label = "fill"
         translated_label = self.translator.translate(label)
-        ctk.CTkLabel(
+        self.fill_label = ctk.CTkLabel(
             self.master,
             text=translated_label,
             font=(FONT, 14),
             text_color=COLORS["BLACK"],
-        ).place(relx=0.72, rely=0.32)
+        )
+        self.fill_label.place(relx=0.72, rely=0.32)
+
         self.entry_to_placehold = ctk.CTkLabel(
             self.master,
             text=" ",
@@ -527,7 +527,43 @@ class CalculatorApp(ctk.CTk):
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
         self.equation_history.add_equation(self.get_entry_content(), result)
 
+    def clear_everything(self):
+        if self.language_manager.get_language() == "pl":
+            self.combobox.set(self.eq_types_pl[0])
+        else:
+            self.combobox.set(self.eq_types_en[0])
+
+        if hasattr(self, "x0_entry") and self.x0_entry.winfo_exists():
+            self.x0_entry.destroy()
+
+        if hasattr(self, "x1_entry") and self.x1_entry.winfo_exists():
+            self.x1_entry.destroy()
+
+        if hasattr(self, "it_entry") and self.it_entry.winfo_exists():
+            self.it_entry.destroy()
+
+        if hasattr(self, "fill_label") and self.fill_label.winfo_exists():
+            self.fill_label.destroy()
+
+        self.eq_entry.delete(0, len(self.get_entry_content()))
+
     def create_options_to_solve_eq(self):
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
+
+        img_d = ctk.CTkImage(Image.open(os.path.join(image_path, "delete_icon.png")))
+        self.delete_button = ctk.CTkButton(
+            master=self.master,
+            image=img_d,
+            command=lambda: self.clear_everything(),
+            text="",
+            width=14,
+            height=14,
+            bg_color=COLORS["BACKGROUND_COLOR"],
+            fg_color=COLORS["BACKGROUND_COLOR"],
+            hover_color=COLORS["BACKGROUND_COLOR"],
+        )
+        self.delete_button.place(relx=0.61, rely=0.2)
+
         acceptable_types = [
             "równanie nieliniowe, metoda Newtona - Raphsona",
             "non linear eq., Newton - Raphson method",
