@@ -39,33 +39,42 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
         if self.type == "równanie kwadratowe" or self.type == "quadratic eq.":
             self.equation_solver.solve_quadratic_equation(self.entry_content)
 
+        if self.type == "równanie liniowe" or self.type == "linear equations":
+            self.equation_solver.solve_linear_equation(self.entry_content)
+
     def create_label_with_step(self, text, font):
         return ctk.CTkLabel(
             master=self, text=text, text_color=COLORS["BLACK"], font=font
         )
 
     def update_label(self):
-        if self.equation_solver.d < 0:
-            new_text = self.dm0_labels_text[self.current_index]
-            self.dm0_labels[self.current_index].configure(text=new_text)
-            self.current_index = (self.current_index + 1) % len(self.dm0_labels)
+        if self.type == "równanie kwadratowe" or self.type == "quadratic eq.":
+            if self.equation_solver.d < 0:
+                new_text = self.dm0_labels_text[self.current_index]
+                self.dm0_labels[self.current_index].configure(text=new_text)
+                self.current_index = (self.current_index + 1) % len(self.dm0_labels)
 
-        if self.equation_solver.d == 0:
-            new_text = self.d0_labels_text[self.current_index]
-            self.d0_labels[self.current_index].configure(text=new_text)
-            self.current_index = (self.current_index + 1) % len(self.d0_labels)
+            if self.equation_solver.d == 0:
+                new_text = self.d0_labels_text[self.current_index]
+                self.d0_labels[self.current_index].configure(text=new_text)
+                self.current_index = (self.current_index + 1) % len(self.d0_labels)
 
-        if self.equation_solver.d > 0:
-            new_text = self.dw0_labels_text[self.current_index]
-            self.dw0_labels[self.current_index].configure(text=new_text)
-            self.current_index = (self.current_index + 1) % len(self.dw0_labels)
+            if self.equation_solver.d > 0:
+                new_text = self.dw0_labels_text[self.current_index]
+                self.dw0_labels[self.current_index].configure(text=new_text)
+                self.current_index = (self.current_index + 1) % len(self.dw0_labels)
+        if self.type == "równanie liniowe" or self.type == "linear equations":
+            new_text = self.labels_text[self.current_index]
+            self.labels[self.current_index].configure(text=new_text)
+            self.current_index = (self.current_index + 1) % len(self.labels)
+            print(self.current_index)
 
     def create_widgets(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
         img_n = ctk.CTkImage(Image.open(os.path.join(image_path, "next.png")))
 
-        next_button = ctk.CTkButton(
+        self.next_button = ctk.CTkButton(
             master=self,
             image=img_n,
             command=lambda: self.update_label(),
@@ -76,8 +85,50 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             fg_color=COLORS["BACKGROUND_COLOR"],
             hover_color=COLORS["BACKGROUND_COLOR"],
         )
-        next_button.place(relx=0.9, rely=0.9)
+        self.next_button.place(relx=0.9, rely=0.9)
         self.current_index = 0
+        if self.type == "równanie liniowe" or self.type == "linear equations":
+            eq = self.create_label_with_step(
+                self.entry_content,
+                (FONT, 20),
+            )
+            eq.place(relx=0.4, rely=0.05)
+            self.labels = []
+            self.labels_text = [
+                f"1.    {self.equation_solver.s_to_show}",
+                f"2.    {-self.equation_solver.imag} x - {-self.equation_solver.real} = 0",
+                f"3.    {-self.equation_solver.imag} x = {-self.equation_solver.real}",
+                f"4.    x = {-self.equation_solver.real} / {-self.equation_solver.imag}",
+                f"5.        x = {self.equation_solver.x}",
+            ]
+            step1 = self.create_label_with_step(
+                "",
+                (FONT, 16),
+            )
+            self.labels.append(step1)
+            step1.place(relx=0.05, rely=0.15)
+
+            step2 = self.create_label_with_step(
+                "",
+                (FONT, 16),
+            )
+            self.labels.append(step2)
+            step2.place(relx=0.05, rely=0.22)
+
+            step3 = self.create_label_with_step("", (FONT, 16))
+            self.labels.append(step3)
+            step3.place(relx=0.05, rely=0.29)
+
+            step4 = self.create_label_with_step(
+                "",
+                (FONT, 16),
+            )
+            self.labels.append(step4)
+            step4.place(relx=0.05, rely=0.36)
+
+            step5 = self.create_label_with_step("", (FONT, 16))
+            self.labels.append(step5)
+            step5.place(relx=0.05, rely=0.50)
 
         if self.type == "równanie kwadratowe" or self.type == "quadratic eq.":
             eq = self.create_label_with_step(
@@ -127,7 +178,7 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                     f"1.    a = {self.equation_solver.a}, b = {self.equation_solver.b}, c = {self.equation_solver.c}",
                     f"2.    △ = b² - 4ac        >>>    {self.equation_solver.b}² - 4· {self.equation_solver.a}· {self.equation_solver.c}",
                     f"3.    △ = {self.equation_solver.d}",
-                    f"4.    x = -b / 2a        >>>    x = -{self.equation_solver.b}/2· {self.equation_solver.a}",
+                    f"4.    x = -b / 2a        >>>    x = -{self.equation_solver.b}/ (2· {self.equation_solver.a})",
                     f"5.        x = {round(self.equation_solver.sol)}",
                 ]
                 step4_0 = self.create_label_with_step(
@@ -145,8 +196,8 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                     f"1.    a = {self.equation_solver.a}, b = {self.equation_solver.b}, c = {self.equation_solver.c}",
                     f"2.    △ = b² - 4ac        >>>    {self.equation_solver.b}² - 4· {self.equation_solver.a}· {self.equation_solver.c}",
                     f"3.    △ = {self.equation_solver.d}",
-                    f"4.    x = -b + √△ / 2a        >>>    x = (-{self.equation_solver.b}+√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
-                    f"5.    x = -b - √△ / 2a        >>>    x = (-{self.equation_solver.b}-√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
+                    f"4.    x = (-b + √△) / 2a        >>>    x = (-{self.equation_solver.b}+√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
+                    f"5.    x = (-b - √△) / 2a        >>>    x = (-{self.equation_solver.b}-√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
                     f"6.        x =     {round(self.equation_solver.sol1,2)},   x =     {round(self.equation_solver.sol2, 2)}\n",
                 ]
                 step4w0 = self.create_label_with_step(

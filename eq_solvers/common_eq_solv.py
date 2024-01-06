@@ -5,13 +5,18 @@ import sympy as sp
 
 
 class EquationSolver:
-    @staticmethod
-    def solve_linear_equation(equation_content):
+    def solve_linear_equation(self, equation_content):
         s1 = equation_content.replace("x", "j").replace(" ", "")
         s2 = s1.replace("=", "-(")
         s = s2 + ")"
+        self.s_to_show = s.replace("j", "x") + "=0"
         z = eval(s, {"j": 1j})
         real, imag = z.real, -z.imag
+        self.real, self.imag = z.real, -z.imag
+        self.x = round((real / imag), 2)
+        if self.x == -0.0:
+            self.x = 0
+            return "x = 0"
         if imag:
             return f"x = {round((real / imag), 2)}"
         else:
