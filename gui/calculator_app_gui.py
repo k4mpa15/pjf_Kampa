@@ -12,6 +12,7 @@ from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
 from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
 from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
 from options.equations_history import EquationHistory
 from options.translator import Translator
 
@@ -43,6 +44,7 @@ class CalculatorApp(ctk.CTk):
         self.equation_history = EquationHistory(self.language_manager)
         self.toplevel_window_history = None
         self.create_slider()
+        self.toplevel_window_step_by_step = None
 
     def on_close(self):
         if (
@@ -169,7 +171,13 @@ class CalculatorApp(ctk.CTk):
         )
 
         self.create_main_button(
-            "solve_step_by_step", 0.385, 0.6, 250, 32, ctk.CENTER, None
+            "solve_step_by_step",
+            0.385,
+            0.6,
+            250,
+            32,
+            ctk.CENTER,
+            lambda: self.show_step_by_step(),
         )
         self.create_main_button("graph", 0.7, 0.6, 260, 32, ctk.CENTER, None)
 
@@ -263,54 +271,6 @@ class CalculatorApp(ctk.CTk):
         )
         export_button.place(relx=0.542, rely=0.71)
         export_button.configure(compound="top")
-
-    def change_language(self, value):
-        if value == 1:
-            new_language = "pl"
-        if value == 2:
-            new_language = "en"
-        self.change_language_in_manager(new_language)
-
-    def change_language_in_manager(self, new_language):
-        self.language_manager.set_language(new_language)
-        self.update_language()
-
-    def update_language(self):
-        self.create_widgets()
-        self.slider.lift()
-
-    def show_instrcutions(self):
-        if (
-            self.toplevel_window_instructions is None
-            or not self.toplevel_window_instructions.winfo_exists()
-        ):
-            self.toplevel_window_instructions = TopLevelInstructions(
-                self.language_manager
-            )
-            self.toplevel_window_instructions.after(
-                1, self.toplevel_window_instructions.lift
-            )
-
-    def export_to_file(self):
-        result = self.solution
-        if (
-            self.toplevel_window_export is None
-            or not self.toplevel_window_export.winfo_exists()
-        ):
-            self.toplevel_window_export = TopLevelExport(result, self.language_manager)
-            self.toplevel_window_export.after(1, self.toplevel_window_export.lift)
-
-    def display_scan_eq_opt(self):
-        if (
-            self.toplevel_window_pic_choser is None
-            or not self.toplevel_window_pic_choser.winfo_exists()
-        ):
-            self.toplevel_window_pic_choser = ToplevelWindowPicChoser(
-                self.language_manager
-            )
-            self.toplevel_window_pic_choser.after(
-                1, self.toplevel_window_pic_choser.lift
-            )
 
     def create_option_button(
         self, text, x, y, wid, bg_color, fg_color, text_color, hover_color, command
@@ -446,6 +406,41 @@ class CalculatorApp(ctk.CTk):
         self.slider.set(1.0)
         self.slider.place(relx=0.87, rely=0.03, anchor=tkinter.CENTER)
 
+    def change_language(self, value):
+        if value == 1:
+            new_language = "pl"
+        if value == 2:
+            new_language = "en"
+        self.change_language_in_manager(new_language)
+
+    def change_language_in_manager(self, new_language):
+        self.language_manager.set_language(new_language)
+        self.update_language()
+
+    def update_language(self):
+        self.create_widgets()
+        self.slider.lift()
+
+    def clear_everything(self):
+        if self.language_manager.get_language() == "pl":
+            self.combobox.set(self.eq_types_pl[0])
+        else:
+            self.combobox.set(self.eq_types_en[0])
+
+        if hasattr(self, "x0_entry") and self.x0_entry.winfo_exists():
+            self.x0_entry.destroy()
+
+        if hasattr(self, "x1_entry") and self.x1_entry.winfo_exists():
+            self.x1_entry.destroy()
+
+        if hasattr(self, "it_entry") and self.it_entry.winfo_exists():
+            self.it_entry.destroy()
+
+        if hasattr(self, "fill_label") and self.fill_label.winfo_exists():
+            self.fill_label.destroy()
+
+        self.eq_entry.delete(0, len(self.get_entry_content()))
+
     def slider_event(self, value):
         rounded_value = round(float(value))
         self.slider.set(rounded_value)
@@ -526,26 +521,6 @@ class CalculatorApp(ctk.CTk):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
         self.equation_history.add_equation(self.get_entry_content(), result)
-
-    def clear_everything(self):
-        if self.language_manager.get_language() == "pl":
-            self.combobox.set(self.eq_types_pl[0])
-        else:
-            self.combobox.set(self.eq_types_en[0])
-
-        if hasattr(self, "x0_entry") and self.x0_entry.winfo_exists():
-            self.x0_entry.destroy()
-
-        if hasattr(self, "x1_entry") and self.x1_entry.winfo_exists():
-            self.x1_entry.destroy()
-
-        if hasattr(self, "it_entry") and self.it_entry.winfo_exists():
-            self.it_entry.destroy()
-
-        if hasattr(self, "fill_label") and self.fill_label.winfo_exists():
-            self.fill_label.destroy()
-
-        self.eq_entry.delete(0, len(self.get_entry_content()))
 
     def create_options_to_solve_eq(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
@@ -656,3 +631,59 @@ class CalculatorApp(ctk.CTk):
         ):
             self.toplevel_window_history = TopLevelHistory(self.language_manager)
             self.toplevel_window_history.after(1, self.toplevel_window_history.lift)
+
+    def show_step_by_step(self):
+        acceptable_types = [
+            "równanie kwadratowe",
+            "równanie liniowe",
+            "linear equations",
+            "quadratic eq.",
+        ]
+        entry_content = self.get_entry_content()
+        if (
+            (
+                self.toplevel_window_step_by_step is None
+                or not self.toplevel_window_step_by_step.winfo_exists()
+            )
+            and not (not entry_content)
+            and (self.eq_type.lower() in map(str.lower, acceptable_types))
+        ):
+            self.toplevel_window_step_by_step = TopLevelWindowStepByStep(
+                self.language_manager, entry_content, self.eq_type
+            )
+            self.toplevel_window_step_by_step.after(
+                1, self.toplevel_window_step_by_step.lift
+            )
+
+    def show_instrcutions(self):
+        if (
+            self.toplevel_window_instructions is None
+            or not self.toplevel_window_instructions.winfo_exists()
+        ):
+            self.toplevel_window_instructions = TopLevelInstructions(
+                self.language_manager
+            )
+            self.toplevel_window_instructions.after(
+                1, self.toplevel_window_instructions.lift
+            )
+
+    def export_to_file(self):
+        result = self.solution
+        if (
+            self.toplevel_window_export is None
+            or not self.toplevel_window_export.winfo_exists()
+        ):
+            self.toplevel_window_export = TopLevelExport(result, self.language_manager)
+            self.toplevel_window_export.after(1, self.toplevel_window_export.lift)
+
+    def display_scan_eq_opt(self):
+        if (
+            self.toplevel_window_pic_choser is None
+            or not self.toplevel_window_pic_choser.winfo_exists()
+        ):
+            self.toplevel_window_pic_choser = ToplevelWindowPicChoser(
+                self.language_manager
+            )
+            self.toplevel_window_pic_choser.after(
+                1, self.toplevel_window_pic_choser.lift
+            )

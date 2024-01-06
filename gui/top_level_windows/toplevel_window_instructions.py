@@ -31,6 +31,4 @@ class TopLevelInstructions(ctk.CTkToplevel):
             size=(600, 500),
         )
 
-        image_label = ctk.CTkLabel(self, image=my_image, text="").place(
-            relx=0.0, rely=0.0
-        )
+        ctk.CTkLabel(self, image=my_image, text="").place(relx=0.0, rely=0.0)

@@ -7,7 +7,7 @@ from options.language_manager import LanguageManager
 def main():
     language_manager = LanguageManager()
     root_tk = ctk.CTk()
-    app = CalculatorApp(root_tk, language_manager)
+    CalculatorApp(root_tk, language_manager)
     root_tk.mainloop()
 
 

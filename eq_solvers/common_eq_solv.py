@@ -20,8 +20,7 @@ class EquationSolver:
             else:
                 return "Nieskończona ilosć rozwiązań"
 
-    @staticmethod
-    def solve_quadratic_equation(equation_content):
+    def solve_quadratic_equation(self, equation_content):
         try:
             equation_content = equation_content.replace(" ", "")
             pattern = re.compile(r"([-+]?\d*)x\*\*2\s*([-+]?\d*)x\s*([-+]?\d*)\s*=\s*0")
@@ -33,20 +32,26 @@ class EquationSolver:
 
             if match:
                 a, b, c = map(lambda x: int(x) if x else 0, match.groups())
+                self.a = a
+                self.b = b
+                self.c = c
             else:
                 return "Zły format równania!"
 
             d = (b**2) - (4 * a * c)
+            self.d = d
             if d < 0:
                 return "Brak rozwiązań"
             elif d == 0:
-                sol = -b / (2 * a)
-                return f"x = {round(sol, 2)}"
+                self.sol = -b / (2 * a)
+                return f"x = {round(self.sol, 2)}"
             elif a == 0:
                 return "To nie jest równanie kwadratowe"
             else:
                 sol1 = (-b - d**0.5) / (2 * a)
                 sol2 = (-b + d**0.5) / (2 * a)
+                self.sol1 = sol1
+                self.sol2 = sol2
                 return f"x1 = {round(sol1, 2)}, x2 = {round(sol2, 2)} "
 
         except ZeroDivisionError:
@@ -100,7 +105,7 @@ class EquationSolver:
         """
         x = sp.symbols("x")
         func = sp.sympify(func_str)
-        df = sp.diff(func, x)  # Oblicz pochodną funkcji
+        df = sp.diff(func, x)
         f_prime = sp.lambdify(x, df)
         iter_count = 0
 
@@ -109,9 +114,7 @@ class EquationSolver:
             f_prime_val = f_prime(x0)
 
             if abs(f_prime_val) < tol:
-                return (
-                    "Pochodna bliska zeru, metoda Newtona-Raphsona może nie zadziałać."
-                )
+                return "Devision by 0!"
 
             x1 = x0 - f_val / f_prime_val
 
@@ -122,7 +125,7 @@ class EquationSolver:
             x0 = x1
             iter_count += 1
 
-        return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."
+        return "End of iterations"
 
     @staticmethod
     def solve_non_linear_equation_by_secant(func_str, x0, x1, tol=1e-6, max_iter=100):
@@ -187,7 +190,7 @@ class EquationSolver:
         f = sp.lambdify(x, func)
 
         if f(a) * f(b) > 0:
-            return "Funkcja nie spełnia warunków teoretycznych metody bisekcji."
+            return "Wrong data!"
 
         iter_count = 0
         while iter_count < max_iter:
@@ -204,4 +207,4 @@ class EquationSolver:
 
             iter_count += 1
 
-        return "Nie osiągnięto wymaganej dokładności w zadanej liczbie iteracji."
+        return "End of iterations"

@@ -6,4 +6,4 @@ pylatex
 scipy
 numpy
 isort
-
+ruff 

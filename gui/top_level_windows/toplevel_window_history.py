@@ -54,7 +54,7 @@ class TopLevelHistory(ctk.CTkToplevel):
         )
         scrollable_frame.place(relx=0.06, rely=0.23)
 
-        label_content = ctk.CTkLabel(
+        ctk.CTkLabel(
             scrollable_frame,
             text=history_text,
             bg_color=COLORS["LIGHT_ENTRY_COLOR"],
