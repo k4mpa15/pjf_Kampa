@@ -26,7 +26,7 @@ class TopLevelHistory(ctk.CTkToplevel):
         self.grab_set()
 
     def clear_history(self):
-        with open("history.txt", "w"):
+        with open("eq_history.txt", "w"):
             pass
         self.create_widgets()
 
