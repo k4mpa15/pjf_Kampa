@@ -169,6 +169,7 @@ class CalculatorApp(ctk.CTk):
         self.solve_button = self.create_main_button(
             "solve", 0.15, 0.6, 120, 32, ctk.CENTER, lambda: self.solve_choosen_type()
         )
+        self.master.bind("<Return>", lambda event: self.solve_choosen_type())
 
         self.create_main_button(
             "solve_step_by_step",
