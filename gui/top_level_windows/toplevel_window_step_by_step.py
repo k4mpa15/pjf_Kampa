@@ -53,26 +53,38 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                 new_text = self.dm0_labels_text[self.current_index]
                 self.dm0_labels[self.current_index].configure(text=new_text)
                 self.current_index = (self.current_index + 1) % len(self.dm0_labels)
-
+                if self.current_index == 0:
+                    self.no_next_button()
+                    
             if self.equation_solver.d == 0:
                 new_text = self.d0_labels_text[self.current_index]
                 self.d0_labels[self.current_index].configure(text=new_text)
                 self.current_index = (self.current_index + 1) % len(self.d0_labels)
-
+                if self.current_index == 0:
+                    self.no_next_button()
+                    
             if self.equation_solver.d > 0:
                 new_text = self.dw0_labels_text[self.current_index]
                 self.dw0_labels[self.current_index].configure(text=new_text)
                 self.current_index = (self.current_index + 1) % len(self.dw0_labels)
-        if self.type == "równanie liniowe" or self.type == "linear equations":
+                if self.current_index == 0:
+                    self.no_next_button()
+                
+        elif self.type == "równanie liniowe" or self.type == "linear equations":
             new_text = self.labels_text[self.current_index]
             self.labels[self.current_index].configure(text=new_text)
-            self.current_index = (self.current_index + 1) % len(self.labels)
-            print(self.current_index)
-
+            self.current_index = (self.current_index + 1) % len(self.labels_text)
+            if self.current_index == 0:
+                self.no_next_button()
+                
+    def no_next_button(self):
+        img_no_next = ctk.CTkImage(Image.open(os.path.join(self.image_path, "no_next.png")))
+        self.next_button.configure(image = img_no_next)
+                
     def create_widgets(self):
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
+        self.image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
-        img_n = ctk.CTkImage(Image.open(os.path.join(image_path, "next.png")))
+        img_n = ctk.CTkImage(Image.open(os.path.join(self.image_path, "next.png")))
 
         self.next_button = ctk.CTkButton(
             master=self,
@@ -196,9 +208,9 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                     f"1.    a = {self.equation_solver.a}, b = {self.equation_solver.b}, c = {self.equation_solver.c}",
                     f"2.    △ = b² - 4ac        >>>    {self.equation_solver.b}² - 4· {self.equation_solver.a}· {self.equation_solver.c}",
                     f"3.    △ = {self.equation_solver.d}",
-                    f"4.    x = (-b + √△) / 2a        >>>    x = (-{self.equation_solver.b}+√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
-                    f"5.    x = (-b - √△) / 2a        >>>    x = (-{self.equation_solver.b}-√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
-                    f"6.        x =     {round(self.equation_solver.sol1,2)},   x =     {round(self.equation_solver.sol2, 2)}\n",
+                    f"4.    x₁ = (-b + √△) / 2a        >>>    x₁ = (-{self.equation_solver.b}+√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
+                    f"5.    x₂ = (-b - √△) / 2a        >>>    x₂ = (-{self.equation_solver.b}-√{round(math.sqrt(self.equation_solver.d),2)}) / (2· {self.equation_solver.a})\n",
+                    f"6.        x₁ =     {round(self.equation_solver.sol1,2)},   x₂ =     {round(self.equation_solver.sol2, 2)}\n",
                 ]
                 step4w0 = self.create_label_with_step(
                     "",

@@ -58,6 +58,170 @@ class CalculatorApp(ctk.CTk):
         self.master.destroy()
         self.master.quit()
 
+    def create_image_button(self, image, command, bg_color, fg_color, hover_color, wid, hei):
+        return ctk.CTkButton(
+            master=self.master,
+            image=image,
+            command=command,
+            text="",
+            width=wid,
+            height=hei,
+            bg_color=bg_color,
+            fg_color=fg_color,
+            hover_color=hover_color,
+        )
+    def create_image_buttons(self):
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
+
+        img_h = ctk.CTkImage(Image.open(os.path.join(image_path, "history_icon.png")))
+        history_button = self.create_image_button(img_h, lambda: self.show_history(),COLORS["MAIN_BUTTONS_COLOR"],COLORS["MAIN_BUTTONS_COLOR"],COLORS["MAIN_BUTTONS_COLOR"],14,14 )
+        history_button.place(relx=0.917, rely=0.0057)
+        history_button.configure(compound="top")
+
+        img_c = ctk.CTkImage(Image.open(os.path.join(image_path, "camera_icon.png")))
+        camera_button = self.create_image_button(img_c, lambda: self.display_scan_eq_opt(),COLORS["LIGHT_ENTRY_COLOR"],COLORS["LIGHT_ENTRY_COLOR"],COLORS["OPTION_BUTTON_HOVER_COLOR"],16,14 )
+        camera_button.place(relx=0.64, rely=0.34)
+        camera_button.configure(compound="top")
+
+        img_e = ctk.CTkImage(Image.open(os.path.join(image_path, "export_icon.jpg")))
+        export_button = self.create_image_button(img_e, lambda: self.export_to_file(),COLORS["LIGHT_ENTRY_COLOR"],COLORS["LIGHT_ENTRY_COLOR"],COLORS["OPTION_BUTTON_HOVER_COLOR"],14,14 )
+        export_button.place(relx=0.542, rely=0.71)
+        export_button.configure(compound="top")
+
+    def create_option_button(
+        self, text, x, y, wid, bg_color, fg_color, text_color, hover_color, command
+    ):
+        translated_text = self.translator.translate(text)
+        opt_button = ctk.CTkButton(
+            master=self.master,
+            text=translated_text,
+            width=wid,
+            border_color=COLORS["WHITE"],
+            bg_color=bg_color,
+            fg_color=fg_color,
+            hover_color=hover_color,
+            font=(FONT, 13),
+            text_color=text_color,
+            command=command,
+            anchor="w",
+        )
+        opt_button.place(relx=x, rely=y)
+        return opt_button
+
+    def create_main_button(self, text, x, y, wid, hei, anchor, command):
+        translated_text = self.translator.translate(text)
+        button = ctk.CTkButton(
+            fg_color=COLORS["MAIN_BUTTONS_COLOR"],
+            bg_color=COLORS["BACKGROUND_COLOR"],
+            master=self.master,
+            text=translated_text,
+            corner_radius=10,
+            width=wid,
+            font=(FONT, 14),
+            height=hei,
+            text_color=COLORS["WHITE"],
+            hover_color=COLORS["MAIN_BUTTONS_HOVER_COLOR"],
+            command=command,
+        )
+        button.place(relx=x, rely=y, anchor=anchor)
+        return button
+
+    def create_label(
+        self,
+        text,
+        x,
+        y,
+        wid,
+        hei,
+        text_font,
+        text_color,
+        bg_color,
+        fg_color,
+        corner_radius,
+        anchor,
+    ):
+        translated_text = self.translator.translate(text)
+        label = ctk.CTkLabel(
+            master=self.master,
+            text=translated_text,
+            width=wid,
+            height=hei,
+            corner_radius=corner_radius,
+            font=text_font,
+            bg_color=bg_color,
+            text_color=text_color,
+            fg_color=fg_color,
+            anchor=anchor,
+        )
+        label.place(relx=x, rely=y)
+        return label
+
+    def create_entry(self, x, y, wid, hei, text):
+        translated_text = self.translator.translate(text)
+        self.eq_entry = ctk.CTkEntry(
+            master=self.master,
+            width=wid,
+            height=hei,
+            font=(FONT, 14),
+            corner_radius=10,
+            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+            bg_color=COLORS["BACKGROUND_COLOR"],
+            placeholder_text=translated_text,
+            placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
+            text_color=COLORS["BLACK"],
+        )
+        self.eq_entry.place(relx=x, rely=y)
+
+        return self.eq_entry
+
+    def get_entry_content(self):
+        return self.eq_entry.get()
+
+    def create_combobox(
+        self,
+        values,
+        wid,
+        bg_color,
+        fg_color,
+        border_color,
+        font,
+        x,
+        y,
+        dropdown_font,
+        button_color,
+    ):
+        self.combobox = ctk.CTkComboBox(
+            master=self.master,
+            values=values,
+            width=wid,
+            corner_radius=10,
+            bg_color=bg_color,
+            fg_color=fg_color,
+            border_color=border_color,
+            font=font,
+            dropdown_font=dropdown_font,
+            button_color=button_color,
+            command=self.get_type_content,
+        )
+        self.combobox.place(relx=x, rely=y)
+
+    def create_slider(self):
+        self.slider = ctk.CTkSlider(
+            master=self.master,
+            from_=1,
+            to=1.5,
+            command=self.slider_event,
+            number_of_steps=2,
+            width=40,
+            bg_color=COLORS["MAIN_BUTTONS_COLOR"],
+            fg_color=COLORS["BACKGROUND_COLOR"],
+            progress_color=COLORS["BACKGROUND_COLOR"],
+            button_color=COLORS["BACKGROUND_COLOR"],
+            button_hover_color=COLORS["BACKGROUND_COLOR"],
+        )
+        self.slider.set(1.0)
+        self.slider.place(relx=0.87, rely=0.03, anchor=tkinter.CENTER)
+        
     def create_widgets(self):
         self.create_option_button(
             "how_to_enter_equations",
@@ -223,190 +387,6 @@ class CalculatorApp(ctk.CTk):
             0,
             None,
         )
-
-    def create_image_buttons(self):
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
-
-        img_h = ctk.CTkImage(Image.open(os.path.join(image_path, "history_icon.png")))
-        history_button = ctk.CTkButton(
-            master=self.master,
-            image=img_h,
-            command=lambda: self.show_history(),
-            text="",
-            width=14,
-            height=14,
-            bg_color=COLORS["MAIN_BUTTONS_COLOR"],
-            fg_color=COLORS["MAIN_BUTTONS_COLOR"],
-            hover_color=COLORS["MAIN_BUTTONS_COLOR"],
-        )
-        history_button.place(relx=0.917, rely=0.0057)
-        history_button.configure(compound="top")
-
-        img_c = ctk.CTkImage(Image.open(os.path.join(image_path, "camera_icon.png")))
-        camera_button = ctk.CTkButton(
-            master=self.master,
-            image=img_c,
-            command=lambda: self.display_scan_eq_opt(),
-            text="",
-            width=16,
-            height=14,
-            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            hover_color=COLORS["OPTION_BUTTON_HOVER_COLOR"],
-        )
-        camera_button.place(relx=0.64, rely=0.34)
-        camera_button.configure(compound="top")
-
-        img_e = ctk.CTkImage(Image.open(os.path.join(image_path, "export_icon.jpg")))
-        export_button = ctk.CTkButton(
-            master=self.master,
-            image=img_e,
-            command=lambda: self.export_to_file(),
-            text="",
-            width=14,
-            height=14,
-            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            hover_color=COLORS["OPTION_BUTTON_HOVER_COLOR"],
-            corner_radius=8,
-        )
-        export_button.place(relx=0.542, rely=0.71)
-        export_button.configure(compound="top")
-
-    def create_option_button(
-        self, text, x, y, wid, bg_color, fg_color, text_color, hover_color, command
-    ):
-        translated_text = self.translator.translate(text)
-        opt_button = ctk.CTkButton(
-            master=self.master,
-            text=translated_text,
-            width=wid,
-            border_color=COLORS["WHITE"],
-            bg_color=bg_color,
-            fg_color=fg_color,
-            hover_color=hover_color,
-            font=(FONT, 13),
-            text_color=text_color,
-            command=command,
-            anchor="w",
-        )
-        opt_button.place(relx=x, rely=y)
-        return opt_button
-
-    def create_main_button(self, text, x, y, wid, hei, anchor, command):
-        translated_text = self.translator.translate(text)
-        button = ctk.CTkButton(
-            fg_color=COLORS["MAIN_BUTTONS_COLOR"],
-            bg_color=COLORS["BACKGROUND_COLOR"],
-            master=self.master,
-            text=translated_text,
-            corner_radius=10,
-            width=wid,
-            font=(FONT, 14),
-            height=hei,
-            text_color=COLORS["WHITE"],
-            hover_color=COLORS["MAIN_BUTTONS_HOVER_COLOR"],
-            command=command,
-        )
-        button.place(relx=x, rely=y, anchor=anchor)
-        return button
-
-    def create_label(
-        self,
-        text,
-        x,
-        y,
-        wid,
-        hei,
-        text_font,
-        text_color,
-        bg_color,
-        fg_color,
-        corner_radius,
-        anchor,
-    ):
-        translated_text = self.translator.translate(text)
-        label = ctk.CTkLabel(
-            master=self.master,
-            text=translated_text,
-            width=wid,
-            height=hei,
-            corner_radius=corner_radius,
-            font=text_font,
-            bg_color=bg_color,
-            text_color=text_color,
-            fg_color=fg_color,
-            anchor=anchor,
-        )
-        label.place(relx=x, rely=y)
-        return label
-
-    def create_entry(self, x, y, wid, hei, text):
-        translated_text = self.translator.translate(text)
-        self.eq_entry = ctk.CTkEntry(
-            master=self.master,
-            width=wid,
-            height=hei,
-            font=(FONT, 14),
-            corner_radius=10,
-            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            bg_color=COLORS["BACKGROUND_COLOR"],
-            placeholder_text=translated_text,
-            placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
-            text_color=COLORS["BLACK"],
-        )
-        self.eq_entry.place(relx=x, rely=y)
-
-        return self.eq_entry
-
-    def get_entry_content(self):
-        return self.eq_entry.get()
-
-    def create_combobox(
-        self,
-        values,
-        wid,
-        bg_color,
-        fg_color,
-        border_color,
-        font,
-        x,
-        y,
-        dropdown_font,
-        button_color,
-    ):
-        self.combobox = ctk.CTkComboBox(
-            master=self.master,
-            values=values,
-            width=wid,
-            corner_radius=10,
-            bg_color=bg_color,
-            fg_color=fg_color,
-            border_color=border_color,
-            font=font,
-            dropdown_font=dropdown_font,
-            button_color=button_color,
-            command=self.get_type_content,
-        )
-        self.combobox.place(relx=x, rely=y)
-
-    def create_slider(self):
-        self.slider = ctk.CTkSlider(
-            master=self.master,
-            from_=1,
-            to=1.5,
-            command=self.slider_event,
-            number_of_steps=2,
-            width=40,
-            bg_color=COLORS["MAIN_BUTTONS_COLOR"],
-            fg_color=COLORS["BACKGROUND_COLOR"],
-            progress_color=COLORS["BACKGROUND_COLOR"],
-            button_color=COLORS["BACKGROUND_COLOR"],
-            button_hover_color=COLORS["BACKGROUND_COLOR"],
-        )
-        self.slider.set(1.0)
-        self.slider.place(relx=0.87, rely=0.03, anchor=tkinter.CENTER)
-
     def change_language(self, value):
         if value == 1:
             new_language = "pl"
@@ -527,17 +507,7 @@ class CalculatorApp(ctk.CTk):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
         img_d = ctk.CTkImage(Image.open(os.path.join(image_path, "delete_icon.png")))
-        self.delete_button = ctk.CTkButton(
-            master=self.master,
-            image=img_d,
-            command=lambda: self.clear_everything(),
-            text="",
-            width=14,
-            height=14,
-            bg_color=COLORS["BACKGROUND_COLOR"],
-            fg_color=COLORS["BACKGROUND_COLOR"],
-            hover_color=COLORS["BACKGROUND_COLOR"],
-        )
+        self.delete_button = self.create_image_button(img_d, lambda: self.clear_everything(), COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], 14, 14)
         self.delete_button.place(relx=0.61, rely=0.2)
 
         acceptable_types = [
