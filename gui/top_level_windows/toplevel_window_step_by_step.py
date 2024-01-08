@@ -55,34 +55,38 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                 self.current_index = (self.current_index + 1) % len(self.dm0_labels)
                 if self.current_index == 0:
                     self.no_next_button()
-                    
+
             if self.equation_solver.d == 0:
                 new_text = self.d0_labels_text[self.current_index]
                 self.d0_labels[self.current_index].configure(text=new_text)
                 self.current_index = (self.current_index + 1) % len(self.d0_labels)
                 if self.current_index == 0:
                     self.no_next_button()
-                    
+
             if self.equation_solver.d > 0:
                 new_text = self.dw0_labels_text[self.current_index]
                 self.dw0_labels[self.current_index].configure(text=new_text)
                 self.current_index = (self.current_index + 1) % len(self.dw0_labels)
                 if self.current_index == 0:
                     self.no_next_button()
-                
+
         elif self.type == "równanie liniowe" or self.type == "linear equations":
             new_text = self.labels_text[self.current_index]
             self.labels[self.current_index].configure(text=new_text)
             self.current_index = (self.current_index + 1) % len(self.labels_text)
             if self.current_index == 0:
                 self.no_next_button()
-                
+
     def no_next_button(self):
-        img_no_next = ctk.CTkImage(Image.open(os.path.join(self.image_path, "no_next.png")))
-        self.next_button.configure(image = img_no_next)
-                
+        img_no_next = ctk.CTkImage(
+            Image.open(os.path.join(self.image_path, "no_next.png"))
+        )
+        self.next_button.configure(image=img_no_next)
+
     def create_widgets(self):
-        self.image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
+        self.image_path = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "icons"
+        )
 
         img_n = ctk.CTkImage(Image.open(os.path.join(self.image_path, "next.png")))
 

@@ -58,7 +58,9 @@ class CalculatorApp(ctk.CTk):
         self.master.destroy()
         self.master.quit()
 
-    def create_image_button(self, image, command, bg_color, fg_color, hover_color, wid, hei):
+    def create_image_button(
+        self, image, command, bg_color, fg_color, hover_color, wid, hei
+    ):
         return ctk.CTkButton(
             master=self.master,
             image=image,
@@ -70,21 +72,46 @@ class CalculatorApp(ctk.CTk):
             fg_color=fg_color,
             hover_color=hover_color,
         )
+
     def create_image_buttons(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
         img_h = ctk.CTkImage(Image.open(os.path.join(image_path, "history_icon.png")))
-        history_button = self.create_image_button(img_h, lambda: self.show_history(),COLORS["MAIN_BUTTONS_COLOR"],COLORS["MAIN_BUTTONS_COLOR"],COLORS["MAIN_BUTTONS_COLOR"],14,14 )
+        history_button = self.create_image_button(
+            img_h,
+            lambda: self.show_history(),
+            COLORS["MAIN_BUTTONS_COLOR"],
+            COLORS["MAIN_BUTTONS_COLOR"],
+            COLORS["MAIN_BUTTONS_COLOR"],
+            14,
+            14,
+        )
         history_button.place(relx=0.917, rely=0.0057)
         history_button.configure(compound="top")
 
         img_c = ctk.CTkImage(Image.open(os.path.join(image_path, "camera_icon.png")))
-        camera_button = self.create_image_button(img_c, lambda: self.display_scan_eq_opt(),COLORS["LIGHT_ENTRY_COLOR"],COLORS["LIGHT_ENTRY_COLOR"],COLORS["OPTION_BUTTON_HOVER_COLOR"],16,14 )
+        camera_button = self.create_image_button(
+            img_c,
+            lambda: self.display_scan_eq_opt(),
+            COLORS["LIGHT_ENTRY_COLOR"],
+            COLORS["LIGHT_ENTRY_COLOR"],
+            COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            16,
+            14,
+        )
         camera_button.place(relx=0.64, rely=0.34)
         camera_button.configure(compound="top")
 
         img_e = ctk.CTkImage(Image.open(os.path.join(image_path, "export_icon.jpg")))
-        export_button = self.create_image_button(img_e, lambda: self.export_to_file(),COLORS["LIGHT_ENTRY_COLOR"],COLORS["LIGHT_ENTRY_COLOR"],COLORS["OPTION_BUTTON_HOVER_COLOR"],14,14 )
+        export_button = self.create_image_button(
+            img_e,
+            lambda: self.export_to_file(),
+            COLORS["LIGHT_ENTRY_COLOR"],
+            COLORS["LIGHT_ENTRY_COLOR"],
+            COLORS["OPTION_BUTTON_HOVER_COLOR"],
+            14,
+            14,
+        )
         export_button.place(relx=0.542, rely=0.71)
         export_button.configure(compound="top")
 
@@ -221,7 +248,7 @@ class CalculatorApp(ctk.CTk):
         )
         self.slider.set(1.0)
         self.slider.place(relx=0.87, rely=0.03, anchor=tkinter.CENTER)
-        
+
     def create_widgets(self):
         self.create_option_button(
             "how_to_enter_equations",
@@ -282,6 +309,8 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., Newton - Raphson method",
             "non linear eq., secant method",
             "non linear eq., bisection method",
+            "ODE, first order",
+            "ODE, second order",
         ]
         self.eq_types_pl = [
             "Wybierz typ",
@@ -291,6 +320,8 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda Newtona - Raphsona",
             "równanie nieliniowe, metoda siecznych",
             "równanie nieliniowe, metoda bisekcji",
+            "równanie różniczkowe zwyczajne, pierwszy stopień",
+            "równanie różniczkowe zwyczajne, drugi stopień",
         ]
         if self.translator.language == "pl":
             eq_types = self.eq_types_pl
@@ -387,6 +418,7 @@ class CalculatorApp(ctk.CTk):
             0,
             None,
         )
+
     def change_language(self, value):
         if value == 1:
             new_language = "pl"
@@ -435,6 +467,8 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
             "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
             "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
+            "równanie różniczkowe zwyczajne, pierwszy stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
+            "równanie różniczkowe zwyczajne, drugi stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
         }
         url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
@@ -443,6 +477,8 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
             "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
             "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",
+            "ODE, first order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
+            "ODE, second order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
         }
         if self.translator.language == "pl":
             url_to_help = url_to_help_pl
@@ -498,6 +534,25 @@ class CalculatorApp(ctk.CTk):
         )
         self.update_label_and_history(result)
 
+    def solve_first_ode(self):
+        equation_content = self.get_entry_content()
+        # equation_content = lambda y, x: -0.1 * y
+        a_value = int(self.x0_entry.get()) if self.x0_entry.get() else None
+        b_value = int(self.x1_entry.get()) if self.x1_entry.get() else None
+
+        if a_value is None and b_value is not None:
+            a_value = b_value
+        elif b_value is None and a_value is not None:
+            b_value = a_value
+
+        result = self.equation_solver.solve_first_ode(
+            equation_content,
+            initial_condition=int(self.it_entry.get()),
+            a=a_value,
+            b=b_value,
+        )
+        self.update_label_and_history(result)
+
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -507,7 +562,15 @@ class CalculatorApp(ctk.CTk):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
         img_d = ctk.CTkImage(Image.open(os.path.join(image_path, "delete_icon.png")))
-        self.delete_button = self.create_image_button(img_d, lambda: self.clear_everything(), COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], 14, 14)
+        self.delete_button = self.create_image_button(
+            img_d,
+            lambda: self.clear_everything(),
+            COLORS["BACKGROUND_COLOR"],
+            COLORS["BACKGROUND_COLOR"],
+            COLORS["BACKGROUND_COLOR"],
+            14,
+            14,
+        )
         self.delete_button.place(relx=0.61, rely=0.2)
 
         acceptable_types = [
@@ -517,6 +580,8 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., secant method",
             "równanie nieliniowe, metoda bisekcji",
             "non linear eq., bisection method",
+            "równanie różniczkowe zwyczajne, pierwszy stopień",
+            "ODE, first order",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -550,6 +615,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "non linear eq., secant method"
             or self.eq_type == "równanie nieliniowe, metoda bisekcji"
             or self.eq_type == "non linear eq., bisection method"
+            or self.eq_type == "równanie różniczkowe zwyczajne, pierwszy stopień"
+            or self.eq_type == "ODE, first order"
         ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
@@ -569,6 +636,13 @@ class CalculatorApp(ctk.CTk):
         ):
             self.x0_entry.configure(placeholder_text="a")
             self.x1_entry.configure(placeholder_text="b")
+        if (
+            self.eq_type == "równanie różniczkowe zwyczajne, pierwszy stopień"
+            or self.eq_type == "ODE, first order"
+        ):
+            self.it_entry.configure(placeholder_text="y(0)")
+            self.x0_entry.configure(placeholder_text="a")
+            self.x1_entry.configure(placeholder_text="b")
 
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
@@ -578,6 +652,7 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda Newtona - Raphsona": self.solve_non_linear_equation_by_newton_raphson,
             "równanie nieliniowe, metoda siecznych": self.solve_non_linear_equation_by_secant,
             "równanie nieliniowe, metoda bisekcji": self.solve_non_linear_equation_by_bisection,
+            "równanie różniczkowe zwyczajne, pierwszy stopień": self.solve_first_ode,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -586,6 +661,7 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., Newton - Raphson method": self.solve_non_linear_equation_by_newton_raphson,
             "non linear eq., secant method": self.solve_non_linear_equation_by_secant,
             "non linear eq., bisection method": self.solve_non_linear_equation_by_bisection,
+            "ODE, first order": self.solve_first_ode,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl

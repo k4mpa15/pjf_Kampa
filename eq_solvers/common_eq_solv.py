@@ -2,6 +2,7 @@ import re
 
 import numpy as np
 import sympy as sp
+from scipy.integrate import odeint
 
 
 class EquationSolver:
@@ -97,17 +98,7 @@ class EquationSolver:
         # ta metoda głównie służy do rozwiazywania równań nieliniowych f(x) = 0
         func_str = func_str.replace(" ", "")
         func_str = func_str.replace("=0", "")
-        """
-        Parametry:
-        - func: Funkcja, dla której szukamy miejsca zerowego.
-        - x0: Punkt startowy (przybliżenie miejsca zerowego).
-        - tol: Tolerancja błędu (domyślnie 1e-6).
-        - max_iter: Maksymalna liczba iteracji (domyślnie 100).
 
-        Zwraca:
-        - x: Miejsce zerowe (przybliżone).
-        - iter_count: Liczba wykonanych iteracji.
-        """
         x = sp.symbols("x")
         func = sp.sympify(func_str)
         df = sp.diff(func, x)
@@ -134,19 +125,6 @@ class EquationSolver:
 
     @staticmethod
     def solve_non_linear_equation_by_secant(func_str, x0, x1, tol=1e-6, max_iter=100):
-        """
-        Metoda siecznych do znalezienia miejsca zerowego funkcji.
-
-        Parametry:
-        - func_str: String reprezentujący równanie, dla którego szukamy miejsca zerowego.
-        - x0, x1: Dwa punkty startowe, między którymi znajduje się miejsce zerowe.
-        - tol: Tolerancja błędu (domyślnie 1e-6).
-        - max_iter: Maksymalna liczba iteracji (domyślnie 100).
-
-        Zwraca:
-        - x: Przybliżone miejsce zerowe funkcji.
-        - iter_count: Liczba wykonanych iteracji.
-        """
         x = sp.symbols("x")
         func_str = func_str.replace(" ", "")
         func_str = func_str.replace("=0", "")
@@ -174,19 +152,6 @@ class EquationSolver:
 
     @staticmethod
     def solve_non_linear_equation_by_bisection(func_str, a, b, tol=1e-6, max_iter=1000):
-        """
-        Metoda bisekcji do znalezienia miejsca zerowego funkcji.
-
-        Parametry:
-        - func_str: String reprezentujący równanie, dla którego szukamy miejsca zerowego.
-        - a, b: Dwa punkty krańcowe przedziału, w którym szukamy miejsca zerowego.
-        - tol: Tolerancja błędu (domyślnie 1e-6).
-        - max_iter: Maksymalna liczba iteracji (domyślnie 100).
-
-        Zwraca:
-        - x: Przybliżone miejsce zerowe funkcji.
-        - iter_count: Liczba wykonanych iteracji.
-        """
         x = sp.symbols("x")
         func_str = func_str.replace(" ", "")
         func_str = func_str.replace("=0", "")
@@ -213,3 +178,13 @@ class EquationSolver:
             iter_count += 1
 
         return "End of iterations"
+
+    def solve_first_ode(self, equation, initial_condition, a, b):
+        def parse_equation(x, y):
+            return eval(equation.replace("y", str(y)))
+
+        values = np.arange(a, b + 1)
+
+        solutions = odeint(parse_equation, initial_condition, values)
+
+        return f"x = {values}: {solutions[:,0]}"
