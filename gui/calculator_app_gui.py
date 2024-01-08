@@ -14,6 +14,7 @@ from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructi
 from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
 from options.equations_history import EquationHistory
+from options.help_materials import HelpMaterials
 from options.translator import Translator
 
 with open("gui/colors.json") as f:
@@ -45,6 +46,7 @@ class CalculatorApp(ctk.CTk):
         self.toplevel_window_history = None
         self.create_slider()
         self.toplevel_window_step_by_step = None
+        self.help_materials = HelpMaterials(self.translator)
 
     def on_close(self):
         if (
@@ -460,32 +462,7 @@ class CalculatorApp(ctk.CTk):
         self.change_language(rounded_value)
 
     def open_help(self):
-        url_to_help_pl = {
-            "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
-            "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
-            "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
-            "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
-            "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
-            "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
-            "równanie różniczkowe zwyczajne, pierwszy stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
-            "równanie różniczkowe zwyczajne, drugi stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
-        }
-        url_to_help_en = {
-            "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
-            "quadratic eq.": "https://en.wikipedia.org/wiki/Quadratic_equation",
-            "system of l. eq.": "https://en.wikipedia.org/wiki/Linear_system",
-            "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
-            "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
-            "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",
-            "ODE, first order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
-            "ODE, second order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
-        }
-        if self.translator.language == "pl":
-            url_to_help = url_to_help_pl
-        else:
-            url_to_help = url_to_help_en
-        url = url_to_help.get(self.eq_type)
-        webbrowser.open(url, new=0, autoraise=True)
+        self.help_materials.open_help_materials(self.eq_type)
 
     def get_type_content(self, choice):
         self.eq_type = choice
@@ -536,7 +513,6 @@ class CalculatorApp(ctk.CTk):
 
     def solve_first_ode(self):
         equation_content = self.get_entry_content()
-        # equation_content = lambda y, x: -0.1 * y
         a_value = int(self.x0_entry.get()) if self.x0_entry.get() else None
         b_value = int(self.x1_entry.get()) if self.x1_entry.get() else None
 
