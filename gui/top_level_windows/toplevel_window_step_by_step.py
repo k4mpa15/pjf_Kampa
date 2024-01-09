@@ -42,9 +42,10 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
 
         if self.type == "równanie liniowe" or self.type == "linear equations":
             self.equation_solver.solve_linear_equation(self.entry_content)
-            
+
         elif self.type == "układ równań liniowych" or self.type == "system of l. eq.":
             self.equation_solver.solve_system_of_equation(self.entry_content)
+
     def create_label_with_step(self, text, font):
         return ctk.CTkLabel(
             master=self, text=text, text_color=COLORS["BLACK"], font=font
@@ -79,13 +80,12 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             self.current_index = (self.current_index + 1) % len(self.labels_text)
             if self.current_index == 0:
                 self.no_next_button()
-        elif self.type == "układ równań liniowych" or self.type == "system of l. eq.":       
+        elif self.type == "układ równań liniowych" or self.type == "system of l. eq.":
             new_text = self.sys_labels_text[self.current_index]
             self.sys_labels[self.current_index].configure(text=new_text)
             self.current_index = (self.current_index + 1) % len(self.sys_labels_text)
             if self.current_index == 0:
                 self.no_next_button()
-                
 
     def no_next_button(self):
         img_no_next = ctk.CTkImage(
@@ -244,7 +244,7 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                 )
                 self.dw0_labels.append(step6w0)
                 step6w0.place(relx=0.05, rely=0.57)
-                
+
         if self.type == "układ równań liniowych" or self.type == "system of l. eq.":
             eq = self.create_label_with_step(
                 self.entry_content,
@@ -252,16 +252,16 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             )
             eq.place(relx=0.1, rely=0.05)
             self.sys_labels = []
-            new_line = '\n'
+            new_line = "\n"
             self.sys_labels_text = [
-                f"1.   A ⋅ x = B",
-                f"2.   A = ",
+                "1.   A ⋅ x = B",
+                "2.   A = ",
                 f"{self.equation_solver.A}",
                 f"3.   B =      {self.equation_solver.B}",
-                f"4.   x = A⁻¹ ⋅ B",
-                f"5.   A⁻¹ =  ",
+                "4.   x = A⁻¹ ⋅ B",
+                "5.   A⁻¹ =  ",
                 f"{self.equation_solver.A_odw}",
-                f"6.        x = {self.equation_solver.x}"
+                f"6.        x = {self.equation_solver.x}",
             ]
             step1 = self.create_label_with_step(
                 "",
@@ -276,14 +276,14 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             )
             self.sys_labels.append(step2)
             step2.place(relx=0.05, rely=0.27)
-            
+
             step2_1 = self.create_label_with_step(
                 "",
                 (FONT, 16),
             )
             self.sys_labels.append(step2_1)
             step2_1.place(relx=0.05, rely=0.32)
-            
+
             step3 = self.create_label_with_step("", (FONT, 16))
             self.sys_labels.append(step3)
             step3.place(relx=0.05, rely=0.47)
@@ -298,15 +298,14 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             step5 = self.create_label_with_step("", (FONT, 16))
             self.sys_labels.append(step5)
             step5.place(relx=0.05, rely=0.61)
-            
+
             step5_1 = self.create_label_with_step(
                 "",
                 (FONT, 16),
             )
             self.sys_labels.append(step5_1)
             step5_1.place(relx=0.05, rely=0.66)
-            
-            
+
             step6 = self.create_label_with_step("", (FONT, 16))
             self.sys_labels.append(step6)
             step6.place(relx=0.05, rely=0.83)

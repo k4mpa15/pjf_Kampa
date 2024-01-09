@@ -661,7 +661,7 @@ class CalculatorApp(ctk.CTk):
             "linear equations",
             "quadratic eq.",
             "układ równań liniowych",
-            "system of l. eq."
+            "system of l. eq.",
         ]
         entry_content = self.get_entry_content()
         if (
