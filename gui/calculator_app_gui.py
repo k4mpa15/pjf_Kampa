@@ -313,7 +313,7 @@ class CalculatorApp(ctk.CTk):
             "ODE, first order",
             "definite integral, trapeze method",
             "definite integral, Simpson method",
-            "improper, definite integral"
+            "improper, definite integral",
         ]
         self.eq_types_pl = [
             "Wybierz typ",
@@ -326,7 +326,7 @@ class CalculatorApp(ctk.CTk):
             "równanie różniczkowe zwyczajne, pierwszy stopień",
             "całka oznaczona, metoda trapezów",
             "całka oznaczona, metoda Simpsona",
-            "całka oznaczona, niewłaściwa"
+            "całka oznaczona, niewłaściwa",
         ]
         if self.translator.language == "pl":
             eq_types = self.eq_types_pl
@@ -456,10 +456,10 @@ class CalculatorApp(ctk.CTk):
 
         if hasattr(self, "fill_label") and self.fill_label.winfo_exists():
             self.fill_label.destroy()
-            
+
         if hasattr(self, "int_symbol") and self.int_symbol.winfo_exists():
             self.int_symbol.destroy()
-            
+
         self.eq_entry.delete(0, len(self.get_entry_content()))
 
     def slider_event(self, value):
@@ -563,7 +563,7 @@ class CalculatorApp(ctk.CTk):
             b=(self.x1_entry.get()),
         )
         self.update_label_and_history(result)
-        
+
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -598,8 +598,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda Simpsona",
             "definite integral, Simpson method",
             "improper, definite integral",
-            "całka oznaczona, niewłaściwa"
-            
+            "całka oznaczona, niewłaściwa",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -682,16 +681,31 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "całka oznaczona, niewłaściwa"
         ):
             self.it_entry.configure(placeholder_text="num of int.")
-            image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
+            image_path = os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), "icons"
+            )
 
-            img_integral = ctk.CTkImage(Image.open(os.path.join(image_path, "integral.jpg")))
-            self.int_symbol = self.create_image_button(img_integral, None, COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], 40, 60)
-            self.int_symbol.place(relx =0.04, rely = 0.36)
-        if (self.eq_type == "improper, definite integral"
-            or self.eq_type == "całka oznaczona, niewłaściwa"):
+            img_integral = ctk.CTkImage(
+                Image.open(os.path.join(image_path, "integral.jpg"))
+            )
+            self.int_symbol = self.create_image_button(
+                img_integral,
+                None,
+                COLORS["BACKGROUND_COLOR"],
+                COLORS["BACKGROUND_COLOR"],
+                COLORS["BACKGROUND_COLOR"],
+                40,
+                60,
+            )
+            self.int_symbol.place(relx=0.04, rely=0.36)
+        if (
+            self.eq_type == "improper, definite integral"
+            or self.eq_type == "całka oznaczona, niewłaściwa"
+        ):
             self.it_entry.destroy()
             self.x0_entry.place(relx=0.72, rely=0.37)
             self.x1_entry.place(relx=0.77, rely=0.37)
+
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,
@@ -703,7 +717,7 @@ class CalculatorApp(ctk.CTk):
             "równanie różniczkowe zwyczajne, pierwszy stopień": self.solve_first_ode,
             "całka oznaczona, metoda trapezów": self.solve_integral_trapeze_method,
             "całka oznaczona, metoda Simpsona": self.solve_integral_simpson_method,
-            "całka oznaczona, niewłaściwa": self.solve_improper_integral
+            "całka oznaczona, niewłaściwa": self.solve_improper_integral,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -715,7 +729,7 @@ class CalculatorApp(ctk.CTk):
             "ODE, first order": self.solve_first_ode,
             "definite integral, trapeze method": self.solve_integral_trapeze_method,
             "definite integral, Simpson method": self.solve_integral_simpson_method,
-            "improper, definite integral": self.solve_improper_integral
+            "improper, definite integral": self.solve_improper_integral,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl

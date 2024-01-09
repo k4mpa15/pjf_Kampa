@@ -3,7 +3,7 @@ import re
 import numpy as np
 import sympy as sp
 from scipy.integrate import odeint
-from sympy import lambdify, symbols, integrate, oo
+from sympy import integrate, lambdify, oo, symbols
 
 
 class EquationSolver:
@@ -213,14 +213,12 @@ class EquationSolver:
             a = -oo
         if b == "oo":
             b = oo
-        else: 
+        else:
             a = float(a)
             b = float(b)
         equation = equation.replace(" ", "").replace("dx", "")
         x = symbols("x")
-        expr = lambdify(
-            x, equation, "numpy"
-        )  
+        expr = lambdify(x, equation, "numpy")
         width_ab = (b - a) / num_of_inter
         sum = 0
 
@@ -233,8 +231,8 @@ class EquationSolver:
             sum += field
 
         return sum
-    
-    def solve_improper_integral(self,equation, a, b):
-        x = symbols('x')
+
+    def solve_improper_integral(self, equation, a, b):
+        x = symbols("x")
         solution = integrate(equation, (x, a, b))
         return solution
