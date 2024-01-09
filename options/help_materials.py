@@ -15,6 +15,8 @@ class HelpMaterials:
             "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
             "równanie różniczkowe zwyczajne, pierwszy stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
             "równanie różniczkowe zwyczajne, drugi stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
+            "całka oznaczona, metoda trapezów": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
+            "całka oznaczona, metoda Simpsona": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
         }
         self.url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
@@ -25,6 +27,8 @@ class HelpMaterials:
             "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",
             "ODE, first order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
             "ODE, second order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
+            "definite integral, trapeze method": "https://en.wikipedia.org/wiki/Numerical_integration",
+            "definite integral, Simpson method": "https://en.wikipedia.org/wiki/Numerical_integration",
         }
         if self.translator.language == "pl":
             self.url_to_help = self.url_to_help_pl

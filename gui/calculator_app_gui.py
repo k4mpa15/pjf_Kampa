@@ -312,6 +312,8 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., bisection method",
             "ODE, first order",
             "ODE, second order",
+            "definite integral, trapeze method",
+            "definite integral, Simpson method",
         ]
         self.eq_types_pl = [
             "Wybierz typ",
@@ -323,6 +325,8 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda bisekcji",
             "równanie różniczkowe zwyczajne, pierwszy stopień",
             "równanie różniczkowe zwyczajne, drugi stopień",
+            "całka oznaczona, metoda trapezów",
+            "całka oznaczona, metoda Simpsona",
         ]
         if self.translator.language == "pl":
             eq_types = self.eq_types_pl
@@ -528,6 +532,26 @@ class CalculatorApp(ctk.CTk):
         )
         self.update_label_and_history(result)
 
+    def solve_integral_trapeze_method(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_integral_trapeze_method(
+            equation_content,
+            a=float(self.x0_entry.get()),
+            b=float(self.x1_entry.get()),
+            num_of_ranges=int(self.it_entry.get()),
+        )
+        self.update_label_and_history(result)
+
+    def solve_integral_simpson_method(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.solve_integral_simpson_method(
+            equation_content,
+            a=float(self.x0_entry.get()),
+            b=float(self.x1_entry.get()),
+            num_of_inter=int(self.it_entry.get()),
+        )
+        self.update_label_and_history(result)
+
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -557,6 +581,10 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., bisection method",
             "równanie różniczkowe zwyczajne, pierwszy stopień",
             "ODE, first order",
+            "całka oznaczona, metoda trapezów",
+            "definite integral, trapeze method",
+            "całka oznaczona, metoda Simpsona",
+            "definite integral, Simpson method",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -592,6 +620,10 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "non linear eq., bisection method"
             or self.eq_type == "równanie różniczkowe zwyczajne, pierwszy stopień"
             or self.eq_type == "ODE, first order"
+            or self.eq_type == "definite integral, trapeze method"
+            or self.eq_type == "całka oznaczona, metoda trapezów"
+            or self.eq_type == "całka oznaczona, metoda Simpsona"
+            or self.eq_type == "definite integral, Simpson method"
         ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
@@ -608,6 +640,10 @@ class CalculatorApp(ctk.CTk):
         if (
             self.eq_type == "równanie nieliniowe, metoda bisekcji"
             or self.eq_type == "non linear eq., bisection method"
+            or self.eq_type == "definite integral, trapeze method"
+            or self.eq_type == "całka oznaczona, metoda trapezów"
+            or self.eq_type == "całka oznaczona, metoda Simpsona"
+            or self.eq_type == "definite integral, Simpson method"
         ):
             self.x0_entry.configure(placeholder_text="a")
             self.x1_entry.configure(placeholder_text="b")
@@ -618,6 +654,13 @@ class CalculatorApp(ctk.CTk):
             self.it_entry.configure(placeholder_text="y(0)")
             self.x0_entry.configure(placeholder_text="a")
             self.x1_entry.configure(placeholder_text="b")
+        elif (
+            self.eq_type == "definite integral, trapeze method"
+            or self.eq_type == "całka oznaczona, metoda trapezów"
+            or self.eq_type == "całka oznaczona, metoda Simpsona"
+            or self.eq_type == "definite integral, Simpson method"
+        ):
+            self.it_entry.configure(placeholder_text="num of int.")
 
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
@@ -628,6 +671,8 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda siecznych": self.solve_non_linear_equation_by_secant,
             "równanie nieliniowe, metoda bisekcji": self.solve_non_linear_equation_by_bisection,
             "równanie różniczkowe zwyczajne, pierwszy stopień": self.solve_first_ode,
+            "całka oznaczona, metoda trapezów": self.solve_integral_trapeze_method,
+            "całka oznaczona, metoda Simpsona": self.solve_integral_simpson_method,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -637,6 +682,8 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., secant method": self.solve_non_linear_equation_by_secant,
             "non linear eq., bisection method": self.solve_non_linear_equation_by_bisection,
             "ODE, first order": self.solve_first_ode,
+            "definite integral, trapeze method": self.solve_integral_trapeze_method,
+            "definite integral, Simpson method": self.solve_integral_simpson_method,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl

@@ -252,7 +252,6 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             )
             eq.place(relx=0.1, rely=0.05)
             self.sys_labels = []
-            new_line = "\n"
             self.sys_labels_text = [
                 "1.   A ⋅ x = B",
                 "2.   A = ",

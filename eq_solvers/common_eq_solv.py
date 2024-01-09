@@ -3,6 +3,7 @@ import re
 import numpy as np
 import sympy as sp
 from scipy.integrate import odeint
+from sympy import lambdify, symbols
 
 
 class EquationSolver:
@@ -190,3 +191,37 @@ class EquationSolver:
         solutions = odeint(parse_equation, initial_condition, values)
 
         return f"x = {values}: {solutions[:,0]}"
+
+    def solve_integral_trapeze_method(self, equation, a, b, num_of_ranges):
+        x = symbols("x")
+        expr = lambdify(x, equation, "numpy")
+
+        width_ab = (b - a) / num_of_ranges
+        sum = 0
+
+        for i in range(num_of_ranges):
+            x_start = a + i * width_ab
+            x_end = x_start + width_ab
+
+            field = (expr(x_start) + expr(x_end)) * width_ab / 2
+            sum += field
+
+        return sum
+
+    def solve_integral_simpson_method(self, equation, a, b, num_of_inter):
+        x = symbols("x")
+        expr = lambdify(
+            x, equation, "numpy"
+        )  # Konwersja funkcji ze stringa do wyrażenia lambda
+        width_ab = (b - a) / num_of_inter
+        sum = 0
+
+        for i in range(num_of_inter):
+            x_start = a + i * width_ab
+            x_mid = x_start + width_ab / 2
+            x_end = x_start + width_ab
+
+            field = (width_ab / 6) * (expr(x_start) + 4 * expr(x_mid) + expr(x_end))
+            sum += field
+
+        return sum
