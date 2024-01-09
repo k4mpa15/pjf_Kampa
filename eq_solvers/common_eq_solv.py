@@ -63,8 +63,7 @@ class EquationSolver:
         except ZeroDivisionError:
             return "Brak rozwiązań"
 
-    @staticmethod
-    def solve_system_of_equation(equation_content):
+    def solve_system_of_equation(self, equation_content):
         equations = equation_content.replace(" ", "").split(";")
         A = [[] for _ in range(len(equations))]
         B = []
@@ -84,11 +83,14 @@ class EquationSolver:
                     A[i].append(0)
 
             B.append(float(result))
-
         A = np.array(A).transpose()
+        self.A = A
         B = np.array(B)
-
-        x = np.linalg.solve(A, B)
+        self.B = B
+        A_odw = np.linalg.inv(A).round(2)
+        self.A_odw = A_odw
+        x = np.linalg.solve(A, B).round(2)
+        self.x = x
         return f"x, y, z ... {str(x)}"
 
     @staticmethod

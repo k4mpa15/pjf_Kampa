@@ -1,7 +1,5 @@
 import webbrowser
 
-from options.translator import Translator
-
 
 class HelpMaterials:
     def __init__(self, translator) -> None:

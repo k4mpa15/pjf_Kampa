@@ -1,7 +1,6 @@
 import json
 import os
 import tkinter
-import webbrowser
 from tkinter import *
 
 import customtkinter as ctk
@@ -661,6 +660,8 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe",
             "linear equations",
             "quadratic eq.",
+            "układ równań liniowych",
+            "system of l. eq."
         ]
         entry_content = self.get_entry_content()
         if (
