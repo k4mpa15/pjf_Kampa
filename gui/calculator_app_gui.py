@@ -311,7 +311,6 @@ class CalculatorApp(ctk.CTk):
             "non linear eq., secant method",
             "non linear eq., bisection method",
             "ODE, first order",
-            "ODE, second order",
             "definite integral, trapeze method",
             "definite integral, Simpson method",
         ]
@@ -324,7 +323,6 @@ class CalculatorApp(ctk.CTk):
             "równanie nieliniowe, metoda siecznych",
             "równanie nieliniowe, metoda bisekcji",
             "równanie różniczkowe zwyczajne, pierwszy stopień",
-            "równanie różniczkowe zwyczajne, drugi stopień",
             "całka oznaczona, metoda trapezów",
             "całka oznaczona, metoda Simpsona",
         ]
@@ -456,7 +454,10 @@ class CalculatorApp(ctk.CTk):
 
         if hasattr(self, "fill_label") and self.fill_label.winfo_exists():
             self.fill_label.destroy()
-
+            
+        if hasattr(self, "int_symbol") and self.int_symbol.winfo_exists():
+            self.int_symbol.destroy()
+            
         self.eq_entry.delete(0, len(self.get_entry_content()))
 
     def slider_event(self, value):
@@ -661,7 +662,12 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "definite integral, Simpson method"
         ):
             self.it_entry.configure(placeholder_text="num of int.")
+            image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
+            img_integral = ctk.CTkImage(Image.open(os.path.join(image_path, "integral.jpg")))
+            self.int_symbol = self.create_image_button(img_integral, None, COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], COLORS["BACKGROUND_COLOR"], 40, 60)
+            self.int_symbol.place(relx =0.04, rely = 0.36)
+            
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,

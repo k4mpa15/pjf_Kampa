@@ -209,6 +209,7 @@ class EquationSolver:
         return sum
 
     def solve_integral_simpson_method(self, equation, a, b, num_of_inter):
+        equation = equation.replace(" ", "").replace("dx", "")
         x = symbols("x")
         expr = lambdify(
             x, equation, "numpy"
