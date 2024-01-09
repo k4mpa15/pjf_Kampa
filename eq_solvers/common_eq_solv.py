@@ -2,7 +2,7 @@ import re
 
 import numpy as np
 import sympy as sp
-from scipy.integrate import odeint
+from scipy.integrate import odeint, quad
 from sympy import integrate, lambdify, oo, symbols
 
 
@@ -236,3 +236,20 @@ class EquationSolver:
         x = symbols("x")
         solution = integrate(equation, (x, a, b))
         return solution
+
+    def field_below_f(self, equation, a, b):
+        x = symbols("x")
+
+        if (a < 0) & (b >= 0):
+            solution1 = abs(integrate(equation, (x, a, 0)))
+            solution2 = integrate(equation, (x, 0, b))
+            solution = solution1 + solution2
+            
+        if (a < 0) & (b < 0):
+            solution1 = abs(integrate(equation, (x, a, 0)))
+            solution2 = abs(integrate(equation, (x, 0, b)))
+            solution = abs(solution1 - solution2)
+
+        else:
+            solution = integrate(equation, (x, a, b))
+        return round(solution, 3)

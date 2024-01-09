@@ -314,6 +314,7 @@ class CalculatorApp(ctk.CTk):
             "definite integral, trapeze method",
             "definite integral, Simpson method",
             "improper, definite integral",
+            "field below function",
         ]
         self.eq_types_pl = [
             "Wybierz typ",
@@ -327,6 +328,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda trapezów",
             "całka oznaczona, metoda Simpsona",
             "całka oznaczona, niewłaściwa",
+            "pole pod wykresem",
         ]
         if self.translator.language == "pl":
             eq_types = self.eq_types_pl
@@ -564,6 +566,15 @@ class CalculatorApp(ctk.CTk):
         )
         self.update_label_and_history(result)
 
+    def field_below_f(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.field_below_f(
+            equation_content,
+            a=float(self.x0_entry.get()),
+            b=float(self.x1_entry.get()),
+        )
+        self.update_label_and_history(result)
+
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -599,6 +610,8 @@ class CalculatorApp(ctk.CTk):
             "definite integral, Simpson method",
             "improper, definite integral",
             "całka oznaczona, niewłaściwa",
+            "field below function",
+            "pole pod wykresem",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -640,6 +653,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "definite integral, Simpson method"
             or self.eq_type == "improper, definite integral"
             or self.eq_type == "całka oznaczona, niewłaściwa"
+            or self.eq_type == "field below function"
+            or self.eq_type == "pole pod wykresem"
         ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
@@ -662,6 +677,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "definite integral, Simpson method"
             or self.eq_type == "improper, definite integral"
             or self.eq_type == "całka oznaczona, niewłaściwa"
+            or self.eq_type == "field below function"
+            or self.eq_type == "pole pod wykresem"
         ):
             self.x0_entry.configure(placeholder_text="a")
             self.x1_entry.configure(placeholder_text="b")
@@ -679,6 +696,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "definite integral, Simpson method"
             or self.eq_type == "improper, definite integral"
             or self.eq_type == "całka oznaczona, niewłaściwa"
+            or self.eq_type == "field below function"
+            or self.eq_type == "pole pod wykresem"
         ):
             self.it_entry.configure(placeholder_text="num of int.")
             image_path = os.path.join(
@@ -701,10 +720,17 @@ class CalculatorApp(ctk.CTk):
         if (
             self.eq_type == "improper, definite integral"
             or self.eq_type == "całka oznaczona, niewłaściwa"
+            or self.eq_type == "field below function"
+            or self.eq_type == "pole pod wykresem"
         ):
             self.it_entry.destroy()
             self.x0_entry.place(relx=0.72, rely=0.37)
             self.x1_entry.place(relx=0.77, rely=0.37)
+        if (
+            self.eq_type == "field below function"
+            or self.eq_type == "pole pod wykresem"
+        ):
+            self.int_symbol.destroy()
 
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
@@ -718,6 +744,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda trapezów": self.solve_integral_trapeze_method,
             "całka oznaczona, metoda Simpsona": self.solve_integral_simpson_method,
             "całka oznaczona, niewłaściwa": self.solve_improper_integral,
+            "pole pod wykresem": self.field_below_f,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -730,6 +757,7 @@ class CalculatorApp(ctk.CTk):
             "definite integral, trapeze method": self.solve_integral_trapeze_method,
             "definite integral, Simpson method": self.solve_integral_simpson_method,
             "improper, definite integral": self.solve_improper_integral,
+            "field below function": self.field_below_f,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
