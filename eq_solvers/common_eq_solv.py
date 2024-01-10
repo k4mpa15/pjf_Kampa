@@ -253,3 +253,6 @@ class EquationSolver:
         else:
             solution = integrate(equation, (x, a, b))
         return round(solution, 3)
+
+    def volume_below_f(Self, equation, a, b):
+        return "dziala"

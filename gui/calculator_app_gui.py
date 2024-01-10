@@ -315,6 +315,7 @@ class CalculatorApp(ctk.CTk):
             "definite integral, Simpson method",
             "improper, definite integral",
             "field below function",
+            "volume of solid under curve"
         ]
         self.eq_types_pl = [
             "Wybierz typ równania lub wartość do policzenia",
@@ -329,6 +330,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda Simpsona",
             "całka oznaczona, niewłaściwa",
             "pole pod wykresem",
+            "objętość bryły ograniczonej funkcją"
         ]
         if self.translator.language == "pl":
             eq_types = self.eq_types_pl
@@ -574,7 +576,16 @@ class CalculatorApp(ctk.CTk):
             b=float(self.x1_entry.get()),
         )
         self.update_label_and_history(result)
-
+        
+    def volume_below_f(self):
+        equation_content = self.get_entry_content()
+        result = self.equation_solver.volume_below_f(
+            equation_content,
+            a=1,#float(self.x0_entry.get()),
+            b=1#float(self.x1_entry.get()),
+        )
+        self.update_label_and_history(result)
+        
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -747,6 +758,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda Simpsona": self.solve_integral_simpson_method,
             "całka oznaczona, niewłaściwa": self.solve_improper_integral,
             "pole pod wykresem": self.field_below_f,
+            "objętość bryły ograniczonej funkcją": self.volume_below_f
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -760,6 +772,7 @@ class CalculatorApp(ctk.CTk):
             "definite integral, Simpson method": self.solve_integral_simpson_method,
             "improper, definite integral": self.solve_improper_integral,
             "field below function": self.field_below_f,
+            "volume of solid under curve": self.volume_below_f
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
