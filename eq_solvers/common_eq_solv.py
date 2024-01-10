@@ -1,8 +1,9 @@
+import math
 import re
 
 import numpy as np
 import sympy as sp
-from scipy.integrate import odeint
+from scipy.integrate import odeint, quad
 from sympy import integrate, lambdify, oo, symbols
 
 
@@ -254,5 +255,36 @@ class EquationSolver:
             solution = integrate(equation, (x, a, b))
         return round(solution, 3)
 
-    def volume_below_f(Self, equation, a, b):
-        return "dziala"
+    def volume_below_f(Self, equation_str, a, b, solid):
+        if solid == 1:
+            x = symbols("x")
+            equation = lambdify(x, equation_str, "numpy")
+            integrand = lambda x: math.pi * equation(x) ** 2
+            volume, _ = quad(integrand, a, b)
+
+        if solid == 2:
+            x = symbols("x")
+            equation = lambdify(x, equation_str, "numpy")
+            integrand = lambda x: (1 / 3) * math.pi * equation(x) ** 2
+            volume, _ = quad(integrand, a, b)
+
+        if solid == 3:
+            equations = equation_str.split(";")
+            equation1_str = equations[0]
+            equation2_str = equations[1]
+            x = symbols("x")
+            equation1 = lambdify(x, equation1_str, "numpy")
+            equation2 = lambdify(x, equation2_str, "numpy")
+            integrand = lambda x: equation1(x) - equation2(x)
+            volume, _ = quad(integrand, a, b)
+
+        if solid == 4:
+            equations = equation_str.split(";")
+            equation1_str = equations[0]
+            equation2_str = equations[1]
+            x = symbols("x")
+            equation1 = lambdify(x, equation1_str, "numpy")
+            equation2 = lambdify(x, equation2_str, "numpy")
+            integrand = lambda x: math.pi * (equation1(x) ** 2 - equation2(x) ** 2)
+            volume, _ = quad(integrand, a, b)
+        return round(volume, 3)

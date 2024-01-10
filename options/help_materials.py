@@ -19,9 +19,7 @@ class HelpMaterials:
             "całka oznaczona, metoda Simpsona": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
             "całka oznaczona, niewłaściwa": "https://pl.wikipedia.org/wiki/Całka",
             "pole pod wykresem": "https://blog.etrapez.pl/calki-nieoznaczone-i-pola-obszarow/",
-            "objętość bryły ograniczonej funkcją" : "https://www.matemaks.pl/objetosc-bryly-ograniczonej-powierzchniami.html"
-            
-            
+            "objętość bryły ograniczonej funkcją": "https://www.matemaks.pl/objetosc-bryly-ograniczonej-powierzchniami.html",
         }
         self.url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
@@ -36,8 +34,7 @@ class HelpMaterials:
             "definite integral, Simpson method": "https://en.wikipedia.org/wiki/Numerical_integration",
             "improper, definite integral": "https://en.wikipedia.org/wiki/Integral",
             "field below function": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/area-under-curve",
-            "volume of solid under curve": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/volumes-revolution"
-            
+            "volume of solid under curve": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/volumes-revolution",
         }
         if self.translator.language == "pl":
             self.url_to_help = self.url_to_help_pl

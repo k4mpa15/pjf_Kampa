@@ -81,7 +81,22 @@
       "erase":{
         "pl": "Usuń historię",
         "en": "Erase history"
+      },
+      "walec":{
+        "pl": "walec",
+        "en": "cylinder"
+      },
+      "stozek":{
+        "pl": "stożek",
+        "en": "cone"
+      },
+      "prostopadloscian":{
+        "pl": "prostopadloscian",
+        "en": "cuboid"
+      },
+      "pierscien":{
+        "pl": "pierscien",
+        "en": "ring"
       }
-
   }
   

@@ -9,9 +9,12 @@ from PIL import Image
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
-from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
-from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
+from gui.top_level_windows.toplevel_window_instructions import \
+    TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import \
+    ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_step_by_step import \
+    TopLevelWindowStepByStep
 from options.equations_history import EquationHistory
 from options.help_materials import HelpMaterials
 from options.translator import Translator
@@ -233,6 +236,17 @@ class CalculatorApp(ctk.CTk):
         )
         self.combobox.place(relx=x, rely=y)
 
+    def create_radio_button(self, text, value, x, y):
+        radio_button = ctk.CTkRadioButton(
+            self,
+            text=text,
+            value=value,
+            variable=self.radio_var,
+            text_color=COLORS["BLACK"],
+        )
+        radio_button.place(relx=x, rely=y)
+        return radio_button
+
     def create_slider(self):
         self.slider = ctk.CTkSlider(
             master=self.master,
@@ -315,7 +329,7 @@ class CalculatorApp(ctk.CTk):
             "definite integral, Simpson method",
             "improper, definite integral",
             "field below function",
-            "volume of solid under curve"
+            "volume of solid under curve",
         ]
         self.eq_types_pl = [
             "Wybierz typ równania lub wartość do policzenia",
@@ -330,7 +344,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda Simpsona",
             "całka oznaczona, niewłaściwa",
             "pole pod wykresem",
-            "objętość bryły ograniczonej funkcją"
+            "objętość bryły ograniczonej funkcją",
         ]
         if self.translator.language == "pl":
             eq_types = self.eq_types_pl
@@ -576,16 +590,17 @@ class CalculatorApp(ctk.CTk):
             b=float(self.x1_entry.get()),
         )
         self.update_label_and_history(result)
-        
+
     def volume_below_f(self):
         equation_content = self.get_entry_content()
         result = self.equation_solver.volume_below_f(
             equation_content,
-            a=1,#float(self.x0_entry.get()),
-            b=1#float(self.x1_entry.get()),
+            a=float(self.x0_entry.get()),
+            b=float(self.x1_entry.get()),
+            solid=1,  # self.radio_var.get()
         )
         self.update_label_and_history(result)
-        
+
     def update_label_and_history(self, result):
         self.solution = result
         self.result_label.configure(text=result, text_color=COLORS["BLACK"])
@@ -623,6 +638,8 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, niewłaściwa",
             "field below function",
             "pole pod wykresem",
+            "objętość bryły ograniczonej funkcją",
+            "volume of solid under curve",
         ]
         if self.eq_type.lower() in map(str.lower, acceptable_types):
             self.entry_to_placehold.destroy()
@@ -680,6 +697,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "całka oznaczona, niewłaściwa"
             or self.eq_type == "field below function"
             or self.eq_type == "pole pod wykresem"
+            or self.eq_type == "objętość bryły ograniczonej funkcją"
+            or self.eq_type == "volume of solid under curve"
         ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
@@ -711,6 +730,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "całka oznaczona, niewłaściwa"
             or self.eq_type == "field below function"
             or self.eq_type == "pole pod wykresem"
+            or self.eq_type == "objętość bryły ograniczonej funkcją"
+            or self.eq_type == "volume of solid under curve"
         ):
             self.it_entry.configure(placeholder_text="num of int.")
             image_path = os.path.join(
@@ -735,6 +756,8 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "całka oznaczona, niewłaściwa"
             or self.eq_type == "field below function"
             or self.eq_type == "pole pod wykresem"
+            or self.eq_type == "objętość bryły ograniczonej funkcją"
+            or self.eq_type == "volume of solid under curve"
         ):
             self.it_entry.destroy()
             self.x0_entry.place(relx=0.72, rely=0.37)
@@ -742,8 +765,36 @@ class CalculatorApp(ctk.CTk):
         if (
             self.eq_type == "field below function"
             or self.eq_type == "pole pod wykresem"
+            or self.eq_type == "objętość bryły ograniczonej funkcją"
+            or self.eq_type == "volume of solid under curve"
         ):
             self.int_symbol.destroy()
+
+        if (
+            self.eq_type == "objętość bryły ograniczonej funkcją"
+            or self.eq_type == "volume of solid under curve"
+        ):
+            self.x0_entry.place(relx=0.72, rely=0.33)
+            self.x1_entry.place(relx=0.77, rely=0.33)
+            self.radio_var = tkinter.IntVar(value=0)
+            self.fill_label.destroy()
+            
+            self.radio_var = tkinter.IntVar(value=0)
+            text = "walec"
+            translated_text = self.translator.translate(text)
+            self.create_radio_button(translated_text, 1, 0.00, 0.00)
+
+            '''text = "stozek"
+            translated_text = self.translator.translate(text)
+            self.create_radio_button(translated_text, 2, 0.72, 0.66)
+
+            text = "prostopadloscian"
+            translated_text = self.translator.translate(text)
+            self.create_radio_button(translated_text, 3, 0.72, 0.67)
+
+            text = "pierscien"
+            translated_text = self.translator.translate(text)
+            self.create_radio_button(translated_text, 4, 0.72, 0.68)'''
 
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
@@ -758,7 +809,7 @@ class CalculatorApp(ctk.CTk):
             "całka oznaczona, metoda Simpsona": self.solve_integral_simpson_method,
             "całka oznaczona, niewłaściwa": self.solve_improper_integral,
             "pole pod wykresem": self.field_below_f,
-            "objętość bryły ograniczonej funkcją": self.volume_below_f
+            "objętość bryły ograniczonej funkcją": self.volume_below_f,
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
@@ -772,7 +823,7 @@ class CalculatorApp(ctk.CTk):
             "definite integral, Simpson method": self.solve_integral_simpson_method,
             "improper, definite integral": self.solve_improper_integral,
             "field below function": self.field_below_f,
-            "volume of solid under curve": self.volume_below_f
+            "volume of solid under curve": self.volume_below_f,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
