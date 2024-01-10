@@ -2,7 +2,7 @@ import re
 
 import numpy as np
 import sympy as sp
-from scipy.integrate import odeint, quad
+from scipy.integrate import odeint
 from sympy import integrate, lambdify, oo, symbols
 
 
@@ -244,7 +244,7 @@ class EquationSolver:
             solution1 = abs(integrate(equation, (x, a, 0)))
             solution2 = integrate(equation, (x, 0, b))
             solution = solution1 + solution2
-            
+
         if (a < 0) & (b < 0):
             solution1 = abs(integrate(equation, (x, a, 0)))
             solution2 = abs(integrate(equation, (x, 0, b)))

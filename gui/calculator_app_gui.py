@@ -303,7 +303,7 @@ class CalculatorApp(ctk.CTk):
             "center",
         )
         self.eq_types_en = [
-            "Choose type",
+            "Choose type of equation or value to calculate",
             "linear equations",
             "system of l. eq.",
             "quadratic eq.",
@@ -317,7 +317,7 @@ class CalculatorApp(ctk.CTk):
             "field below function",
         ]
         self.eq_types_pl = [
-            "Wybierz typ",
+            "Wybierz typ równania lub wartość do policzenia",
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
@@ -643,18 +643,8 @@ class CalculatorApp(ctk.CTk):
         if (
             self.eq_type == "równanie nieliniowe, metoda siecznych"
             or self.eq_type == "non linear eq., secant method"
-            or self.eq_type == "równanie nieliniowe, metoda bisekcji"
-            or self.eq_type == "non linear eq., bisection method"
             or self.eq_type == "równanie różniczkowe zwyczajne, pierwszy stopień"
             or self.eq_type == "ODE, first order"
-            or self.eq_type == "definite integral, trapeze method"
-            or self.eq_type == "całka oznaczona, metoda trapezów"
-            or self.eq_type == "całka oznaczona, metoda Simpsona"
-            or self.eq_type == "definite integral, Simpson method"
-            or self.eq_type == "improper, definite integral"
-            or self.eq_type == "całka oznaczona, niewłaściwa"
-            or self.eq_type == "field below function"
-            or self.eq_type == "pole pod wykresem"
         ):
             self.x1_entry = ctk.CTkEntry(
                 self.master,
@@ -680,6 +670,18 @@ class CalculatorApp(ctk.CTk):
             or self.eq_type == "field below function"
             or self.eq_type == "pole pod wykresem"
         ):
+            self.x1_entry = ctk.CTkEntry(
+                self.master,
+                height=40,
+                width=40,
+                corner_radius=10,
+                bg_color=COLORS["BACKGROUND_COLOR"],
+                fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+                placeholder_text="x1",
+                placeholder_text_color=COLORS["TEXT_GREY_COLOR"],
+                text_color=COLORS["BLACK"],
+            )
+            self.x1_entry.place(relx=0.89, rely=0.37)
             self.x0_entry.configure(placeholder_text="a")
             self.x1_entry.configure(placeholder_text="b")
         if (
