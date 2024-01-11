@@ -15,7 +15,7 @@ FONT = "Century Gothic"
 class TopLevelSolidType(ctk.CTkToplevel):
     def __init__(self, language_manager, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.geometry("210x220")
+        self.geometry("230x240")
         self.language_manager = language_manager
         self.translator = Translator(self.language_manager)
         self.create_widgets()
@@ -67,7 +67,7 @@ class TopLevelSolidType(ctk.CTkToplevel):
             fg_color=COLORS["MAIN_BUTTONS_COLOR"],
             width=100,
         )
-        load_button.place(relx=0.60, rely=0.8)
+        load_button.place(relx=0.50, rely=0.8)
 
     def set_value(self):
         self.selected_option = self.radio_var.get()

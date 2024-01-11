@@ -7,6 +7,8 @@ import numpy as np
 import sympy as sp
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from sympy import lambdify, symbols
+from mpl_toolkits.mplot3d import Axes3D
+
 
 from eq_solvers.common_eq_solv import EquationSolver
 
@@ -73,7 +75,7 @@ class TopLevelPlots(ctk.CTkToplevel):
             "całka oznaczona, metoda Simpsona": self.integral_eq_plot,
             "całka oznaczona, niewłaściwa": self.integral_eq_plot,
             "pole pod wykresem": self.field_eq_plot,
-            # "objętość bryły ograniczonej funkcją": self.volume_below_f,
+            "objętość bryły ograniczonej funkcją": self.volume_eq_plot,
         }
         eq_type_to_func_en = {
             "linear equations": self.linear_eq_plot,
@@ -87,7 +89,7 @@ class TopLevelPlots(ctk.CTkToplevel):
             "definite integral, Simpson method": self.integral_eq_plot,
             "improper, definite integral": self.integral_eq_plot,
             "field below function": self.field_eq_plot,
-            # "volume of solid under curve": self.volume_below_f,
+            "volume of solid under curve": self.volume_eq_plot,
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
@@ -228,6 +230,49 @@ class TopLevelPlots(ctk.CTkToplevel):
 
         self.canvas.mpl_connect("scroll_event", self.on_scroll)
 
+    def volume_eq_plot(self):
+        x = symbols("x")
+        equation = lambdify(x, self.equation_content, "numpy")
+        
+        if self.toolbar:
+            self.toolbar.destroy()
+            
+        x_vals = np.linspace(-10, 10, 100)
+        y_vals = equation(x_vals)
+        z_vals = np.zeros_like(x_vals)
+        
+        for ax in self.fig.get_axes():
+            self.fig.delaxes(ax)
+
+        self.ax = self.fig.add_subplot(111, projection='3d')
+
+        self.ax.plot(x_vals, y_vals, z_vals)
+
+        self.ax.set_xlabel('X')
+        self.ax.set_ylabel('Y')
+        self.ax.set_zlabel('Z')
+        
+        label_eq = self.change_form(self.equation_content)
+        self.ax.set_title(f"{label_eq}, [{self.a}; {self.b}]")
+
+
+
+        if not self.toolbar:
+            self.toolbar = NavigationToolbar2Tk(
+                FigureCanvasTkAgg(self.fig, master=self), self
+            )
+            self.toolbar.update()
+            self.toolbar.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+            self.fig.tight_layout()
+
+        if not hasattr(self, 'canvas'):
+            self.canvas = FigureCanvasTkAgg(self.fig, master=self)
+            self.canvas.draw()
+            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+        self.canvas.mpl_connect("scroll_event", self.on_scroll)
+        
+        
     def on_scroll(self, event):
         if event.button == "down":
             self.ax.set_xlim(self.ax.get_xlim()[0] * 1.1, self.ax.get_xlim()[1] * 1.1)
