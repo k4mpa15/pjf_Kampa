@@ -110,7 +110,7 @@ class TopLevelPlots(ctk.CTkToplevel):
         if self.toolbar:
             self.toolbar.destroy()
 
-        x_vals = np.linspace(-10, 10, 100)
+        x_vals = np.linspace(-5, 5, 100)
         y_vals = formula(x_vals)
 
         self.ax.clear()
@@ -203,7 +203,7 @@ class TopLevelPlots(ctk.CTkToplevel):
         if self.toolbar:
             self.toolbar.destroy()
 
-        x_vals = np.linspace(-10, 10, 100)
+        x_vals = np.linspace(-5, 5, 100)
         y_vals_eq1 = formula1(x_vals)
         y_vals_eq2 = formula2(x_vals)
 
@@ -232,29 +232,43 @@ class TopLevelPlots(ctk.CTkToplevel):
 
     def volume_eq_plot(self):
         x = symbols("x")
-        equation = lambdify(x, self.equation_content, "numpy")
-        
+        equations = self.equation_content.split(";")
         if self.toolbar:
             self.toolbar.destroy()
-            
-        x_vals = np.linspace(-10, 10, 100)
-        y_vals = equation(x_vals)
-        z_vals = np.zeros_like(x_vals)
-        
         for ax in self.fig.get_axes():
             self.fig.delaxes(ax)
+        if len(equations) == 1:
+            equation = lambdify(x, self.equation_content, "numpy")
+            
+            x_vals = np.linspace(-5, 5, 100)
+            y_vals = equation(x_vals)
+            z_vals = np.zeros_like(x_vals)
 
-        self.ax = self.fig.add_subplot(111, projection='3d')
+            self.ax = self.fig.add_subplot(111, projection='3d')
 
-        self.ax.plot(x_vals, y_vals, z_vals)
+            self.ax.plot(x_vals, y_vals, z_vals)
+
+            
+        if len(equations) == 2:
+            equation1 = lambdify(x, equations[0], "numpy")
+            equation2 = lambdify(x, equations[1], "numpy")
+            
+            x_vals = np.linspace(-5, 5, 100)
+            y_vals1 = equation1(x_vals)
+            y_vals2 = equation2(x_vals)
+            z_vals = np.zeros_like(x_vals)
+            
+            self.ax = self.fig.add_subplot(111, projection='3d')
+
+            self.ax.plot(x_vals, y_vals1, z_vals)
+            self.ax.plot(x_vals, y_vals2, z_vals)
 
         self.ax.set_xlabel('X')
         self.ax.set_ylabel('Y')
         self.ax.set_zlabel('Z')
-        
+            
         label_eq = self.change_form(self.equation_content)
         self.ax.set_title(f"{label_eq}, [{self.a}; {self.b}]")
-
 
 
         if not self.toolbar:
