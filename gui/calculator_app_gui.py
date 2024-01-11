@@ -1,6 +1,7 @@
 import json
 import os
 import tkinter
+import time
 from tkinter import *
 
 import customtkinter as ctk
@@ -9,12 +10,10 @@ from PIL import Image
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
-from gui.top_level_windows.toplevel_window_instructions import \
-    TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import \
-    ToplevelWindowPicChoser
-from gui.top_level_windows.toplevel_window_step_by_step import \
-    TopLevelWindowStepByStep
+from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
+from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
+from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
+from gui.top_level_windows.toplevel_window_solid_type import TopLevelSolidType
 from options.equations_history import EquationHistory
 from options.help_materials import HelpMaterials
 from options.translator import Translator
@@ -44,11 +43,13 @@ class CalculatorApp(ctk.CTk):
         self.solution = None
         self.eq_type = None
         self.toplevel_window_instructions = None
+        self.toplevel_window_solid_type = None
         self.equation_history = EquationHistory(self.language_manager)
         self.toplevel_window_history = None
         self.create_slider()
         self.toplevel_window_step_by_step = None
         self.help_materials = HelpMaterials(self.translator)
+        self.value = 0
 
     def on_close(self):
         if (
@@ -593,13 +594,16 @@ class CalculatorApp(ctk.CTk):
 
     def volume_below_f(self):
         equation_content = self.get_entry_content()
-        result = self.equation_solver.volume_below_f(
-            equation_content,
-            a=float(self.x0_entry.get()),
-            b=float(self.x1_entry.get()),
-            solid=1,  # self.radio_var.get()
+        
+        solid_type_value = self.toplevel_window_solid_type.get_type()
+        if self.x0_entry.get() and self.x1_entry.get():
+            result = self.equation_solver.volume_below_f(
+                equation_content,
+                a=float(self.x0_entry.get()),
+                b=float(self.x1_entry.get()),
+                solid=solid_type_value,
         )
-        self.update_label_and_history(result)
+            self.update_label_and_history(result)
 
     def update_label_and_history(self, result):
         self.solution = result
@@ -776,26 +780,25 @@ class CalculatorApp(ctk.CTk):
         ):
             self.x0_entry.place(relx=0.72, rely=0.33)
             self.x1_entry.place(relx=0.77, rely=0.33)
-            self.radio_var = tkinter.IntVar(value=0)
             self.fill_label.destroy()
+            self.choose_solid_type()
             
-            self.radio_var = tkinter.IntVar(value=0)
-            text = "walec"
-            translated_text = self.translator.translate(text)
-            self.create_radio_button(translated_text, 1, 0.00, 0.00)
-
-            '''text = "stozek"
-            translated_text = self.translator.translate(text)
-            self.create_radio_button(translated_text, 2, 0.72, 0.66)
-
-            text = "prostopadloscian"
-            translated_text = self.translator.translate(text)
-            self.create_radio_button(translated_text, 3, 0.72, 0.67)
-
-            text = "pierscien"
-            translated_text = self.translator.translate(text)
-            self.create_radio_button(translated_text, 4, 0.72, 0.68)'''
-
+            
+    def choose_solid_type(self):
+        if (
+                self.toplevel_window_solid_type is None
+                or not self.toplevel_window_solid_type.winfo_exists()
+            ):
+                self.toplevel_window_solid_type = TopLevelSolidType(
+                    self.language_manager
+                )
+                self.toplevel_window_solid_type.after(
+                    1, self.toplevel_window_solid_type.lift
+                )
+        else:
+            self.toplevel_window_solid_type.set_value()
+        
+            
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,

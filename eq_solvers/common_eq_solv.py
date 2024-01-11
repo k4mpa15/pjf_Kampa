@@ -256,6 +256,8 @@ class EquationSolver:
         return round(solution, 3)
 
     def volume_below_f(Self, equation_str, a, b, solid):
+        if solid == 0:
+            print("wtf")
         if solid == 1:
             x = symbols("x")
             equation = lambdify(x, equation_str, "numpy")
