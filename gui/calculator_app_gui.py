@@ -1,7 +1,6 @@
 import json
 import os
 import tkinter
-import time
 from tkinter import *
 
 import customtkinter as ctk
@@ -12,8 +11,9 @@ from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
 from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
 from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
-from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
+from gui.top_level_windows.toplevel_window_plots import TopLevelPlots
 from gui.top_level_windows.toplevel_window_solid_type import TopLevelSolidType
+from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
 from options.equations_history import EquationHistory
 from options.help_materials import HelpMaterials
 from options.translator import Translator
@@ -50,6 +50,7 @@ class CalculatorApp(ctk.CTk):
         self.toplevel_window_step_by_step = None
         self.help_materials = HelpMaterials(self.translator)
         self.value = 0
+        self.toplevel_window_plots = None
 
     def on_close(self):
         if (
@@ -399,7 +400,9 @@ class CalculatorApp(ctk.CTk):
             ctk.CENTER,
             lambda: self.show_step_by_step(),
         )
-        self.create_main_button("graph", 0.7, 0.6, 260, 32, ctk.CENTER, None)
+        self.create_main_button(
+            "graph", 0.7, 0.6, 260, 32, ctk.CENTER, lambda: self.display_plot()
+        )
 
         self.result_label = self.create_label(
             "eq_solve__",
@@ -594,7 +597,7 @@ class CalculatorApp(ctk.CTk):
 
     def volume_below_f(self):
         equation_content = self.get_entry_content()
-        
+
         solid_type_value = self.toplevel_window_solid_type.get_type()
         if self.x0_entry.get() and self.x1_entry.get():
             result = self.equation_solver.volume_below_f(
@@ -602,7 +605,7 @@ class CalculatorApp(ctk.CTk):
                 a=float(self.x0_entry.get()),
                 b=float(self.x1_entry.get()),
                 solid=solid_type_value,
-        )
+            )
             self.update_label_and_history(result)
 
     def update_label_and_history(self, result):
@@ -782,23 +785,19 @@ class CalculatorApp(ctk.CTk):
             self.x1_entry.place(relx=0.77, rely=0.33)
             self.fill_label.destroy()
             self.choose_solid_type()
-            
-            
+
     def choose_solid_type(self):
         if (
-                self.toplevel_window_solid_type is None
-                or not self.toplevel_window_solid_type.winfo_exists()
-            ):
-                self.toplevel_window_solid_type = TopLevelSolidType(
-                    self.language_manager
-                )
-                self.toplevel_window_solid_type.after(
-                    1, self.toplevel_window_solid_type.lift
-                )
+            self.toplevel_window_solid_type is None
+            or not self.toplevel_window_solid_type.winfo_exists()
+        ):
+            self.toplevel_window_solid_type = TopLevelSolidType(self.language_manager)
+            self.toplevel_window_solid_type.after(
+                1, self.toplevel_window_solid_type.lift
+            )
         else:
             self.toplevel_window_solid_type.set_value()
-        
-            
+
     def solve_choosen_type(self):
         eq_type_to_func_pl = {
             "równanie liniowe": self.solve_equation,
@@ -901,3 +900,22 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_pic_choser.after(
                 1, self.toplevel_window_pic_choser.lift
             )
+
+    def display_plot(self):
+        if (
+            self.toplevel_window_plots is None
+            or not self.toplevel_window_plots.winfo_exists()
+        ):
+            if hasattr(self, "x0_entry") and self.x0_entry.winfo_exists():
+                a = self.x0_entry.get()
+
+                if hasattr(self, "x1_entry") and self.x1_entry.winfo_exists():
+                    b = self.x1_entry.get()
+            else:
+                a = None
+                b = None
+
+            self.toplevel_window_plots = TopLevelPlots(
+                self.translator, self.get_entry_content(), self.eq_type, a, b
+            )
+            self.toplevel_window_plots.after(1, self.toplevel_window_plots.lift)

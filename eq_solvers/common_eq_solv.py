@@ -99,6 +99,8 @@ class EquationSolver:
     def solve_non_linear_equation_by_newton_raphson(
         func_str, x0, tol=1e-6, max_iter=100
     ):
+        if max_iter > 100:
+            return "Too much iterations"
         # ta metoda głównie służy do rozwiazywania równań nieliniowych f(x) = 0
         func_str = func_str.replace(" ", "")
         func_str = func_str.replace("=0", "")
@@ -194,6 +196,7 @@ class EquationSolver:
         return f"x = {values}: {solutions[:,0]}"
 
     def solve_integral_trapeze_method(self, equation, a, b, num_of_ranges):
+        equation = equation.replace(" ", "").replace("dx", "")
         x = symbols("x")
         expr = lambdify(x, equation, "numpy")
 
@@ -234,6 +237,7 @@ class EquationSolver:
         return sum
 
     def solve_improper_integral(self, equation, a, b):
+        equation = equation.replace(" ", "").replace("dx", "")
         x = symbols("x")
         solution = integrate(equation, (x, a, b))
         return solution
@@ -256,8 +260,6 @@ class EquationSolver:
         return round(solution, 3)
 
     def volume_below_f(Self, equation_str, a, b, solid):
-        if solid == 0:
-            print("wtf")
         if solid == 1:
             x = symbols("x")
             equation = lambdify(x, equation_str, "numpy")

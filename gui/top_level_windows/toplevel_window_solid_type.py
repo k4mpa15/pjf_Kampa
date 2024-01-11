@@ -2,6 +2,7 @@ import json
 import tkinter
 
 import customtkinter as ctk
+
 from options.translator import Translator
 
 with open("gui/colors.json") as f:
@@ -69,8 +70,8 @@ class TopLevelSolidType(ctk.CTkToplevel):
         load_button.place(relx=0.60, rely=0.8)
 
     def set_value(self):
-        self.selected_option  = self.radio_var.get()
+        self.selected_option = self.radio_var.get()
         self.destroy()
 
     def get_type(self):
-        return self.selected_option 
+        return self.selected_option

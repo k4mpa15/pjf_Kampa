@@ -17,7 +17,6 @@ class FileExporter:
         )
         if file_path:
             wb.save(file_path)
-            print(f"Plik Excela został zapisany jako: {file_path}")
 
     def export_to_latex(self, result):
         doc = Document()
@@ -32,7 +31,6 @@ class FileExporter:
         )
         if file_path:
             doc.generate_tex(file_path)
-            print(f"Plik LaTeX został zapisany jako: {file_path}")
 
     def ask_save_file(self, defaultextension, filetypes, title):
         return ctk.filedialog.asksaveasfilename(

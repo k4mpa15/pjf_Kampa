@@ -97,6 +97,10 @@
       "pierscien":{
         "pl": "pierscien",
         "en": "ring"
+      },
+      "is_graph":{
+        "pl": "brak wykresu dla takiego typu równania!",
+        "en": "no graph for this equation type!"
       }
   }
   
