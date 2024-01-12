@@ -30,12 +30,12 @@ class TopLevelHistory(ctk.CTkToplevel):
         with open("eq_history.txt", "w"):
             pass
         self.create_widgets()
-        
+
     def on_equation_clicked(self, equation, result):
         self.clicked_equation = equation
         self.root.set_equation_value(equation)
         return equation
-            
+
     def create_widgets(self):
         text = "history"
         translated_text = self.translator.translate(text)
@@ -59,11 +59,17 @@ class TopLevelHistory(ctk.CTkToplevel):
         )
         scrollable_frame.place(relx=0.06, rely=0.23)
 
-        for equation, result, timestamp in self.equation_history.get_all_equations_with_timestamp():
+        for (
+            equation,
+            result,
+            timestamp,
+        ) in self.equation_history.get_all_equations_with_timestamp():
             equation_text = f"{equation} > > > {result},   [{timestamp.strftime('%d/%m/%Y; %H:%M:%S')}]"
             equation_button = ctk.CTkButton(
                 master=scrollable_frame,
-                command=lambda eq=equation, res=result: self.on_equation_clicked(eq, res),
+                command=lambda eq=equation, res=result: self.on_equation_clicked(
+                    eq, res
+                ),
                 text=equation_text,
                 bg_color=COLORS["LIGHT_ENTRY_COLOR"],
                 fg_color=COLORS["LIGHT_ENTRY_COLOR"],
@@ -72,10 +78,10 @@ class TopLevelHistory(ctk.CTkToplevel):
                 width=600,
                 anchor=ctk.W,
                 text_color=COLORS["BLACK"],
-                hover_color=COLORS["LIGHT_ENTRY_COLOR"]
+                hover_color=COLORS["LIGHT_ENTRY_COLOR"],
             )
             equation_button.pack(pady=5)
-        
+
         text = "erase"
         translated_text = self.translator.translate(text)
         ctk.CTkButton(

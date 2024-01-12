@@ -53,7 +53,6 @@ class CalculatorApp(ctk.CTk):
         self.value = 0
         self.toplevel_window_plots = None
         self.equation_value = None
-        
 
     def on_close(self):
         if (
@@ -926,7 +925,7 @@ class CalculatorApp(ctk.CTk):
                 self.translator, self.get_entry_content(), self.eq_type, a, b
             )
             self.toplevel_window_plots.after(1, self.toplevel_window_plots.lift)
-            
+
     def set_equation_value(self, value):
         self.eq_entry.delete(0, END)
         self.eq_entry.insert(0, value)

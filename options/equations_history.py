@@ -2,6 +2,7 @@ from datetime import datetime
 
 from options.translator import Translator
 
+
 class EquationHistory:
     def __init__(self, language_manager):
         self.language_manager = language_manager
@@ -32,7 +33,7 @@ class EquationHistory:
 
     def parse_history_line(self, line):
         parts = line.strip().rsplit("> > >", 1)
-        
+
         if len(parts) == 2:
             equation = parts[0].strip()
             result, timestamp = [part.strip() for part in parts[1].split(",")]
