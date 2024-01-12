@@ -52,6 +52,8 @@ class CalculatorApp(ctk.CTk):
         self.help_materials = HelpMaterials(self.translator)
         self.value = 0
         self.toplevel_window_plots = None
+        self.equation_value = None
+        
 
     def on_close(self):
         if (
@@ -841,7 +843,7 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_history is None
             or not self.toplevel_window_history.winfo_exists()
         ):
-            self.toplevel_window_history = TopLevelHistory(self.language_manager)
+            self.toplevel_window_history = TopLevelHistory(self.language_manager, self)
             self.toplevel_window_history.after(1, self.toplevel_window_history.lift)
 
     def show_step_by_step(self):
@@ -903,7 +905,6 @@ class CalculatorApp(ctk.CTk):
         pytesseract.tesseract_cmd = path_to_tesseract
         text = pytesseract.image_to_string(img)
         text = text.lower().replace("", "").replace("X", "x")
-        print(text)
         self.eq_entry.delete(0, END)
         self.eq_entry.insert(0, text)
 
@@ -925,3 +926,7 @@ class CalculatorApp(ctk.CTk):
                 self.translator, self.get_entry_content(), self.eq_type, a, b
             )
             self.toplevel_window_plots.after(1, self.toplevel_window_plots.lift)
+            
+    def set_equation_value(self, value):
+        self.eq_entry.delete(0, END)
+        self.eq_entry.insert(0, value)

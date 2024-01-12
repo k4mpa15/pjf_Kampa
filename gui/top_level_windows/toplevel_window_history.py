@@ -13,7 +13,7 @@ FONT = "Century Gothic"
 
 
 class TopLevelHistory(ctk.CTkToplevel):
-    def __init__(self, language_manager, *args, **kwargs):
+    def __init__(self, language_manager, root, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("600x500")
         self.language_manager = language_manager
@@ -22,6 +22,7 @@ class TopLevelHistory(ctk.CTkToplevel):
         self.create_widgets()
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.title("Historia")
+        self.root = root
         self.resizable(False, True)
         self.grab_set()
 
@@ -29,7 +30,12 @@ class TopLevelHistory(ctk.CTkToplevel):
         with open("eq_history.txt", "w"):
             pass
         self.create_widgets()
-
+        
+    def on_equation_clicked(self, equation, result):
+        self.clicked_equation = equation
+        self.root.set_equation_value(equation)
+        return equation
+            
     def create_widgets(self):
         text = "history"
         translated_text = self.translator.translate(text)
@@ -44,7 +50,6 @@ class TopLevelHistory(ctk.CTkToplevel):
         )
         label.place(relx=0.42, rely=0.1)
 
-        history_text = self.equation_history.get_history()
         scrollable_frame = ctk.CTkScrollableFrame(
             master=self,
             width=500,
@@ -54,18 +59,23 @@ class TopLevelHistory(ctk.CTkToplevel):
         )
         scrollable_frame.place(relx=0.06, rely=0.23)
 
-        ctk.CTkLabel(
-            scrollable_frame,
-            text=history_text,
-            bg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            fg_color=COLORS["LIGHT_ENTRY_COLOR"],
-            corner_radius=10,
-            text_color=COLORS["BLACK"],
-            font=(FONT, 14),
-            width=600,
-            height=300,
-            anchor=ctk.W,
-        ).pack(pady=10)
+        for equation, result, timestamp in self.equation_history.get_all_equations_with_timestamp():
+            equation_text = f"{equation} > > > {result},   [{timestamp.strftime('%d/%m/%Y; %H:%M:%S')}]"
+            equation_button = ctk.CTkButton(
+                master=scrollable_frame,
+                command=lambda eq=equation, res=result: self.on_equation_clicked(eq, res),
+                text=equation_text,
+                bg_color=COLORS["LIGHT_ENTRY_COLOR"],
+                fg_color=COLORS["LIGHT_ENTRY_COLOR"],
+                corner_radius=10,
+                font=(FONT, 14),
+                width=600,
+                anchor=ctk.W,
+                text_color=COLORS["BLACK"],
+                hover_color=COLORS["LIGHT_ENTRY_COLOR"]
+            )
+            equation_button.pack(pady=5)
+        
         text = "erase"
         translated_text = self.translator.translate(text)
         ctk.CTkButton(
