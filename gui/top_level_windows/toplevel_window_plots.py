@@ -7,8 +7,6 @@ import numpy as np
 import sympy as sp
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from sympy import lambdify, symbols
-from mpl_toolkits.mplot3d import Axes3D
-
 
 from eq_solvers.common_eq_solv import EquationSolver
 
@@ -239,37 +237,35 @@ class TopLevelPlots(ctk.CTkToplevel):
             self.fig.delaxes(ax)
         if len(equations) == 1:
             equation = lambdify(x, self.equation_content, "numpy")
-            
+
             x_vals = np.linspace(-5, 5, 100)
             y_vals = equation(x_vals)
             z_vals = np.zeros_like(x_vals)
 
-            self.ax = self.fig.add_subplot(111, projection='3d')
+            self.ax = self.fig.add_subplot(111, projection="3d")
 
             self.ax.plot(x_vals, y_vals, z_vals)
 
-            
         if len(equations) == 2:
             equation1 = lambdify(x, equations[0], "numpy")
             equation2 = lambdify(x, equations[1], "numpy")
-            
+
             x_vals = np.linspace(-5, 5, 100)
             y_vals1 = equation1(x_vals)
             y_vals2 = equation2(x_vals)
             z_vals = np.zeros_like(x_vals)
-            
-            self.ax = self.fig.add_subplot(111, projection='3d')
+
+            self.ax = self.fig.add_subplot(111, projection="3d")
 
             self.ax.plot(x_vals, y_vals1, z_vals)
             self.ax.plot(x_vals, y_vals2, z_vals)
 
-        self.ax.set_xlabel('X')
-        self.ax.set_ylabel('Y')
-        self.ax.set_zlabel('Z')
-            
+        self.ax.set_xlabel("X")
+        self.ax.set_ylabel("Y")
+        self.ax.set_zlabel("Z")
+
         label_eq = self.change_form(self.equation_content)
         self.ax.set_title(f"{label_eq}, [{self.a}; {self.b}]")
-
 
         if not self.toolbar:
             self.toolbar = NavigationToolbar2Tk(
@@ -279,14 +275,13 @@ class TopLevelPlots(ctk.CTkToplevel):
             self.toolbar.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
             self.fig.tight_layout()
 
-        if not hasattr(self, 'canvas'):
+        if not hasattr(self, "canvas"):
             self.canvas = FigureCanvasTkAgg(self.fig, master=self)
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         self.canvas.mpl_connect("scroll_event", self.on_scroll)
-        
-        
+
     def on_scroll(self, event):
         if event.button == "down":
             self.ax.set_xlim(self.ax.get_xlim()[0] * 1.1, self.ax.get_xlim()[1] * 1.1)

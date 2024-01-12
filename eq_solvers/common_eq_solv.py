@@ -210,7 +210,7 @@ class EquationSolver:
             field = (expr(x_start) + expr(x_end)) * width_ab / 2
             sum += field
 
-        return round(sum,3)
+        return round(sum, 3)
 
     def solve_integral_simpson_method(self, equation, a, b, num_of_inter):
         if a == "-oo":
@@ -234,13 +234,13 @@ class EquationSolver:
             field = (width_ab / 6) * (expr(x_start) + 4 * expr(x_mid) + expr(x_end))
             sum += field
 
-        return round(sum,3)
+        return round(sum, 3)
 
     def solve_improper_integral(self, equation, a, b):
         equation = equation.replace(" ", "").replace("dx", "")
         x = symbols("x")
         solution = integrate(equation, (x, a, b))
-        return round(solution,3)
+        return round(solution, 3)
 
     def field_below_f(self, equation, a, b):
         x = symbols("x")
@@ -291,5 +291,5 @@ class EquationSolver:
             equation2 = lambdify(x, equation2_str, "numpy")
             integrand = lambda x: math.pi * (equation1(x) ** 2 - equation2(x) ** 2)
             volume, _ = quad(integrand, a, b)
-            
+
         return round(volume, 3)

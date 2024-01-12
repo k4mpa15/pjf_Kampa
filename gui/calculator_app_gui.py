@@ -2,15 +2,16 @@ import json
 import os
 import tkinter
 from tkinter import *
+from tkinter import filedialog
 
 import customtkinter as ctk
 from PIL import Image
+from pytesseract import pytesseract
 
 from eq_solvers.common_eq_solv import EquationSolver
 from gui.top_level_windows.toplevel_window_export import TopLevelExport
 from gui.top_level_windows.toplevel_window_history import TopLevelHistory
 from gui.top_level_windows.toplevel_window_instructions import TopLevelInstructions
-from gui.top_level_windows.toplevel_window_pic_choser import ToplevelWindowPicChoser
 from gui.top_level_windows.toplevel_window_plots import TopLevelPlots
 from gui.top_level_windows.toplevel_window_solid_type import TopLevelSolidType
 from gui.top_level_windows.toplevel_window_step_by_step import TopLevelWindowStepByStep
@@ -890,16 +891,21 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_export.after(1, self.toplevel_window_export.lift)
 
     def display_scan_eq_opt(self):
-        if (
-            self.toplevel_window_pic_choser is None
-            or not self.toplevel_window_pic_choser.winfo_exists()
-        ):
-            self.toplevel_window_pic_choser = ToplevelWindowPicChoser(
-                self.language_manager
-            )
-            self.toplevel_window_pic_choser.after(
-                1, self.toplevel_window_pic_choser.lift
-            )
+        file_path = filedialog.askopenfilename(
+            title="",
+            filetypes=[("Pliki obrazów", "*.png;*.jpg;*.jpeg;")],
+        )
+        if file_path:
+            print(f"Wczytano plik: {file_path}")
+        path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        image_path = file_path
+        img = Image.open(image_path)
+        pytesseract.tesseract_cmd = path_to_tesseract
+        text = pytesseract.image_to_string(img)
+        text = text.lower().replace("", "").replace("X", "x")
+        print(text)
+        self.eq_entry.delete(0, END)
+        self.eq_entry.insert(0, text)
 
     def display_plot(self):
         if (
