@@ -504,7 +504,7 @@ class CalculatorApp(ctk.CTk):
         self.update_label_and_history(result)
 
     def solve_quadratic_equation(self):
-        try: 
+        try:
             equation_content = self.get_entry_content()
             result = self.equation_solver.solve_quadratic_equation(equation_content)
         except ValueError:
@@ -642,7 +642,6 @@ class CalculatorApp(ctk.CTk):
         except ValueError:
             result = "Wrong format"
         self.update_label_and_history(result)
-            
 
     def update_label_and_history(self, result):
         self.solution = result

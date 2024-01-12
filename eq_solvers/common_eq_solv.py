@@ -97,7 +97,7 @@ class EquationSolver:
             return f"x, y, z ... {str(x)}"
         except UnboundLocalError:
             return "Wrong format"
-        
+
     @staticmethod
     def solve_non_linear_equation_by_newton_raphson(
         func_str, x0, tol=1e-6, max_iter=100
@@ -134,6 +134,7 @@ class EquationSolver:
             return "End of iterations"
         except ValueError:
             return "Wrong format"
+
     @staticmethod
     def solve_non_linear_equation_by_secant(func_str, x0, x1, tol=1e-6, max_iter=100):
         try:
@@ -163,7 +164,7 @@ class EquationSolver:
             return "End of iterations"
         except ValueError:
             return "Wrong format"
-        
+
     @staticmethod
     def solve_non_linear_equation_by_bisection(func_str, a, b, tol=1e-6, max_iter=1000):
         try:
@@ -193,12 +194,13 @@ class EquationSolver:
                 iter_count += 1
 
             return "End of iterations"
-        
+
         except ValueError:
             return "Wrong format"
 
     def solve_first_ode(self, equation, initial_condition, a, b):
         try:
+
             def parse_equation(x, y):
                 return eval(equation.replace("y", str(y)))
 
@@ -229,7 +231,7 @@ class EquationSolver:
             return round(sum, 3)
         except ValueError:
             return "Wrong format"
-        
+
     def solve_integral_simpson_method(self, equation, a, b, num_of_inter):
         try:
             if a == "-oo":
@@ -254,7 +256,7 @@ class EquationSolver:
                 sum += field
 
             return round(sum, 3)
-        
+
         except ValueError:
             return "Wrong format"
 

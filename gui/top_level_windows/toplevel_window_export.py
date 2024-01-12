@@ -20,7 +20,7 @@ class TopLevelExport(ctk.CTkToplevel):
         self.language_manager = language_manager
         self.translator = Translator(self.language_manager)
         self.create_widgets()
-        self.file_exporter = FileExporter()
+        self.file_exporter = FileExporter(self.translator)
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.title("Wybór rozszerzenia pliku")

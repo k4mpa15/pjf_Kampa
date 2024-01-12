@@ -43,7 +43,10 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
         if self.type == "równanie liniowe" or self.type == "linear equations":
             self.equation_solver.solve_linear_equation(self.entry_content)
 
-        elif self.type == "układ równań liniowych" or self.type == "system of l. equations":
+        elif (
+            self.type == "układ równań liniowych"
+            or self.type == "system of l. equations"
+        ):
             self.equation_solver.solve_system_of_equation(self.entry_content)
 
     def create_label_with_step(self, text, font):
@@ -80,7 +83,10 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             self.current_index = (self.current_index + 1) % len(self.labels_text)
             if self.current_index == 0:
                 self.no_next_button()
-        elif self.type == "układ równań liniowych" or self.type == "system of l. equations":
+        elif (
+            self.type == "układ równań liniowych"
+            or self.type == "system of l. equations"
+        ):
             new_text = self.sys_labels_text[self.current_index]
             self.sys_labels[self.current_index].configure(text=new_text)
             self.current_index = (self.current_index + 1) % len(self.sys_labels_text)
@@ -245,7 +251,10 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                 self.dw0_labels.append(step6w0)
                 step6w0.place(relx=0.05, rely=0.57)
 
-        if self.type == "układ równań liniowych" or self.type == "system of l. equations":
+        if (
+            self.type == "układ równań liniowych"
+            or self.type == "system of l. equations"
+        ):
             eq = self.create_label_with_step(
                 self.entry_content,
                 (FONT, 20),
