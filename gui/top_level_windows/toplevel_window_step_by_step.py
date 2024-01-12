@@ -37,13 +37,13 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
         self.destroy()
 
     def solve_eq(self):
-        if self.type == "równanie kwadratowe" or self.type == "quadratic eq.":
+        if self.type == "równanie kwadratowe" or self.type == "quadratic equation":
             self.equation_solver.solve_quadratic_equation(self.entry_content)
 
         if self.type == "równanie liniowe" or self.type == "linear equations":
             self.equation_solver.solve_linear_equation(self.entry_content)
 
-        elif self.type == "układ równań liniowych" or self.type == "system of l. eq.":
+        elif self.type == "układ równań liniowych" or self.type == "system of l. equations":
             self.equation_solver.solve_system_of_equation(self.entry_content)
 
     def create_label_with_step(self, text, font):
@@ -52,7 +52,7 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
         )
 
     def update_label(self):
-        if self.type == "równanie kwadratowe" or self.type == "quadratic eq.":
+        if self.type == "równanie kwadratowe" or self.type == "quadratic equation":
             if self.equation_solver.d < 0:
                 new_text = self.dm0_labels_text[self.current_index]
                 self.dm0_labels[self.current_index].configure(text=new_text)
@@ -80,7 +80,7 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             self.current_index = (self.current_index + 1) % len(self.labels_text)
             if self.current_index == 0:
                 self.no_next_button()
-        elif self.type == "układ równań liniowych" or self.type == "system of l. eq.":
+        elif self.type == "układ równań liniowych" or self.type == "system of l. equations":
             new_text = self.sys_labels_text[self.current_index]
             self.sys_labels[self.current_index].configure(text=new_text)
             self.current_index = (self.current_index + 1) % len(self.sys_labels_text)
@@ -156,7 +156,7 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
             self.labels.append(step5)
             step5.place(relx=0.05, rely=0.50)
 
-        if self.type == "równanie kwadratowe" or self.type == "quadratic eq.":
+        if self.type == "równanie kwadratowe" or self.type == "quadratic equation":
             eq = self.create_label_with_step(
                 f"{self.equation_solver.a}x² + {self.equation_solver.b}x + {self.equation_solver.c} = 0",
                 (FONT, 20),
@@ -245,7 +245,7 @@ class TopLevelWindowStepByStep(ctk.CTkToplevel):
                 self.dw0_labels.append(step6w0)
                 step6w0.place(relx=0.05, rely=0.57)
 
-        if self.type == "układ równań liniowych" or self.type == "system of l. eq.":
+        if self.type == "układ równań liniowych" or self.type == "system of l. equations":
             eq = self.create_label_with_step(
                 self.entry_content,
                 (FONT, 20),

@@ -77,8 +77,8 @@ class TopLevelPlots(ctk.CTkToplevel):
         }
         eq_type_to_func_en = {
             "linear equations": self.linear_eq_plot,
-            "quadratic eq.": self.quadratic_eq_plot,
-            "system of l. eq.": self.system_of_eq_plot,
+            "quadratic equation": self.quadratic_eq_plot,
+            "system of l. equations": self.system_of_eq_plot,
             "non linear eq., Newton - Raphson method": self.non_linear_eq_plot,
             "non linear eq., secant method": self.non_linear_eq_plot,
             "non linear eq., bisection method": self.non_linear_eq_plot,

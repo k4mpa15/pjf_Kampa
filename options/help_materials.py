@@ -23,8 +23,8 @@ class HelpMaterials:
         }
         self.url_to_help_en = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
-            "quadratic eq.": "https://en.wikipedia.org/wiki/Quadratic_equation",
-            "system of l. eq.": "https://en.wikipedia.org/wiki/Linear_system",
+            "quadratic equation": "https://en.wikipedia.org/wiki/Quadratic_equation",
+            "system of l. equations": "https://en.wikipedia.org/wiki/Linear_system",
             "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
             "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
             "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",

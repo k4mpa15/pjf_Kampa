@@ -323,8 +323,8 @@ class CalculatorApp(ctk.CTk):
         self.eq_types_en = [
             "Choose type of equation or value to calculate",
             "linear equations",
-            "system of l. eq.",
-            "quadratic eq.",
+            "system of l. equations",
+            "quadratic equation",
             "non linear eq., Newton - Raphson method",
             "non linear eq., secant method",
             "non linear eq., bisection method",
@@ -504,111 +504,145 @@ class CalculatorApp(ctk.CTk):
         self.update_label_and_history(result)
 
     def solve_quadratic_equation(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_quadratic_equation(equation_content)
+        try: 
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_quadratic_equation(equation_content)
+        except ValueError:
+            result = "Wrong format"
         self.update_label_and_history(result)
 
     def solve_system_of_equations(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_system_of_equation(equation_content)
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_system_of_equation(equation_content)
+        except ValueError:
+            result = "Wrong format"
         self.update_label_and_history(result)
 
     def solve_non_linear_equation_by_newton_raphson(self):
-        num_of_it = self.it_entry.get()
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_non_linear_equation_by_newton_raphson(
-            equation_content, max_iter=int(num_of_it), x0=int(self.x0_entry.get())
-        )
+        try:
+            num_of_it = self.it_entry.get()
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_non_linear_equation_by_newton_raphson(
+                equation_content, max_iter=int(num_of_it), x0=int(self.x0_entry.get())
+            )
+        except ValueError:
+            result = "Wrong format"
         self.update_label_and_history(result)
 
     def solve_non_linear_equation_by_secant(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_non_linear_equation_by_secant(
-            equation_content,
-            max_iter=int(self.it_entry.get()),
-            x0=int(self.x0_entry.get()),
-            x1=int(self.x1_entry.get()),
-        )
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_non_linear_equation_by_secant(
+                equation_content,
+                max_iter=int(self.it_entry.get()),
+                x0=int(self.x0_entry.get()),
+                x1=int(self.x1_entry.get()),
+            )
+        except ValueError:
+            result = "Wrong format"
         self.update_label_and_history(result)
 
     def solve_non_linear_equation_by_bisection(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_non_linear_equation_by_bisection(
-            equation_content,
-            max_iter=int(self.it_entry.get()),
-            a=int(self.x0_entry.get()),
-            b=int(self.x1_entry.get()),
-        )
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_non_linear_equation_by_bisection(
+                equation_content,
+                max_iter=int(self.it_entry.get()),
+                a=int(self.x0_entry.get()),
+                b=int(self.x1_entry.get()),
+            )
+        except ValueError:
+            result = "Wrong format"
         self.update_label_and_history(result)
 
     def solve_first_ode(self):
-        equation_content = self.get_entry_content()
-        a_value = int(self.x0_entry.get()) if self.x0_entry.get() else None
-        b_value = int(self.x1_entry.get()) if self.x1_entry.get() else None
+        try:
+            equation_content = self.get_entry_content()
+            a_value = int(self.x0_entry.get()) if self.x0_entry.get() else None
+            b_value = int(self.x1_entry.get()) if self.x1_entry.get() else None
 
-        if a_value is None and b_value is not None:
-            a_value = b_value
-        elif b_value is None and a_value is not None:
-            b_value = a_value
+            if a_value is None and b_value is not None:
+                a_value = b_value
+            elif b_value is None and a_value is not None:
+                b_value = a_value
 
-        result = self.equation_solver.solve_first_ode(
-            equation_content,
-            initial_condition=int(self.it_entry.get()),
-            a=a_value,
-            b=b_value,
-        )
+            result = self.equation_solver.solve_first_ode(
+                equation_content,
+                initial_condition=int(self.it_entry.get()),
+                a=a_value,
+                b=b_value,
+            )
+        except ValueError:
+            result = "Wrong format"
         self.update_label_and_history(result)
 
     def solve_integral_trapeze_method(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_integral_trapeze_method(
-            equation_content,
-            a=float(self.x0_entry.get()),
-            b=float(self.x1_entry.get()),
-            num_of_ranges=int(self.it_entry.get()),
-        )
-        self.update_label_and_history(result)
-
-    def solve_integral_simpson_method(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_integral_simpson_method(
-            equation_content,
-            a=float(self.x0_entry.get()),
-            b=float(self.x1_entry.get()),
-            num_of_inter=int(self.it_entry.get()),
-        )
-        self.update_label_and_history(result)
-
-    def solve_improper_integral(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.solve_improper_integral(
-            equation_content,
-            a=(self.x0_entry.get()),
-            b=(self.x1_entry.get()),
-        )
-        self.update_label_and_history(result)
-
-    def field_below_f(self):
-        equation_content = self.get_entry_content()
-        result = self.equation_solver.field_below_f(
-            equation_content,
-            a=float(self.x0_entry.get()),
-            b=float(self.x1_entry.get()),
-        )
-        self.update_label_and_history(result)
-
-    def volume_below_f(self):
-        equation_content = self.get_entry_content()
-
-        solid_type_value = self.toplevel_window_solid_type.get_type()
-        if self.x0_entry.get() and self.x1_entry.get():
-            result = self.equation_solver.volume_below_f(
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_integral_trapeze_method(
                 equation_content,
                 a=float(self.x0_entry.get()),
                 b=float(self.x1_entry.get()),
-                solid=solid_type_value,
+                num_of_ranges=int(self.it_entry.get()),
             )
-            self.update_label_and_history(result)
+        except ValueError:
+            result = "Wrong format"
+        self.update_label_and_history(result)
+
+    def solve_integral_simpson_method(self):
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_integral_simpson_method(
+                equation_content,
+                a=float(self.x0_entry.get()),
+                b=float(self.x1_entry.get()),
+                num_of_inter=int(self.it_entry.get()),
+            )
+        except ValueError:
+            result = "Wrong format"
+        self.update_label_and_history(result)
+
+    def solve_improper_integral(self):
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_improper_integral(
+                equation_content,
+                a=(self.x0_entry.get()),
+                b=(self.x1_entry.get()),
+            )
+        except ValueError:
+            result = "Wrong format"
+        self.update_label_and_history(result)
+
+    def field_below_f(self):
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.field_below_f(
+                equation_content,
+                a=float(self.x0_entry.get()),
+                b=float(self.x1_entry.get()),
+            )
+        except ValueError:
+            result = "Wrong format"
+        self.update_label_and_history(result)
+
+    def volume_below_f(self):
+        try:
+            equation_content = self.get_entry_content()
+
+            solid_type_value = self.toplevel_window_solid_type.get_type()
+            if self.x0_entry.get() and self.x1_entry.get():
+                result = self.equation_solver.volume_below_f(
+                    equation_content,
+                    a=float(self.x0_entry.get()),
+                    b=float(self.x1_entry.get()),
+                    solid=solid_type_value,
+                )
+        except ValueError:
+            result = "Wrong format"
+        self.update_label_and_history(result)
+            
 
     def update_label_and_history(self, result):
         self.solution = result
@@ -817,8 +851,8 @@ class CalculatorApp(ctk.CTk):
         }
         eq_type_to_func_en = {
             "linear equations": self.solve_equation,
-            "quadratic eq.": self.solve_quadratic_equation,
-            "system of l. eq.": self.solve_system_of_equations,
+            "quadratic equation": self.solve_quadratic_equation,
+            "system of l. equations": self.solve_system_of_equations,
             "non linear eq., Newton - Raphson method": self.solve_non_linear_equation_by_newton_raphson,
             "non linear eq., secant method": self.solve_non_linear_equation_by_secant,
             "non linear eq., bisection method": self.solve_non_linear_equation_by_bisection,
@@ -850,9 +884,9 @@ class CalculatorApp(ctk.CTk):
             "równanie kwadratowe",
             "równanie liniowe",
             "linear equations",
-            "quadratic eq.",
+            "quadratic equation",
             "układ równań liniowych",
-            "system of l. eq.",
+            "system of l. equations",
         ]
         entry_content = self.get_entry_content()
         if (
