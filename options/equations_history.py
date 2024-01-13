@@ -36,7 +36,7 @@ class EquationHistory:
 
         if len(parts) == 2:
             equation = parts[0].strip()
-            result, timestamp = [part.strip() for part in parts[1].split(",")]
+            result, timestamp = [part.strip() for part in parts[1].rsplit(",", 1)]
             timestamp = datetime.strptime(timestamp[1:-1], "%d/%m/%Y; %H:%M:%S")
             return equation, result, timestamp
         else:

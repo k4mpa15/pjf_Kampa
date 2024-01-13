@@ -487,6 +487,7 @@ class CalculatorApp(ctk.CTk):
             self.int_symbol.destroy()
 
         self.eq_entry.delete(0, len(self.get_entry_content()))
+        self.result_label.configure(text = "")
 
     def slider_event(self, value):
         rounded_value = round(float(value))
@@ -960,14 +961,13 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_plots is None
             or not self.toplevel_window_plots.winfo_exists()
         ):
+            a = None
+            b = None
             if hasattr(self, "x0_entry") and self.x0_entry.winfo_exists():
                 a = self.x0_entry.get()
 
                 if hasattr(self, "x1_entry") and self.x1_entry.winfo_exists():
                     b = self.x1_entry.get()
-            else:
-                a = None
-                b = None
 
             self.toplevel_window_plots = TopLevelPlots(
                 self.translator, self.get_entry_content(), self.eq_type, a, b

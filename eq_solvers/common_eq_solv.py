@@ -200,15 +200,14 @@ class EquationSolver:
 
     def solve_first_ode(self, equation, initial_condition, a, b):
         try:
-
             def parse_equation(x, y):
                 return eval(equation.replace("y", str(y)))
 
             values = np.arange(a, b + 1)
 
             solutions = odeint(parse_equation, initial_condition, values)
-
-            return f"x = {values}: {solutions[:,0]}"
+            rounded_solutions = solutions.round(2).flatten()
+            return f"x = {values}: {rounded_solutions}"
         except ValueError:
             return "Wrong format"
 
@@ -322,7 +321,8 @@ class EquationSolver:
         return round(volume, 3)
 
     def solve_system_of_non_linear_equation(self, equation_content):
-        equations = equation_content.replace(" ", "").split(";")
+        equation_content = equation_content.replace(" ", "").replace("=0","")
+        equations = equation_content.split(";")
         equation1_str = equations[0]
         equation2_str = equations[1]
         x, y = symbols("x y")
