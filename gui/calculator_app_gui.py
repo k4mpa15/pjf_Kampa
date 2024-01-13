@@ -487,7 +487,7 @@ class CalculatorApp(ctk.CTk):
             self.int_symbol.destroy()
 
         self.eq_entry.delete(0, len(self.get_entry_content()))
-        self.result_label.configure(text = "")
+        self.result_label.configure(text="")
 
     def slider_event(self, value):
         rounded_value = round(float(value))
@@ -649,7 +649,9 @@ class CalculatorApp(ctk.CTk):
     def solve_system_of_non_linear_equation(self):
         try:
             equation_content = self.get_entry_content()
-            result = self.equation_solver.solve_system_of_non_linear_equation(equation_content)
+            result = self.equation_solver.solve_system_of_non_linear_equation(
+                equation_content
+            )
         except ValueError:
             result = "Wrong format"
         self.update_label_and_history(result)
@@ -852,7 +854,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
             "układ równań liniowych": self.solve_system_of_equations,
-            "układ równań nieliniowych" : self.solve_system_of_non_linear_equation,
+            "układ równań nieliniowych": self.solve_system_of_non_linear_equation,
             "równanie nieliniowe, metoda Newtona - Raphsona": self.solve_non_linear_equation_by_newton_raphson,
             "równanie nieliniowe, metoda siecznych": self.solve_non_linear_equation_by_secant,
             "równanie nieliniowe, metoda bisekcji": self.solve_non_linear_equation_by_bisection,
@@ -941,21 +943,24 @@ class CalculatorApp(ctk.CTk):
             self.toplevel_window_export.after(1, self.toplevel_window_export.lift)
 
     def display_scan_eq_opt(self):
-        file_path = filedialog.askopenfilename(
-            title="",
-            filetypes=[("Pliki obrazów", "*.png;*.jpg;*.jpeg;")],
-        )
-        if file_path:
-            print(f"Wczytano plik: {file_path}")
-        path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-        image_path = file_path
-        img = Image.open(image_path)
-        pytesseract.tesseract_cmd = path_to_tesseract
-        text = pytesseract.image_to_string(img)
-        text = text.lower().replace("", "").replace("X", "x")
-        self.eq_entry.delete(0, END)
-        self.eq_entry.insert(0, text)
-
+        try:
+            file_path = filedialog.askopenfilename(
+                title="",
+                filetypes=[("Pliki obrazów", "*.png;*.jpg;*.jpeg;")],
+            )
+            if file_path:
+                print(f"Wczytano plik: {file_path}")
+            path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+            image_path = file_path
+            img = Image.open(image_path)
+            pytesseract.tesseract_cmd = path_to_tesseract
+            text = pytesseract.image_to_string(img)
+            text = text.lower().replace("", "").replace("X", "x")
+            self.eq_entry.delete(0, END)
+            self.eq_entry.insert(0, text)
+        except AttributeError:
+            return
+        
     def display_plot(self):
         if (
             self.toplevel_window_plots is None

@@ -4,8 +4,9 @@ import re
 import numpy as np
 import sympy as sp
 from scipy.integrate import odeint, quad
-from sympy import integrate, lambdify, oo, symbols, parse_expr
 from scipy.optimize import fsolve
+from sympy import integrate, lambdify, oo, parse_expr, symbols
+
 
 class EquationSolver:
     def solve_linear_equation(self, equation_content):
@@ -200,6 +201,7 @@ class EquationSolver:
 
     def solve_first_ode(self, equation, initial_condition, a, b):
         try:
+
             def parse_equation(x, y):
                 return eval(equation.replace("y", str(y)))
 
@@ -321,7 +323,7 @@ class EquationSolver:
         return round(volume, 3)
 
     def solve_system_of_non_linear_equation(self, equation_content):
-        equation_content = equation_content.replace(" ", "").replace("=0","")
+        equation_content = equation_content.replace(" ", "").replace("=0", "")
         equations = equation_content.split(";")
         equation1_str = equations[0]
         equation2_str = equations[1]
@@ -335,7 +337,7 @@ class EquationSolver:
             y = z[1]
             F = np.empty(2)
             F[0] = equation1(x, y)
-            F[1] = equation2(x, y)  
+            F[1] = equation2(x, y)
             return F
 
         initial_guesses = np.array([[1, 1], [-1, -1]])
