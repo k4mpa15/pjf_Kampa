@@ -10,7 +10,7 @@ COLORS = colors_data.get("COLORS", {})
 
 
 class TopLevelInstructions(ctk.CTkToplevel):
-    def __init__(self, translator ,eq_type, *args, **kwargs):
+    def __init__(self, translator, eq_type, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("600x350")
         self.translator = translator
@@ -24,23 +24,23 @@ class TopLevelInstructions(ctk.CTkToplevel):
 
     def on_close(self):
         self.destroy()
-        
+
     def get_image(self):
         self.images_to_help_pl = {
             "równanie liniowe": "gui\instructions\instructions_linear_eq.png",
-            #"równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
-            #"układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
-            #"układ równań nieliniowych": "https://pl.wikipedia.org/wiki/Układ_nieliniowy",
-            #"równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
-            #"równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
-            #"równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
-            #"równanie różniczkowe zwyczajne, pierwszy stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
-            #"równanie różniczkowe zwyczajne, drugi stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
-            #"całka oznaczona, metoda trapezów": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
-            #"całka oznaczona, metoda Simpsona": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
-            #"całka oznaczona, niewłaściwa": "https://pl.wikipedia.org/wiki/Całka",
-            #"pole pod wykresem": "https://blog.etrapez.pl/calki-nieoznaczone-i-pola-obszarow/",
-            #"objętość bryły ograniczonej funkcją": "https://www.matemaks.pl/objetosc-bryly-ograniczonej-powierzchniami.html",
+            # "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
+            # "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
+            # "układ równań nieliniowych": "https://pl.wikipedia.org/wiki/Układ_nieliniowy",
+            # "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
+            # "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
+            # "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
+            # "równanie różniczkowe zwyczajne, pierwszy stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
+            # "równanie różniczkowe zwyczajne, drugi stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
+            # "całka oznaczona, metoda trapezów": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
+            # "całka oznaczona, metoda Simpsona": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
+            # "całka oznaczona, niewłaściwa": "https://pl.wikipedia.org/wiki/Całka",
+            # "pole pod wykresem": "https://blog.etrapez.pl/calki-nieoznaczone-i-pola-obszarow/",
+            # "objętość bryły ograniczonej funkcją": "https://www.matemaks.pl/objetosc-bryly-ograniczonej-powierzchniami.html",
         }
         self.images_to_help_eng = {
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
@@ -67,7 +67,7 @@ class TopLevelInstructions(ctk.CTkToplevel):
             return img
         except TypeError:
             return
-    
+
     def create_widgets(self):
         img = self.get_image()
         my_image = ctk.CTkImage(
@@ -76,4 +76,6 @@ class TopLevelInstructions(ctk.CTkToplevel):
             size=(600, 500),
         )
 
-        ctk.CTkLabel(self, image=my_image, text="", anchor = "center").place(relx=0.0, rely=0.0)
+        ctk.CTkLabel(self, image=my_image, text="", anchor="center").place(
+            relx=0.0, rely=0.0
+        )

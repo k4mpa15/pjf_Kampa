@@ -960,7 +960,7 @@ class CalculatorApp(ctk.CTk):
             self.eq_entry.insert(0, text)
         except AttributeError:
             return
-        
+
     def display_plot(self):
         if (
             self.toplevel_window_plots is None
