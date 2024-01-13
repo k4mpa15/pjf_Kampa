@@ -927,7 +927,7 @@ class CalculatorApp(ctk.CTk):
             or not self.toplevel_window_instructions.winfo_exists()
         ):
             self.toplevel_window_instructions = TopLevelInstructions(
-                self.language_manager
+                self.translator, self.eq_type
             )
             self.toplevel_window_instructions.after(
                 1, self.toplevel_window_instructions.lift
