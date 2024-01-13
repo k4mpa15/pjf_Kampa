@@ -6,5 +6,6 @@
     "BLACK": "black",
     "WHITE": "white",
     "OPTION_BUTTON_HOVER_COLOR": "#B7AAD2",
-    "MAIN_BUTTONS_HOVER_COLOR": "#AEC9F2"
+    "MAIN_BUTTONS_HOVER_COLOR": "#AEC9F2",
+    "RED": "red"
 }}

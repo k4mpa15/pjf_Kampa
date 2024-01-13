@@ -34,6 +34,7 @@ class TopLevelHistory(ctk.CTkToplevel):
     def on_equation_clicked(self, equation, result):
         self.clicked_equation = equation
         self.root.set_equation_value(equation)
+        self.destroy()
         return equation
 
     def create_widgets(self):

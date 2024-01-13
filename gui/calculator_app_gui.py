@@ -644,8 +644,11 @@ class CalculatorApp(ctk.CTk):
         self.update_label_and_history(result)
 
     def update_label_and_history(self, result):
+        text_color = COLORS["BLACK"]
+        if result == "Wrong format":
+            text_color = COLORS["RED"]
         self.solution = result
-        self.result_label.configure(text=result, text_color=COLORS["BLACK"])
+        self.result_label.configure(text=result, text_color=text_color)
         self.equation_history.add_equation(self.get_entry_content(), result)
 
     def create_options_to_solve_eq(self):
