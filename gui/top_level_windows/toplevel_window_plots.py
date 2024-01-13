@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sympy as sp
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-from sympy import lambdify, symbols
+from sympy import lambdify, symbols, parse_expr
+from numpy import arange, meshgrid, sqrt
 
 from eq_solvers.common_eq_solv import EquationSolver
 
@@ -75,7 +76,7 @@ class TopLevelPlots(ctk.CTkToplevel):
             "całka oznaczona, niewłaściwa": self.integral_eq_plot,
             "pole pod wykresem": self.field_eq_plot,
             "objętość bryły ograniczonej funkcją": self.volume_eq_plot,
-            "układ równań nieliniowych": self.no_graph
+            "układ równań nieliniowych": self.non_linear_system_plot
         }
         eq_type_to_func_en = {
             "Choose type of equation or value to calculate": self.no_graph,
@@ -91,7 +92,7 @@ class TopLevelPlots(ctk.CTkToplevel):
             "improper, definite integral": self.integral_eq_plot,
             "field below function": self.field_eq_plot,
             "volume of solid under curve": self.volume_eq_plot,
-            "system of non linear equations": self.no_graph
+            "system of non linear equations": self.non_linear_system_plot
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
@@ -286,6 +287,57 @@ class TopLevelPlots(ctk.CTkToplevel):
 
         self.canvas.mpl_connect("scroll_event", self.on_scroll)
 
+    def non_linear_system_plot(self):
+        equation_content = self.equation_content.replace(" ", "").replace("=0", "")
+        equations = equation_content.split(";")
+        equation1_str = equations[0]
+        equation2_str = equations[1]
+        
+        x, y = symbols("x y")
+        if "y" in equation1_str:
+            equation1 = lambdify((x, y), parse_expr(equation1_str), "numpy")
+        if "y" in equation2_str:
+            equation2 = lambdify((x, y), parse_expr(equation2_str), "numpy")
+        if "y" not in equation1_str:
+            x = sp.symbols("x")
+            equation1 = sp.sympify(equation1_str)
+        if "y" not in equation2_str:
+            x = sp.symbols("x")
+            equation2 = sp.sympify(equation2_str)
+        delta = 0.025
+        x_vals, y_vals = np.meshgrid(
+            arange(-10, 10, delta),
+            arange(-10, 10, delta)
+        )
+
+        z1 = equation1(x_vals, y_vals)
+        z2 = equation2(x_vals, y_vals)
+        self.ax.clear()
+        contour1 = self.ax.contour(x_vals, y_vals, z1, [0], colors='r')
+        contour2 = self.ax.contour(x_vals, y_vals, z2, [0], colors='b')
+        
+        equation1_str = self.change_form(equation1_str)
+        equation2_str = self.change_form(equation2_str)
+        label = f"{equation1_str} = 0, {equation2_str} = 0"
+        
+        self.ax.axhline(0, color="black", linewidth=0.5)
+        self.ax.axvline(0, color="black", linewidth=0.5)
+        self.ax.set_xlabel("x")
+        self.ax.set_ylabel("y")
+        self.ax.set_title(label)
+        
+        
+        self.toolbar = NavigationToolbar2Tk(FigureCanvasTkAgg(self.fig, master=self), self)
+        self.toolbar.update()
+        self.toolbar.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        self.fig.tight_layout()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+        self.canvas.mpl_connect("scroll_event", self.on_scroll)
+
+    
     def on_scroll(self, event):
         if event.button == "down":
             self.ax.set_xlim(self.ax.get_xlim()[0] * 1.1, self.ax.get_xlim()[1] * 1.1)
