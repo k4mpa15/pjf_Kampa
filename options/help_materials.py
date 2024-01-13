@@ -10,6 +10,7 @@ class HelpMaterials:
             "równanie liniowe": "https://pl.wikipedia.org/wiki/Równanie_liniowe",
             "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
             "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
+            "układ równań nieliniowych": "https://pl.wikipedia.org/wiki/Układ_nieliniowy",
             "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
             "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
             "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
@@ -25,6 +26,7 @@ class HelpMaterials:
             "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
             "quadratic equation": "https://en.wikipedia.org/wiki/Quadratic_equation",
             "system of l. equations": "https://en.wikipedia.org/wiki/Linear_system",
+            "system of non linear equations": "https://en.wikipedia.org/wiki/Nonlinear_control",
             "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
             "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
             "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",
@@ -36,9 +38,12 @@ class HelpMaterials:
             "field below function": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/area-under-curve",
             "volume of solid under curve": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/volumes-revolution",
         }
-        if self.translator.language == "pl":
-            self.url_to_help = self.url_to_help_pl
-        else:
-            self.url_to_help = self.url_to_help_en
-        url = self.url_to_help.get(eq_type)
-        webbrowser.open(url, new=0, autoraise=True)
+        try:
+            if self.translator.language == "pl":
+                self.url_to_help = self.url_to_help_pl
+            else:
+                self.url_to_help = self.url_to_help_en
+            url = self.url_to_help.get(eq_type)
+            webbrowser.open(url, new=0, autoraise=True)
+        except TypeError:
+            return

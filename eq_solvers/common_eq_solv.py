@@ -320,3 +320,6 @@ class EquationSolver:
             volume, _ = quad(integrand, a, b)
 
         return round(volume, 3)
+
+    def solve_system_of_non_linear_equation(self):
+        return "Dziala"

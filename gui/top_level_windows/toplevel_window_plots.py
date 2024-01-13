@@ -62,6 +62,7 @@ class TopLevelPlots(ctk.CTkToplevel):
 
     def create_plot(self):
         eq_type_to_func_pl = {
+            "Wybierz typ równania lub wartość do policzenia": self.no_graph,
             "równanie liniowe": self.linear_eq_plot,
             "równanie kwadratowe": self.quadratic_eq_plot,
             "układ równań liniowych": self.system_of_eq_plot,
@@ -74,8 +75,10 @@ class TopLevelPlots(ctk.CTkToplevel):
             "całka oznaczona, niewłaściwa": self.integral_eq_plot,
             "pole pod wykresem": self.field_eq_plot,
             "objętość bryły ograniczonej funkcją": self.volume_eq_plot,
+            "układ równań nieliniowych": self.no_graph
         }
         eq_type_to_func_en = {
+            "Choose type of equation or value to calculate": self.no_graph,
             "linear equations": self.linear_eq_plot,
             "quadratic equation": self.quadratic_eq_plot,
             "system of l. equations": self.system_of_eq_plot,
@@ -88,6 +91,7 @@ class TopLevelPlots(ctk.CTkToplevel):
             "improper, definite integral": self.integral_eq_plot,
             "field below function": self.field_eq_plot,
             "volume of solid under curve": self.volume_eq_plot,
+            "system of non linear equations": self.no_graph
         }
         if self.translator.language == "pl":
             eq_type_to_func = eq_type_to_func_pl
@@ -297,4 +301,4 @@ class TopLevelPlots(ctk.CTkToplevel):
         translated_text = self.translator.translate(text)
         ctk.CTkLabel(
             self, text=translated_text, font=(FONT, 20), text_color=COLORS["BLACK"]
-        ).place(relx=0.20, rely=0.4)
+        ).place(relx=0.5, rely=0.4, anchor = "center")

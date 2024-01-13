@@ -325,6 +325,7 @@ class CalculatorApp(ctk.CTk):
             "linear equations",
             "system of l. equations",
             "quadratic equation",
+            "system of non linear equations",
             "non linear eq., Newton - Raphson method",
             "non linear eq., secant method",
             "non linear eq., bisection method",
@@ -340,6 +341,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe",
             "układ równań liniowych",
             "równanie kwadratowe",
+            "układ równań nieliniowych",
             "równanie nieliniowe, metoda Newtona - Raphsona",
             "równanie nieliniowe, metoda siecznych",
             "równanie nieliniowe, metoda bisekcji",
@@ -643,6 +645,14 @@ class CalculatorApp(ctk.CTk):
             result = "Wrong format"
         self.update_label_and_history(result)
 
+    def solve_system_of_non_linear_equation(self):
+        try:
+            equation_content = self.get_entry_content()
+            result = self.equation_solver.solve_system_of_non_linear_equation()
+        except ValueError:
+            result = "Wrong format"
+        self.update_label_and_history(result)
+
     def update_label_and_history(self, result):
         text_color = COLORS["BLACK"]
         if result == "Wrong format":
@@ -841,6 +851,7 @@ class CalculatorApp(ctk.CTk):
             "równanie liniowe": self.solve_equation,
             "równanie kwadratowe": self.solve_quadratic_equation,
             "układ równań liniowych": self.solve_system_of_equations,
+            "układ równań nieliniowych" : self.solve_system_of_non_linear_equation,
             "równanie nieliniowe, metoda Newtona - Raphsona": self.solve_non_linear_equation_by_newton_raphson,
             "równanie nieliniowe, metoda siecznych": self.solve_non_linear_equation_by_secant,
             "równanie nieliniowe, metoda bisekcji": self.solve_non_linear_equation_by_bisection,
@@ -855,6 +866,7 @@ class CalculatorApp(ctk.CTk):
             "linear equations": self.solve_equation,
             "quadratic equation": self.solve_quadratic_equation,
             "system of l. equations": self.solve_system_of_equations,
+            "system of non linear equations": self.solve_system_of_non_linear_equation,
             "non linear eq., Newton - Raphson method": self.solve_non_linear_equation_by_newton_raphson,
             "non linear eq., secant method": self.solve_non_linear_equation_by_secant,
             "non linear eq., bisection method": self.solve_non_linear_equation_by_bisection,
