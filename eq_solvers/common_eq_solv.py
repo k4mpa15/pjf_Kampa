@@ -4,8 +4,8 @@ import re
 import numpy as np
 import sympy as sp
 from scipy.integrate import odeint, quad
-from sympy import integrate, lambdify, oo, symbols
-
+from sympy import integrate, lambdify, oo, symbols, parse_expr
+from scipy.optimize import fsolve
 
 class EquationSolver:
     def solve_linear_equation(self, equation_content):
@@ -321,5 +321,32 @@ class EquationSolver:
 
         return round(volume, 3)
 
-    def solve_system_of_non_linear_equation(self):
-        return "Dziala"
+    def solve_system_of_non_linear_equation(self, equation_content):
+        equations = equation_content.replace(" ", "").split(";")
+        equation1_str = equations[0]
+        equation2_str = equations[1]
+        x, y = symbols("x y")
+        equation1 = lambdify((x, y), parse_expr(equation1_str), "numpy")
+        equation2 = lambdify((x, y), parse_expr(equation2_str), "numpy")
+
+        @staticmethod
+        def f(z):
+            x = z[0]
+            y = z[1]
+            F = np.empty(2)
+            F[0] = equation1(x, y)
+            F[1] = equation2(x, y)  
+            return F
+
+        initial_guesses = np.array([[1, 1], [-1, -1]])
+        solutions = []
+
+        for guess in initial_guesses:
+            solution = fsolve(f, guess)
+            solutions.append(solution)
+        for solution in solutions:
+            x1 = round(solutions[0][0], 3)
+            y1 = round(solutions[0][1], 3)
+            x2 = round(solutions[1][0], 3)
+            y2 = round(solutions[1][1], 3)
+        return x1, y1, x2, y2

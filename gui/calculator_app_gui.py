@@ -648,7 +648,7 @@ class CalculatorApp(ctk.CTk):
     def solve_system_of_non_linear_equation(self):
         try:
             equation_content = self.get_entry_content()
-            result = self.equation_solver.solve_system_of_non_linear_equation()
+            result = self.equation_solver.solve_system_of_non_linear_equation(equation_content)
         except ValueError:
             result = "Wrong format"
         self.update_label_and_history(result)
@@ -659,7 +659,7 @@ class CalculatorApp(ctk.CTk):
             text_color = COLORS["RED"]
         self.solution = result
         self.result_label.configure(text=result, text_color=text_color)
-        self.equation_history.add_equation(self.get_entry_content(), result)
+        self.equation_history.add_equation(self.get_entry_content(), str(result))
 
     def create_options_to_solve_eq(self):
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
