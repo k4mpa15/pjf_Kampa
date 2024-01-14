@@ -346,9 +346,18 @@ class EquationSolver:
         for guess in initial_guesses:
             solution = fsolve(f, guess)
             solutions.append(solution)
+    
+        valid_solutions = []
         for solution in solutions:
-            x1 = round(solutions[0][0], 3)
-            y1 = round(solutions[0][1], 3)
-            x2 = round(solutions[1][0], 3)
-            y2 = round(solutions[1][1], 3)
-        return x1, y1, x2, y2
+            x, y = solution
+            if np.isclose(equation1(x, y), 0) and np.isclose(equation2(x, y), 0):
+                valid_solutions.append((round(x, 3), round(y, 3)))
+                
+        unique_solutions = list(set(valid_solutions))
+        
+        if len(unique_solutions) == 1:
+            return unique_solutions[0]
+        elif len(unique_solutions) == 2:
+            return unique_solutions[0] + unique_solutions[1]
+        else:
+            return None
