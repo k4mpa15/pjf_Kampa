@@ -296,7 +296,7 @@ class TopLevelPlots(ctk.CTkToplevel):
         x, y = symbols("x y")
         delta = 0.025
         x_vals, y_vals = np.meshgrid(arange(-10, 10, delta), arange(-10, 10, delta))
-        
+
         if ("y" in equation1_str) and ("y" not in equation2_str):
             equation1 = lambdify((x, y), parse_expr(equation1_str), "numpy")
             z1 = equation1(x_vals, y_vals)
@@ -327,7 +327,7 @@ class TopLevelPlots(ctk.CTkToplevel):
             self.ax.clear()
             contour1 = self.ax.contour(x_vals, y_vals, z1, [0], colors="r")
             contour2 = self.ax.contour(x_vals, y_vals, z2, [0], colors="b")
-            
+
         elif ("y" not in equation2_str) and ("y" not in equation1_str):
             x = sp.symbols("x")
             func1 = sp.sympify(equation1_str)

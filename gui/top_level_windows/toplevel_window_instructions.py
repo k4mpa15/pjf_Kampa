@@ -12,11 +12,11 @@ COLORS = colors_data.get("COLORS", {})
 class TopLevelInstructions(ctk.CTkToplevel):
     def __init__(self, translator, eq_type, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.geometry("600x350")
+        self.geometry("300x170")
         self.translator = translator
         self.eq_type = eq_type
         self.create_widgets()
-        self.resizable(True, True)
+        self.resizable(False, False)
         self.configure(fg_color=COLORS["BACKGROUND_COLOR"])
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.title("Instrukcje")
@@ -27,36 +27,36 @@ class TopLevelInstructions(ctk.CTkToplevel):
 
     def get_image(self):
         self.images_to_help_pl = {
+            "Wybierz typ równania lub wartość do policzenia": "gui\instructions\instructions_blank.png",
             "równanie liniowe": "gui\instructions\instructions_linear_eq.png",
-            # "równanie kwadratowe": "https://pl.wikipedia.org/wiki/Równanie_kwadratowe",
-            # "układ równań liniowych": "https://pl.wikipedia.org/wiki/Układ_równań_liniowych",
-            # "układ równań nieliniowych": "https://pl.wikipedia.org/wiki/Układ_nieliniowy",
-            # "równanie nieliniowe, metoda Newtona - Raphsona": "https://pl.wikipedia.org/wiki/Metoda_Newtona",
-            # "równanie nieliniowe, metoda siecznych": "https://pl.wikipedia.org/wiki/Metoda_siecznych",
-            # "równanie nieliniowe, metoda bisekcji": "https://pl.wikipedia.org/wiki/Metoda_równego_podziału",
-            # "równanie różniczkowe zwyczajne, pierwszy stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
-            # "równanie różniczkowe zwyczajne, drugi stopień": "https://pl.wikipedia.org/wiki/Równanie_różniczkowe_zwyczajne",
-            # "całka oznaczona, metoda trapezów": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
-            # "całka oznaczona, metoda Simpsona": "https://pl.wikipedia.org/wiki/Całkowanie_numeryczne",
-            # "całka oznaczona, niewłaściwa": "https://pl.wikipedia.org/wiki/Całka",
-            # "pole pod wykresem": "https://blog.etrapez.pl/calki-nieoznaczone-i-pola-obszarow/",
-            # "objętość bryły ograniczonej funkcją": "https://www.matemaks.pl/objetosc-bryly-ograniczonej-powierzchniami.html",
+            "równanie kwadratowe": "gui\instructions\instructions_quadratic.png",
+            "układ równań liniowych": "gui\instructions\instructions_system_of_linear.png",
+            "układ równań nieliniowych": "gui\instructions\instructions_system_of_nonlinear.png",
+            "równanie nieliniowe, metoda Newtona - Raphsona": "gui\instructions\instructions_non_linear_eq.png",
+            "równanie nieliniowe, metoda siecznych": "gui\instructions\instructions_non_linear_eq.png",
+            "równanie nieliniowe, metoda bisekcji": "gui\instructions\instructions_non_linear_eq.png",
+            "równanie różniczkowe zwyczajne, pierwszy stopień": "gui\instructions\instructions_ode_int.png",
+            "całka oznaczona, metoda trapezów": "gui\instructions\instructions_integral.png",
+            "całka oznaczona, metoda Simpsona": "gui\instructions\instructions_integral.png",
+            "całka oznaczona, niewłaściwa": "gui\instructions\instructions_integral.png",
+            "pole pod wykresem": "gui\instructions\instructions_field_below_f.png",
+            "objętość bryły ograniczonej funkcją": "gui\instructions\instructions_volume_below_f.png",
         }
         self.images_to_help_eng = {
-            "linear equations": "https://en.wikipedia.org/wiki/Linear_equation",
-            "quadratic equation": "https://en.wikipedia.org/wiki/Quadratic_equation",
-            "system of l. equations": "https://en.wikipedia.org/wiki/Linear_system",
-            "system of non linear equations": "https://en.wikipedia.org/wiki/Nonlinear_control",
-            "non linear eq., Newton - Raphson method": "https://en.wikipedia.org/wiki/Newton%27s_method",
-            "non linear eq., secant method": "https://en.wikipedia.org/wiki/Secant_method",
-            "non linear eq., bisection method": "https://en.wikipedia.org/wiki/Bisection_method",
-            "ODE, first order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
-            "ODE, second order": "https://en.wikipedia.org/wiki/Ordinary_differential_equation",
-            "definite integral, trapeze method": "https://en.wikipedia.org/wiki/Numerical_integration",
-            "definite integral, Simpson method": "https://en.wikipedia.org/wiki/Numerical_integration",
-            "improper, definite integral": "https://en.wikipedia.org/wiki/Integral",
-            "field below function": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/area-under-curve",
-            "volume of solid under curve": "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/volumes-revolution",
+            "Choose type of equation or value to calculate": "gui\instructions\instructions_blank.png",
+            "linear equations": "gui\instructions\instructions_linear_eq.png",
+            "quadratic equation": "gui\instructions\instructions_quadratic.png",
+            "system of l. equations": "gui\instructions\instructions_system_of_linear.png",
+            "system of non linear equations": "gui\instructions\instructions_system_of_nonlinear.png",
+            "non linear eq., Newton - Raphson method": "gui\instructions\instructions_non_linear_eq.png",
+            "non linear eq., secant method": "gui\instructions\instructions_non_linear_eq.png",
+            "non linear eq., bisection method": "gui\instructions\instructions_non_linear_eq.png",
+            "ODE, first order": "gui\instructions\instructions_ode_int.png",
+            "definite integral, trapeze method": "gui\instructions\instructions_integral.png",
+            "definite integral, Simpson method": "gui\instructions\instructions_integral.png",
+            "improper, definite integral": "gui\instructions\instructions_integral.png",
+            "field below function": "gui\instructions\instructions_field_below_f.png",
+            "volume of solid under curve": "gui\instructions\instructions_volume_below_f.png",
         }
         try:
             if self.translator.language == "pl":
@@ -73,7 +73,7 @@ class TopLevelInstructions(ctk.CTkToplevel):
         my_image = ctk.CTkImage(
             light_image=Image.open(img),
             dark_image=None,
-            size=(600, 500),
+            size=(300, 170),
         )
 
         ctk.CTkLabel(self, image=my_image, text="", anchor="center").place(

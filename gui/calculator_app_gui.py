@@ -832,8 +832,6 @@ class CalculatorApp(ctk.CTk):
             self.eq_type == "objętość bryły ograniczonej funkcją"
             or self.eq_type == "volume of solid under curve"
         ):
-            self.x0_entry.place(relx=0.72, rely=0.33)
-            self.x1_entry.place(relx=0.77, rely=0.33)
             self.fill_label.destroy()
             self.choose_solid_type()
 
@@ -948,8 +946,6 @@ class CalculatorApp(ctk.CTk):
                 title="",
                 filetypes=[("Pliki obrazów", "*.png;*.jpg;*.jpeg;")],
             )
-            if file_path:
-                print(f"Wczytano plik: {file_path}")
             path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
             image_path = file_path
             img = Image.open(image_path)
