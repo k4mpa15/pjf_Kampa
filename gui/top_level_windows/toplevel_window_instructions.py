@@ -12,7 +12,7 @@ COLORS = colors_data.get("COLORS", {})
 class TopLevelInstructions(ctk.CTkToplevel):
     def __init__(self, translator, eq_type, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.geometry("300x170")
+        self.geometry("350x200")
         self.translator = translator
         self.eq_type = eq_type
         self.create_widgets()
@@ -38,7 +38,7 @@ class TopLevelInstructions(ctk.CTkToplevel):
             "równanie różniczkowe zwyczajne, pierwszy stopień": "gui\instructions\instructions_ode_int.png",
             "całka oznaczona, metoda trapezów": "gui\instructions\instructions_integral.png",
             "całka oznaczona, metoda Simpsona": "gui\instructions\instructions_integral.png",
-            "całka oznaczona, niewłaściwa": "gui\instructions\instructions_integral.png",
+            "całka oznaczona, niewłaściwa": "gui\instructions\instructions_integral_last.png",
             "pole pod wykresem": "gui\instructions\instructions_field_below_f.png",
             "objętość bryły ograniczonej funkcją": "gui\instructions\instructions_volume_below_f.png",
         }
@@ -73,7 +73,7 @@ class TopLevelInstructions(ctk.CTkToplevel):
         my_image = ctk.CTkImage(
             light_image=Image.open(img),
             dark_image=None,
-            size=(300, 170),
+            size=(350, 200),
         )
 
         ctk.CTkLabel(self, image=my_image, text="", anchor="center").place(
