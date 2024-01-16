@@ -8,6 +8,7 @@ class FileExporter:
         self.translator = translator
 
     def export_to_excel(self, result):
+        result = str(result)
         wb = openpyxl.Workbook()
         ws = wb.active
         if self.translator.language == "pl":

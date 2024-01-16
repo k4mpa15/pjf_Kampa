@@ -7,7 +7,7 @@ import numpy as np
 import sympy as sp
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from numpy import arange
-from sympy import lambdify, parse_expr, symbols
+from sympy import lambdify, parse_expr, symbols, oo
 
 from eq_solvers.common_eq_solv import EquationSolver
 
@@ -119,7 +119,9 @@ class TopLevelPlots(ctk.CTkToplevel):
         self.ax.clear()
         self.ax.plot(x_vals, y_vals, label=label, color="blue", **kwargs)
         for arg in args:
-            self.ax.axvline(arg, color="red", linewidth=2)
+            if arg == "oo" or arg == "-oo":
+                break
+            self.ax.axvline(int(arg), color="red", linewidth=2)
         self.ax.axhline(0, color="black", linewidth=0.5)
         self.ax.axvline(0, color="black", linewidth=0.5)
         self.ax.set_title(label)
@@ -175,7 +177,7 @@ class TopLevelPlots(ctk.CTkToplevel):
         expr = lambdify(x, equation, "numpy")
         equation = self.change_form(equation)
         label = f"∫ {equation} dx [{self.a}; {self.b}]"
-        self.show_graph(expr, label, int(self.a), int(self.b))
+        self.show_graph(expr, label, self.a, self.b)
 
     def field_eq_plot(self):
         x = symbols("x")
